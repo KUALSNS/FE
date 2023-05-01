@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { userState, userState } from '../atoms/auth';
+import { useRecoilState,useSetRecoilState } from 'recoil'
 
 const Signin = () => {
 
@@ -11,6 +13,7 @@ const Signin = () => {
   
   const [email,setEmail] = useState('')
   const [password,setPw] = useState('')
+  const userState = useRecoilState(userState)
 
   const spaceHome = () =>{
     navigate('/')
