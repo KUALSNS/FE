@@ -7,10 +7,12 @@ import Challenge from "./pages/Challenge";
 import Template from "./pages/Template";
 import Record from "./pages/Record";
 import Mypage from "./pages/Mypage";
+import LeftNav from "./components/LeftNav";
 
 function App() {
   return (
     <div>
+      <LeftNav/>
       <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/login' element={<Signin />}/>
