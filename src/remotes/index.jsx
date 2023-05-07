@@ -6,7 +6,7 @@ const WritonAxios = axios.create({
 });
 
 
-const postLoginUser=(userEmail,userPassword)=>WritonAxios.post('/api/user/login',{userEmail,userPassword});
+const postLoginUser=(userIdentifier,userPassword)=>WritonAxios.post('/api/user/login',{userIdentifier,userPassword});
 
 const getAccessToken=()=>WritonAxios.get('/api/user/login/reissue-token',{headers:{access:localStorage.getItem('accessToken'),refresh:localStorage.getItem('refreshToken')}})
 
