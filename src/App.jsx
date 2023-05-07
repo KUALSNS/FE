@@ -11,6 +11,7 @@ import LeftNav from "./components/LeftNav";
 import { getAccessToken } from "./remotes";
 import { useSetRecoilState } from "recoil";
 import { authState } from "./atoms/auth";
+import jwt_decode from "jwt-decode";
 
 function App() {
  
@@ -21,22 +22,23 @@ function App() {
     if (accessToken) {
       // 토큰의 만료 시간을 체크합니다.
       const tokenExpiration = jwt_decode(accessToken).exp;
+      console.log('zz')
       const currentTime = Date.now() / 1000;
       // 토큰이 만료되었다면, 새로운 토큰을 발급받습니다.
       if (tokenExpiration < currentTime) {
         getAccessToken()
           .then((res) => {
             console.log(res)
-            if(res.message === 'login again!'){
+            localStorage.setItem("accessToken",res.data.data.accessToken)
+            console.log('access 토큰 만 재발급')
+          })
+          .catch(error => {
+            if(error.response.data.code === 419){
               alert('로그인을 다시 하세요')
               setAuth(false)
             }else{
-              // 새로운 Access Token으로 요청을 보낼 수 있도록 설정합니다.
-            localStorage.setItem("accessToken",res.data.data.accessToken)
+              console.log(error)
             }
-          })
-          .catch(error => {
-            console.log(error);
           });
       }
     }
