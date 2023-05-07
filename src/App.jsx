@@ -20,11 +20,11 @@ function App() {
   const checkTokenExpiration = () => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
-      // 토큰의 만료 시간을 체크합니다.
+      // 토큰의 만료 시간을 체크
       const tokenExpiration = jwt_decode(accessToken).exp;
       console.log('zz')
       const currentTime = Date.now() / 1000;
-      // 토큰이 만료되었다면, 새로운 토큰을 발급받습니다.
+      // 토큰이 만료되었다면, 새로운 토큰을 발급
       if (tokenExpiration < currentTime) {
         getAccessToken()
           .then((res) => {
@@ -44,7 +44,7 @@ function App() {
     }
   };
   
-  setInterval(checkTokenExpiration, 60000); // 60초 마다 토큰 만료 여부를 체크합니다.
+  setInterval(checkTokenExpiration, 60000); // 60초 마다 토큰 만료 여부를 체크
 
   return (
     <div>
