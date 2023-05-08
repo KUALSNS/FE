@@ -8,6 +8,7 @@ import checkAllIcon_dis from '../static/signup_checkall_disabled.svg'
 import checkAllIcon from '../static/signup_checkall.svg'
 import checkIcon_dis from '../static/signup_check_disabled.svg'
 import checkIcon from '../static/signup_check.svg'
+import { getEmail, postEmailCode, postSignup } from '../remotes';
 
 const SignupWrapper = styled.div`
   font-family: 'Pretendard';
@@ -167,7 +168,9 @@ const Signup = () => {
     const [idError, setIdError] = useState(false);
     const [password1Error, setPassword1Error] = useState(false);
     const [password2Error, setPassword2Error] = useState(false);
+    const [emailCode, setEmailCode] = useState('');
     const [emailConfirmed, setEmailConfirmed] = useState(false);
+    const [emailCodeError, setEmailCodeError] = useState(false);
     const [check, setCheck] = useState([false, false, false]);
     const [signupFlag, setSignupFlag]= useState(false);
 
@@ -175,7 +178,7 @@ const Signup = () => {
       if (!idError && userId
         && !password1Error && password1
         && !password2Error && password2
-        && emailConfirmed
+        && emailConfirmed && !emailCodeError
         && username.length>0 
         && phone.length===11
         && check[0] && check[1]){
@@ -184,7 +187,7 @@ const Signup = () => {
       else{
         setSignupFlag(false);
       }
-    }, [idError, password1Error, password2Error, username, email, phone, ...check])
+    }, [idError, password1Error, password2Error, username, email, emailCodeError, phone, ...check])
     
     const homeRoute = (e)=>{
       navigate('/')
@@ -192,7 +195,14 @@ const Signup = () => {
 
     const LoginSubmit =(e)=>{
       e.preventDefault();
-      navigate('/')
+      postSignup(userId, email, password2, username, phone)
+      .then((res)=>{
+        console.log(res);
+        navigate('/')
+      })
+      .catch((err)=>console.log(err));
+      //[needFix]
+      //if email exists, show modal
     }
 
     const handleIdChange = (e)=>{
@@ -240,6 +250,14 @@ const Signup = () => {
       setEmail(e.target.value)
     }
 
+    const handleEmailCodeChange = (e)=>{
+      const value = e.target.value;
+      const regex = /^[0-9]{0,6}$/
+      if (regex.test(value)){
+        setEmailCode(e.target.value);
+      }
+    }
+
     const handlePhoneChange  = (e)=>{
       const value = e.target.value;
       const regex = /^[0-9]{0,11}$/
@@ -256,8 +274,8 @@ const Signup = () => {
       //[needFix]
       //fetch to server, check if duplicated
       //for test,
-      //if userId==="existing", show error
-      if (userId==="existing"){
+      //if userId==="existing1", show error
+      if (userId==="existing1"){
         setIdError(true);
       }
       else{
@@ -267,11 +285,26 @@ const Signup = () => {
 
     const handleEmailClick = (e)=>{
       e.preventDefault();
-      //[needFix]
-      //email confirm fetch to server
-      //if successful,
-      setEmailConfirmed(true);
+      getEmail(email)
+      .then(res=>{
+        console.log(res);
+        setEmailConfirmed(true);
+      })
+      .catch((err)=>console.log(err));
+    }
 
+    const handleEmailCodeClick = (e)=>{
+      e.preventDefault();
+      //[needFix]
+      //email confirm server check
+      postEmailCode(email, emailCode)
+      .then(res=>{
+        console.log(res)
+      })
+      .catch((err)=>{
+        setEmailCodeError(true);
+        console.log(err)
+      })
     }
 
     const handleCheckAll = ()=>{
@@ -298,7 +331,7 @@ const Signup = () => {
         <div className='field'>
           <div>아이디</div>
           <input type='text' className={(idError)?"errorBox":""} placeholder='영문, 숫자 5-11자' value={userId} onChange={handleIdChange} />
-          <button disabled={/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,11}$/.test(userId)?false:true} onClick={handleIdClick}>중복 확인</button>
+          <button className='hidden' disabled={/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,11}$/.test(userId)?false:true} onClick={handleIdClick}>중복 확인</button>
         </div>
         {idError?(
           <div className='message'>
@@ -334,12 +367,22 @@ const Signup = () => {
         </div>
         <div className='field'>
           <div>이메일</div>
-          <input type='email' value={email} onChange={handleEmailChange} />
-          <button disabled={email.indexOf("@")>0?false:true}  onClick={handleEmailClick}>인증 요청</button>
+          <input type='email' readOnly={emailConfirmed?true:false} value={email} onChange={handleEmailChange} />
+          <button disabled={email.indexOf("@")>0?false:true} onClick={handleEmailClick}>인증 요청</button>
         </div>
         <div className='message'>
           <span className='emailMessage'> 계정 분실 시 본인인증을 위한 입력이 필요해요.</span>
         </div>
+        <div className='field'>
+          <div>인증 코드</div>
+          <input disabled={emailConfirmed?false:true} type='text' className={(emailCodeError)?"errorBox":""} placeholder="인증 코드 6자리" value={emailCode} onChange={handleEmailCodeChange} />
+          <button disabled={emailConfirmed?false:true} onClick={handleEmailCodeClick}>인증</button>
+        </div>
+        {emailCodeError?(
+          <div className='message'>
+            <span className='errorMessage'>잘못된 인증코드입니다.</span>
+          </div>
+        ):""}
         <div className='field'>
           <div>휴대폰</div>
           <input type='text' placeholder="'-' 빼고 숫자만 입력" value={phone} onChange={handlePhoneChange}/>

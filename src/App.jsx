@@ -50,8 +50,12 @@ function App() {
     <div>
       <Routes>
           <Route path='/' element={<Home />}/>
-           <Route path='/login' element={<Signin />}/>
+          <Route path='/login' element={<Signin />}/>
           <Route path='/register' element={<Signup />}/>
+          <Route path='/challenge' element={<Challenge />}/>
+          <Route path='/record' element={<Record />}/>
+          <Route path='/template' element={<Template />}/>
+          <Route path='/mypage' element={<Mypage />}/>
       </Routes>
     </div>
   )

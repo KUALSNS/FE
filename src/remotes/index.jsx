@@ -12,4 +12,10 @@ const getAccessToken=()=>WritonAxios.get('/api/user/login/reissue-token',{header
 
 const patchLogoutUser=()=>WritonAxios.patch('/api/user/logout','',{headers:{access:localStorage.getItem('accessToken')}});
 
-export {postLoginUser,patchLogoutUser,getAccessToken}
+const getEmail = (userEmail)=>WritonAxios.get('api/user/signup/verify-email-code', {userEmail});
+
+const postEmailCode = (userEmail, userEmailCode)=>WritonAxios.post('/api/user/signup/verify-email', {userEmail, userEmailCode});
+
+const postSignup = (userId, userEmail, userPassword, nickname, phoneNumber)=>WritonAxios.post('api/user/signup', {userId, userEmail, userPassword, nickname, phoneNumber})
+
+export {postLoginUser,patchLogoutUser,getAccessToken,getEmail,postEmailCode,postSignup}
