@@ -1,29 +1,39 @@
-
 /*Font: Montserrat*/
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 
 /*Font: Happiness-Sans*/
 @font-face {
-  font-family: 'Happiness-Sans-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/Happiness-Sans-Bold.woff2') format('woff2');
+  font-family: "Happiness-Sans-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/Happiness-Sans-Bold.woff2")
+    format("woff2");
   font-weight: 700;
   font-style: normal;
 }
 
 /*Font: Pretendard*/
 @font-face {
-  font-family: 'Pretendard';
-  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
   font-weight: 400;
   font-style: normal;
 }
 
 :root {
-  font-family:'Pretendard', sans-serif;
-  --challenging-blue:#266CF4;
-  --shadow-blue:#135FF3;
-  --enjoy-yellow:#FCE184;
+  font-family: "Pretendard", sans-serif;
+  --challenging-blue: #266cf4;
+  --shadow-blue: #135ff3;
+  --enjoy-yellow: #fce184;
   --dark: #272727;
   --gray: #626262;
-  --off-white:#F3F5F9;
+  --off-white: #f3f5f9;
+}
+
+body {
+  margin: auto;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 1100px;
+  overflow-x: hidden;
+  font-family: "Happiness-Sans-Bold";
 }
