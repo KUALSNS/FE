@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { userState } from '../atoms/auth';
 import { useRecoilState,useSetRecoilState } from 'recoil'
 import styled from 'styled-components';
-import singupBtn from '../static/signin_signupBtn.svg';
 import { postLoginUser } from '../remotes';
 import { authState } from '../atoms/auth';
 
@@ -12,6 +11,13 @@ const SigninWrapper = styled.div`
   text-align: center;
   min-height: 100vh;
   padding-top: 83px;
+  div{
+    font-family: 'Happiness-Sans-Bold', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 26px;
+    margin-bottom: 68px;
+  }
 
   img{
     margin-bottom: 212px;
@@ -22,19 +28,14 @@ const SigninWrapper = styled.div`
   }
 `
 
-const SigninForm = styled.div`
-  div{
-    font-family: 'Happiness-Sans-Bold', sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    font-size: 26px;
-    margin-bottom: 68px;
-  }
+const SigninForm = styled.form`
+    
   input{
     display: block;
     margin: auto;
-    padding: 16px;
     width: 328px;
+    height: 48px;
+    padding: 16px;
     border-radius: 8px;
     border: 1px solid #E3E5E5;
     margin-bottom: 24px;
@@ -103,14 +104,14 @@ const Signin = () => {
 
   return (
     <SigninWrapper>
-      <SigninForm>
-        <div>로그인</div>
+      <div>로그인</div>
+      <SigninForm onSubmit={(e)=>LoginSubmit(e)}>
         <input type='text' placeholder='아이디' value={userId} onChange={(e)=>setUserId(e.target.value)}></input>
         <input type='password' placeholder='비밀번호' value={password} onChange={(e)=>setPassword(e.target.value)}></input>
-        <button onClick={LoginSubmit}>로그인</button>
+        <button type='submit'>로그인</button>
         <span>아이디 찾기 | 비밀번호 찾기</span>
       </SigninForm>
-      <img src={singupBtn} onClick={signupRoute}/>
+      <img src='signin_signupBtn.svg' onClick={signupRoute}/>
     </SigninWrapper>
   )
 }
