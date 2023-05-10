@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
@@ -12,11 +12,14 @@ import { getAccessToken, getCategory } from "./remotes";
 import { useRecoilState } from "recoil";
 import { authState } from "./atoms/auth";
 import jwt_decode from "jwt-decode";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { patchLogoutUser } from "./remotes";
+import Navigation from "./components/Navigation";
 
 function App() {
+  const location = useLocation();
   const [auth, setAuth] = useRecoilState(authState);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const checkTokenExpiration = () => {
     getCategory()
@@ -61,6 +64,15 @@ function App() {
     if (accessToken) {
       setAuth(true);
     }
+
+    function handleResize() {
+      setIsSmallScreen(window.innerWidth <= 1390);
+    }
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const Logout = () => {
@@ -88,14 +100,28 @@ function App() {
         </button>
       )}
       {/* <button onClick={checkTokenExpiration}>토큰 재발급 </button> */}
+      {location.pathname == "/login" || location.pathname == "/register" ? (
+        ""
+      ) : (
+        <div>
+          <Navigation />
+          {!isSmallScreen ? (
+            <div>
+              <LeftNav />
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      )}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Signin />} />
-        <Route path="/register" element={<Signup />} />
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/record" element={<Record />} />
         <Route path="/template" element={<Template />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/login" element={<Signin />} />
+        <Route path="/register" element={<Signup />} />
       </Routes>
     </div>
   );
