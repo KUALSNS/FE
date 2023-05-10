@@ -111,9 +111,10 @@ const ContainerLeft = styled.div`
 const ContainerRight = styled.div`
   display: flex;
   margin: auto;
-  margin-bottom: 17px;
+  margin-left: 236px;
+  margin-bottom: 12px;
   justify-content: space-between;
-  width: 920px;
+  width: 1106px;
   z-index: 2;
   .challenge-title {
     display: flex;

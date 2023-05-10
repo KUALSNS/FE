@@ -13,8 +13,9 @@ export default Record;
 
 const Container = styled.div`
   background-color: lightgray;
-  max-width: 920px;
+  max-width: 1039px;
   margin: auto;
+  margin-left: 260px;
   height: 1000px;
   margin-top: 64px;
 `;
