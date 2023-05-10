@@ -20,15 +20,15 @@ const Home = () => {
 
   return (
     <div>
-      <Navigation />
+      {/* <Navigation /> */}
       <Main>
-        {!isSmallScreen ? (
+        {/* {!isSmallScreen ? (
           <div>
             <LeftNav />
           </div>
         ) : (
           ""
-        )}
+        )} */}
         <Container>메인 페이지</Container>
       </Main>
     </div>
