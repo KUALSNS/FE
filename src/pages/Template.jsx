@@ -13,8 +13,9 @@ export default Template;
 
 const Container = styled.div`
   background-color: lightgray;
-  max-width: 920px;
+  max-width: 1106px;
   margin: auto;
+  margin-left: 260px;
   height: 1000px;
   margin-top: 64px;
 `;
