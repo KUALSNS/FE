@@ -4,6 +4,7 @@ const WritonAxios = axios.create({
   baseURL: "https://www.tarae.store",
 });
 
+
 const postLoginUser = (userIdentifier, userPassword) =>
   WritonAxios.post("/api/user/login", { userIdentifier, userPassword });
 
@@ -21,7 +22,7 @@ const patchLogoutUser = () =>
   });
 
 const getEmail = (userEmail) =>
-  WritonAxios.get("api/user/signup/verify-email-code", { userEmail });
+  WritonAxios.get("/api/user/signup/verify-email-code", { userEmail });
 
 const postEmailCode = (userEmail, userEmailCode) =>
   WritonAxios.post("/api/user/signup/verify-email", {
@@ -48,3 +49,4 @@ export {
   postSignup,
   getCategory,
 };
+

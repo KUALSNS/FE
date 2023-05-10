@@ -3,11 +3,6 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logo from '../static/writon_logo.svg'
-import checkAllIcon_dis from '../static/signup_checkall_disabled.svg'
-import checkAllIcon from '../static/signup_checkall.svg'
-import checkIcon_dis from '../static/signup_check_disabled.svg'
-import checkIcon from '../static/signup_check.svg'
 import { getEmail, postEmailCode, postSignup } from '../remotes';
 
 const SignupWrapper = styled.div`
@@ -17,7 +12,7 @@ const SignupWrapper = styled.div`
   padding-bottom: 100px;
 
   .logo{
-    margin-bottom: 68px;
+    margin-bottom: 44px;
     cursor: pointer;
   }
 `;
@@ -45,6 +40,8 @@ const SignupForm = styled.form`
     margin: auto;
     padding: 16px;
     flex-basis: 328px;
+    width: 328px;
+    height: 48px;
     border-radius: 8px;
     border: 1px solid #E3E5E5;
   }
@@ -326,7 +323,7 @@ const Signup = () => {
     return (
 
     <SignupWrapper>
-        <img className='logo' src={logo} alt='writon' onClick={homeRoute}/>
+        <img className='logo' src='writon_logo.svg' alt='writon' onClick={homeRoute}/>
       <SignupForm>
         <div className='field'>
           <div>아이디</div>
@@ -392,22 +389,22 @@ const Signup = () => {
           <div>이용약관 동의</div>
           <div className='policy'>
             <div className='check'>
-              <img onClick={handleCheckAll} src={check.every(c => c === true)?checkAllIcon:checkAllIcon_dis}/>
+              <img onClick={handleCheckAll} src={check.every(c => c === true)?'signup_checkall.svg':'signup_checkall_disabled.svg'}/>
               <span>약관 전체 동의 (선택 동의 포함)</span>
               <a className='hidden'>자세히</a>
             </div>
             <div className='check'>
-              <img onClick={()=>handleCheck(0)} src={check[0]?checkIcon:checkIcon_dis}/>
+              <img onClick={()=>handleCheck(0)} src={check[0]?'signup_check.svg':'signup_check_disabled.svg'}/>
               <span>[필수] 라이톤 이용약관 동의</span>
               <a>자세히</a>
             </div>
             <div className='check'>
-              <img onClick={()=>handleCheck(1)} src={check[1]?checkIcon:checkIcon_dis}/>
+              <img onClick={()=>handleCheck(1)} src={check[1]?'signup_check.svg':'signup_check_disabled.svg'}/>
               <span>[필수] 개인정보 수집 및 이용 동의</span>
               <a>자세히</a>
             </div>
             <div className='check'>
-              <img onClick={()=>handleCheck(2)} src={check[2]?checkIcon:checkIcon_dis}/>
+              <img onClick={()=>handleCheck(2)} src={check[2]?'signup_check.svg':'signup_check_disabled.svg'}/>
               <span>[선택] 광고성 정보 수신 동의</span>
               <a>자세히</a>
             </div>
