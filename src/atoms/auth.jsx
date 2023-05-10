@@ -1,19 +1,21 @@
-import {atom} from 'recoil'
-
+import { atom } from "recoil";
 
 export const authState = atom({
-    key:'src/atoms/auth.jsx-authState',
-    default:false
-    
-})
+  key: "src/atoms/auth.jsx-authState",
+  default: false,
+});
 
+export const sideToggleState = atom({
+  key: "src/atoms/auth.jsx-sideToggleState",
+  default: false,
+});
 
 export const userState = atom({
-    key: 'src/atoms/auth.jsx-userState', 
-    default: {
-      username:'',
-      email:'',
-      acesstoken:'',
-      refreshtoken:'',
-    }
-  })
+  key: "src/atoms/auth.jsx-userState",
+  default: {
+    username: "",
+    email: "",
+    acesstoken: "",
+    refreshtoken: "",
+  },
+});

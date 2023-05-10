@@ -1,11 +1,21 @@
-import React from 'react'
+import React from "react";
+import LeftNav from "../components/LeftNav";
+import styled from "styled-components";
 
 function Mypage() {
   return (
     <div>
-        Mypage
+      <Container>Mypage</Container>
     </div>
-  )
+  );
 }
 
-export default Mypage
+export default Mypage;
+
+const Container = styled.div`
+  background-color: lightgray;
+  max-width: 920px;
+  margin: auto;
+  height: 1000px;
+  margin-top: 64px;
+`;
