@@ -6,12 +6,14 @@ import MypageModal from '../components/MypageModal';
 
 const check=false; //needfix: email check button, change into atom
 
-const MypageWrapper = styled.div`
-  font-family: "Pretendard", sans-serif;
-  width: 920px;
+
+const Container = styled.div`
+  max-width: 1106px;
   margin-top: 148px;
   margin-left: 378px;
   margin-bottom: 149px;
+  font-family: "Pretendard", sans-serif;
+  width: 920px;
   h1{
     font-family: 'Happiness-Sans-Bold';
     font-size: 28px;
@@ -100,7 +102,7 @@ const MypageWrapper = styled.div`
     background: #DDDEE1;
     margin-right: 20px;
   }
-`
+  `;
 
 function Mypage() {
   const [editing, setEditing] = useState(false);
@@ -109,7 +111,7 @@ function Mypage() {
     setModalState({show: true, content: clicked});
   }
   return (
-      <MypageWrapper>
+    <Container>
         {modalState.show&&<MypageModal/>}
         <h1 className='title'>nickname님, 오늘의 글 기록을 응원해요!</h1>
         <div className='contents'>
@@ -151,7 +153,7 @@ function Mypage() {
         </>
         :
         <button className='edit' onClick={()=>setEditing(true)}>수정하기</button>}
-      </MypageWrapper>
+    </Container>
   )
 }
 
