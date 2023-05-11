@@ -59,7 +59,6 @@ const Sidebar = styled.div`
   overflow-x: hidden;
   box-shadow: 0px 2px 5px rgba(38, 51, 77, 0.03);
   border-bottom: 1px solid #e4e7ed;
-  margin-top: 64px;
 
   .sidebar {
     position: absolute;

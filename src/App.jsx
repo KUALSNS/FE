@@ -89,7 +89,7 @@ function App() {
 
   return (
     <div>
-      {!auth ? (
+      {/* {!auth ? (
         <div className="sign" style={{ position: "relative", zIndex: "30" }}>
           <Link to="/login">Sign in</Link>
           <Link to="/register">Sign up</Link>
@@ -98,7 +98,7 @@ function App() {
         <button style={{ position: "relative", zIndex: "30" }} onClick={Logout}>
           로그아웃
         </button>
-      )}
+      )} */}
       {/* <button onClick={checkTokenExpiration}>토큰 재발급 </button> */}
       {location.pathname == "/login" || location.pathname == "/register" ? (
         ""
