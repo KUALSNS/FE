@@ -48,5 +48,5 @@ const Container = styled.div`
   margin: auto;
   margin-left: 260px;
   height: 1000px;
-  margin-top: 64px;
+  margin-top: 80px;
 `;
