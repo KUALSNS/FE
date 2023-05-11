@@ -22,7 +22,13 @@ function App() {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const checkTokenExpiration = () => {
-
+    // getCategory()
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       // 토큰의 만료 시간을 체크

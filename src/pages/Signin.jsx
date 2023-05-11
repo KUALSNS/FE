@@ -117,25 +117,3 @@ const Signin = () => {
 }
 
 export default Signin
-
-/*
-
-    <div style={{display:'flex', justifyContent:"center",alignItems:'center',height:'500px'}}>
-      <div>
-        <div onClick={spaceHome} style={{display:'flex', fontSize:'50px',fontWeight:'600' ,margin:"60px", justifyContent:'center',alignItems:'center', fontStyle:'italic', cursor:'pointer'}}>Tarae</div>
-        <Form style={{width:'500px'}} onSubmit={(e)=>LoginSubmit(e)}>
-          <Form.Group className="mb-3" controlId="formBasicuserId">
-            <Form.Label>userId address</Form.Label>
-            <Form.Control type="text" placeholder="Enter userId" style={{fontSize:'20px'}} onChange={e=>setuserId(e.target.value)} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" style={{fontSize:'20px'}} onChange={e=>setPw(e.target.value)} />
-          </Form.Group>
-          <Button variant="dark" size="lg" type="submit" style={{float:'right'}} > 
-            Sign in
-          </Button>
-        </Form>
-      </div>
-    </div>
-*/
