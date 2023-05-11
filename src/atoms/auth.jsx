@@ -19,3 +19,11 @@ export const userState = atom({
     refreshtoken: "",
   },
 });
+
+export const mypageModalState = atom({
+  key: 'src/atoms/auth.jsx-mypageModalState',
+  default: {
+    show: false,
+    content: "",
+  }
+});
