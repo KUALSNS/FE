@@ -29,11 +29,15 @@ const Navigation = () => {
   //     navigate("/");
   //   };
 
+  const SpaceHome = () => {
+    navigate("/");
+  };
+
   return (
     <Container>
       <ContainerLeft>
-        <div clasName="navi-logo">
-          <img height={80} src="navigation.svg" />
+        <div className="navi-logo">
+          <img onClick={SpaceHome} height={80} src="navigation.svg" />
         </div>
         <div className="navi-list">
           <img onClick={sidebarToggle} src="menu.svg" />
@@ -77,7 +81,7 @@ const Navigation = () => {
 export default Navigation;
 
 const Container = styled.div`
-  min-width: 800px;
+  min-width: 920px;
   position: fixed;
   top: 0;
   left: 0;
@@ -93,7 +97,7 @@ const Container = styled.div`
     color: #ffffff;
     text-decoration: none;
   }
-  z-index: 1;
+  z-index: 2;
 `;
 
 const ContainerLeft = styled.div`
@@ -106,6 +110,10 @@ const ContainerLeft = styled.div`
     top: 25px;
     cursor: pointer;
     left: -40px;
+  }
+
+  .navi-logo img {
+    cursor: pointer;
   }
 `;
 
