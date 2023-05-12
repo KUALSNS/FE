@@ -41,7 +41,7 @@ const ChallengeFeed = () => {
                 <div
                   onClick={() => setSelectCategory(idx)}
                   key={idx}
-                  className={
+                  className={`button ${
                     idx == selectCategory
                       ? idx == 0
                         ? "all"
@@ -49,7 +49,7 @@ const ChallengeFeed = () => {
                       : idx !== 0
                       ? "not"
                       : "notall"
-                  }
+                  }`}
                 >
                   {item}
                 </div>
@@ -202,62 +202,53 @@ const Category = styled.div`
     cursor: pointer;
   }
 
-  .category .all {
+  .category .button {
     padding: 12px 16px;
     display: flex;
+    border-radius: 32px;
+  }
+
+  .category .all {
     width: 60px;
     height: 40px;
     background: #272727;
-    border-radius: 32px;
     color: #ffffff;
   }
   .category .except {
-    padding: 12px 16px;
-    display: flex;
     width: 92px;
     height: 40px;
     background: #272727;
-    border-radius: 32px;
     color: #ffffff;
   }
 
   .category .not {
-    padding: 12px 16px;
-    display: flex;
     width: 92px;
     height: 40px;
     background: #f3f5f9;
-    border-radius: 32px;
+
     color: #272727;
   }
 
   .category .not:hover {
-    padding: 12px 16px;
-    display: flex;
     width: 94px;
     height: 40px;
     background: #e1dddd;
-    border-radius: 32px;
+
     color: #272727;
   }
 
   .category .notall {
-    padding: 12px 16px;
-    display: flex;
     width: 60px;
     height: 40px;
     background: #f3f5f9;
-    border-radius: 32px;
     color: #272727;
   }
 
   .category .notall:hover {
-    padding: 12px 16px;
-    display: flex;
     width: 62px;
     height: 40px;
     background: #e1dddd;
-    border-radius: 32px;
+
     color: #272727;
   }
 
