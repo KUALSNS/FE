@@ -12,7 +12,7 @@ const Progress = () => {
       <CircularProgressbarWithChildren
         strokeWidth={7}
         background={true}
-        value={40}
+        value={7}
         styles={{
           path: {
             stroke: "#266CF4",
@@ -38,8 +38,9 @@ const Progress = () => {
           alt="doge"
         />
 
-        <div className="percentage">40%</div>
+        <div className="percentage">7%</div>
       </CircularProgressbarWithChildren>
+      <div className="text">내일 일기</div>
     </ProgressBar1>
   );
 };
@@ -53,6 +54,7 @@ const ProgressBar1 = styled.div`
   width: 65px;
   height: 65px;
   z-index: 1;
+  margin-right: 40px;
 
   .percentage {
     position: absolute;
@@ -62,5 +64,19 @@ const ProgressBar1 = styled.div`
     font-weight: 700;
     font-size: 12px;
     line-height: 13px;
+  }
+
+  .text {
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 12px;
+    /* identical to box height, or 100% */
+
+    text-align: center;
+
+    color: #7c8089;
+    margin-top: 8px;
   }
 `;
