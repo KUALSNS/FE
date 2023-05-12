@@ -34,6 +34,7 @@ const Container = styled.div`
     background: #f3f5f9;
     box-shadow: 0px 18px 20px -18px rgba(39, 39, 39, 0.2);
     border-radius: 8px;
+    margin-top: -8px;
   }
 
   .inner {

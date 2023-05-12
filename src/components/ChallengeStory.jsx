@@ -29,7 +29,7 @@ const ChallengeStory = () => {
               <div className="hover-text1">
                 🔥 이번 달 챌린지는 6월 9일 마감이에요
               </div>
-              <div className="hover-text2">5월 9일 부터 30일 동안 진행되요</div>
+              <div className="hover-text2">5월 9일 부터 30일 동안 진행돼요</div>
             </div>
           )}
           <div className="close">
