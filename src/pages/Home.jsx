@@ -3,14 +3,20 @@ import styled from "styled-components";
 import LeftNav from "../components/LeftNav";
 import Navigation from "../components/Navigation";
 import { useEffect, useState } from "react";
-import Progress from "../components/Progress";
 import ChallengeStory from "../components/ChallengeStory";
 import ChallengeFeed from "../components/ChallengeFeed";
+import { getLoginMain } from "../remotes";
 
 const Home = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      getLoginMain()
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
     function handleResize() {
       setIsSmallScreen(window.innerWidth <= 1390);
     }
@@ -34,7 +40,7 @@ const Home = () => {
 export default Home;
 
 const Container = styled.div`
-  background-color: lightgreen;
+  background-color: #ffffff;
   max-width: 920px;
   margin: auto;
   /* height: 1000px; */

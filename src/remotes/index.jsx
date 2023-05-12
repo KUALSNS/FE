@@ -4,7 +4,6 @@ const WritonAxios = axios.create({
   baseURL: "https://www.tarae.store",
 });
 
-
 const postLoginUser = (userIdentifier, userPassword) =>
   WritonAxios.post("/api/user/login", { userIdentifier, userPassword });
 
@@ -40,6 +39,12 @@ const postSignup = (userId, userEmail, userPassword, nickname, phoneNumber) =>
   });
 
 const getCategory = () => WritonAxios.get("/api/challenge/whole-category");
+
+const getLoginMain = () =>
+  WritonAxios.get("api/challenge/main", {
+    headers: { access: localStorage.getItem("accessToken") },
+  });
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -48,5 +53,5 @@ export {
   postEmailCode,
   postSignup,
   getCategory,
+  getLoginMain,
 };
-
