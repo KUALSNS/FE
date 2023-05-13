@@ -21,22 +21,23 @@ const patchLogoutUser = () =>
     headers: { access: localStorage.getItem("accessToken") },
   });
 
-const getEmail = (userEmail) =>
-  WritonAxios.get("/api/user/signup/verify-email-code", { userEmail });
+const postEmail = (userEmail) =>
+  WritonAxios.post('/api/user/signup/verify-email-code', {'email': userEmail})
 
-const postEmailCode = (userEmail, userEmailCode) =>
-  WritonAxios.post("/api/user/signup/verify-email", {
-    userEmail,
-    userEmailCode,
+const getEmailCode = (userEmail, userEmailCode) =>
+  WritonAxios.get("/api/user/signup/verify-email", {params:{
+    'email': userEmail,
+    'code': userEmailCode
+  }
   });
 
 const postSignup = (userId, userEmail, userPassword, nickname, phoneNumber) =>
   WritonAxios.post("/api/user/signup", {
-    userId,
-    userEmail,
-    userPassword,
-    nickname,
-    phoneNumber,
+    'userId':userId,
+    'email':userEmail,
+    'password':userPassword,
+    'nickname':nickname,
+    'phoneNumber':phoneNumber,
   });
 
 const getCategory = () => WritonAxios.get("/api/challenge/whole-category");
@@ -44,8 +45,8 @@ export {
   postLoginUser,
   patchLogoutUser,
   getAccessToken,
-  getEmail,
-  postEmailCode,
+  postEmail,
+  getEmailCode,
   postSignup,
   getCategory,
 };

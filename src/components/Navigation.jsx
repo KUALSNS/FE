@@ -88,6 +88,7 @@ const Container = styled.div`
   align-items: center;
   padding-left: 30px;
   padding-right: 30px;
+  z-index: 10;
   a {
     color: #ffffff;
     text-decoration: none;
