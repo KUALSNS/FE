@@ -1,5 +1,5 @@
 import { Editor } from "@tinymce/tinymce-react";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 
 function Challenge() {
@@ -36,7 +36,6 @@ function Challenge() {
   const [saveAlert, setSaveAlert] = useState(false);
   const [saveDisappear, setSaveDisappear] = useState(true);
   useEffect(() => {
-    console.log("hihihi");
     if (saveAlert) {
       setSaveDisappear(false);
       setTimeout(() => {
@@ -51,6 +50,8 @@ function Challenge() {
   
 
   const editorRef = useRef(null);
+  const imgUploadRef = useRef(null);
+
   const handleSubmitClick = () => {
     //needfix: server connection
     if (editorRef.current) {
@@ -74,6 +75,43 @@ function Challenge() {
       editorRef.current.setContent(cur + template[idx].contents);
     }
   };
+
+  const handleImgClick = ()=>{
+    if (!imgUploadRef.current) {
+      return;
+    }
+    imgUploadRef.current.click();
+  }
+
+  const handleImgUpload = useCallback((e) => {
+    if (!e.target.files) {
+      return;
+    }
+    console.log(e.target.files[0].name);
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    console.log(formData);
+    
+    /* needfix: connect to server
+    axios({
+      baseURL: API_HOST,
+      url: '/images/:username/thumbnail',
+      method: 'POST',
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });*/
+
+  }, []);
+  
+
   return (
     <>
       <div>
@@ -84,6 +122,8 @@ function Challenge() {
             <input type='text' placeholder="나의 제목을 기록해보세요"></input>
             <hr/>
             <div className='editor'>
+              <input type="file" accept='image/*' multiple={true} 
+              ref={imgUploadRef} onChange={handleImgUpload} style={{display:'none'}}/>
               <Editor
               apiKey='g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20'
               onInit={(evt, editor) => editorRef.current = editor}
@@ -94,10 +134,21 @@ function Challenge() {
                 menubar: false,
                 statusbar: false,
                 plugins: 'autolink autosave save directionality image link',
-                toolbar: 'blocks fontsizeinput bold italic underline strikethrough image forecolor backcolor | removestyle ',
-                editimage_toolbar: 'rotateleft rotateright | flipv fliph | editimage imageoptions',
+                toolbar: 'blocks fontsizeinput bold italic underline strikethrough customImage forecolor backcolor customRemove ',
                 link_context_toolbar: true,
-              }}
+                setup: (editor) => {
+                  editor.ui.registry.addToggleButton('customImage', {
+                    icon: 'image',
+                    tooltip: '이미지 삽입',
+                    onAction: handleImgClick
+                  });
+                  editor.ui.registry.addToggleButton('customRemove', {
+                    icon: 'remove',
+                    tooltip: '전체 삭제',
+                    onAction: () => {editorRef.current.setContent("")},
+                  });
+                }}}
+              
               />
             </div>
           </div>
