@@ -1,6 +1,9 @@
 import { Editor } from "@tinymce/tinymce-react";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
+import ChallengeModal from "../components/ChallengeModal";
+import { useRecoilState } from "recoil";
+import { challengeModalState } from "../atoms/auth";
 
 function Challenge() {
   //needfix: dummy data, should be atom (or state?)
@@ -31,8 +34,9 @@ function Challenge() {
     ]
   const challenge = "챌린지명"
   const category = "카테고리명"
+  const [newChallengeFlag, setFlag] = useRecoilState(challengeModalState);
   //dummy data
-
+  console.log(newChallengeFlag);
   const [saveAlert, setSaveAlert] = useState(false);
   const [saveDisappear, setSaveDisappear] = useState(true);
   useEffect(() => {
@@ -114,9 +118,10 @@ function Challenge() {
 
   return (
     <>
+    {newChallengeFlag&&<ChallengeModal/>}
       <div>
         <Container>
-          {<div className={saveAlert ? "saved showSaved" : "saved hideSaved" + (saveDisappear ? " saveDisappear" : "")}>작성 중인 글이 저장되었습니다.</div>}
+          {!saveDisappear&&<div className={saveAlert ? "saved showSaved" : "saved hideSaved"}>작성 중인 글이 저장되었습니다.</div>}
           <div className='left'>
             <h2>[{category}] {challenge} </h2><img src="challenge_title_dropdown_disabled.svg"></img>
             <input type='text' placeholder="나의 제목을 기록해보세요"></input>
@@ -208,7 +213,7 @@ const Container = styled.div`
 
   .showSaved{
     animation: slideDown 0.5s ease-in-out;
-    top: 88px;
+    top: 80px;
   }
 
   .hideSaved{
@@ -361,7 +366,7 @@ const Container = styled.div`
     }
   @keyframes slideUp {
       0% {
-          transform: translateY(88px);
+          transform: translateY(80px);
       }
       100% {
           transform: translateY(0);
