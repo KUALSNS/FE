@@ -3,7 +3,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { getEmail, postEmailCode, postSignup } from '../remotes';
+import {postEmail, getEmailCode, postSignup } from '../remotes';
 
 const SignupWrapper = styled.div`
   font-family: 'Pretendard';
@@ -192,6 +192,8 @@ const Signup = () => {
 
     const LoginSubmit =(e)=>{
       e.preventDefault();
+      console.log(userId, email, password2, username, phone);
+
       postSignup(userId, email, password2, username, phone)
       .then((res)=>{
         console.log(res);
@@ -282,7 +284,8 @@ const Signup = () => {
 
     const handleEmailClick = (e)=>{
       e.preventDefault();
-      getEmail(email)
+      console.log(email);
+      postEmail(email)
       .then(res=>{
         console.log(res);
         setEmailConfirmed(true);
@@ -294,7 +297,7 @@ const Signup = () => {
       e.preventDefault();
       //[needFix]
       //email confirm server check
-      postEmailCode(email, emailCode)
+      getEmailCode(email, emailCode)
       .then(res=>{
         console.log(res)
       })

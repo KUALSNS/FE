@@ -27,3 +27,8 @@ export const mypageModalState = atom({
     content: "",
   },
 });
+
+export const challengeModalState = atom({
+  key: "src/atoms/auth.jsx-challengeModalState",
+  default: true,
+});
