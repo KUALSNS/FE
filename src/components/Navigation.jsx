@@ -29,11 +29,15 @@ const Navigation = () => {
   //     navigate("/");
   //   };
 
+  const SpaceHome = () => {
+    navigate("/");
+  };
+
   return (
     <Container>
       <ContainerLeft>
-        <div clasName="navi-logo">
-          <img src="navigation.svg" />
+        <div className="navi-logo">
+          <img onClick={SpaceHome} height={80} src="navigation.svg" />
         </div>
         <div className="navi-list">
           <img onClick={sidebarToggle} src="menu.svg" />
@@ -77,15 +81,18 @@ const Navigation = () => {
 export default Navigation;
 
 const Container = styled.div`
+  min-width: 920px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 88px;
+  height: 80px;
   background-color: #266cf4;
   display: flex;
   /* justify-content: space-between; */
   align-items: center;
+  padding-left: 60px;
+  padding-right: 74px;
   padding-left: 30px;
   padding-right: 30px;
   z-index: 10;
@@ -93,18 +100,22 @@ const Container = styled.div`
     color: #ffffff;
     text-decoration: none;
   }
+  z-index: 2;
 `;
 
 const ContainerLeft = styled.div`
   display: flex;
   position: absolute;
 
-  .navi-logo {
-  }
   .navi-list {
     position: absolute;
     z-index: 4;
-    top: 40px;
+    top: 25px;
+    cursor: pointer;
+    left: -40px;
+  }
+
+  .navi-logo img {
     cursor: pointer;
   }
 `;
@@ -112,8 +123,7 @@ const ContainerLeft = styled.div`
 const ContainerRight = styled.div`
   display: flex;
   margin: auto;
-  margin-left: 236px;
-  margin-bottom: 12px;
+  margin-left: 205px;
   justify-content: space-between;
   width: 1106px;
   z-index: 2;

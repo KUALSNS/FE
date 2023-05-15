@@ -25,6 +25,10 @@ function LeftNav() {
     navigate(url);
   };
 
+  const SpaceHome = () => {
+    navigate("/");
+  };
+
   return (
     <Sidebar>
       <div className={`sidebar ${toggle ? "open" : ""}`}>
@@ -45,6 +49,14 @@ function LeftNav() {
             );
           })}
         </div>
+        <div className="list-bottom">
+          <img
+            onClick={SpaceHome}
+            width={114}
+            height={27}
+            src="list_bottom.svg"
+          />
+        </div>
       </div>
     </Sidebar>
   );
@@ -57,18 +69,20 @@ const Sidebar = styled.div`
   width: 236px;
   height: 100%;
   overflow-x: hidden;
-  box-shadow: 0px 2px 5px rgba(38, 51, 77, 0.03);
-  border-bottom: 1px solid #e4e7ed;
-  margin-top: 64px;
 
   .sidebar {
-    position: absolute;
-    top: 200;
+    position: relative;
+
+    min-height: 100%;
+    /* position: absolute; */
     left: -300px;
     width: 236px;
-    height: 100%;
+    /* height: 100%; */
     background-color: #fbfbfb;
     transition: transform 0.3s ease-in-out;
+    box-shadow: 0px 2px 5px rgba(38, 51, 77, 0.03);
+    display: flex;
+    flex-direction: column;
   }
 
   .open {
@@ -76,7 +90,7 @@ const Sidebar = styled.div`
   }
   .sidebar-nav {
     list-style: none;
-    margin-top: 60px;
+    margin-top: 40px;
   }
 
   .sidebar-nav li {
@@ -87,7 +101,6 @@ const Sidebar = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
-
     margin: auto;
     margin-bottom: 18px;
   }
@@ -116,5 +129,16 @@ const Sidebar = styled.div`
     align-items: center;
     position: absolute;
     margin-left: 16px;
+  }
+
+  .list-bottom {
+    position: absolute;
+    bottom: 115px; //라이톤 로고 bottom 조정
+    width: 236px;
+    display: flex;
+    justify-content: center;
+    /* height: 110px; 
+    cursor: pointer;
+    /* margin-top: auto; */
   }
 `;

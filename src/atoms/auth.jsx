@@ -7,7 +7,7 @@ export const authState = atom({
 
 export const sideToggleState = atom({
   key: "src/atoms/auth.jsx-sideToggleState",
-  default: false,
+  default: true,
 });
 
 export const userState = atom({
@@ -17,5 +17,13 @@ export const userState = atom({
     email: "",
     acesstoken: "",
     refreshtoken: "",
+  },
+});
+
+export const mypageModalState = atom({
+  key: "src/atoms/auth.jsx-mypageModalState",
+  default: {
+    show: false,
+    content: "",
   },
 });
