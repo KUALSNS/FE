@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authState, sideToggleState } from "../atoms/auth";
+import { authState, sideToggleState, sideBarState } from "../atoms/auth";
 import { patchLogoutUser } from "../remotes";
 
 const Navigation = () => {
@@ -10,6 +10,7 @@ const Navigation = () => {
   const [listToggle, setListToggle] = useRecoilState(sideToggleState);
   const [userToggle, setUserToggle] = useState(false);
   const auth = useRecoilValue(authState);
+  const [menuNum, setMenuNum] = useRecoilState(sideBarState);
 
   const sidebarToggle = () => {
     setListToggle(!listToggle);
@@ -31,6 +32,7 @@ const Navigation = () => {
   };
 
   const SpaceHome = () => {
+    setMenuNum(0);
     navigate("/");
   };
 
@@ -42,11 +44,22 @@ const Navigation = () => {
     navigate("/register");
   };
 
+  const SpaceToMypage = () => {
+    setMenuNum(4);
+    setUserToggle(false);
+    navigate("/mypage");
+  };
+
   return (
     <Container>
       <ContainerLeft>
         <div className="navi-logo">
-          <img onClick={SpaceHome} height={80} src="navigation.svg" />
+          <img
+            onClick={SpaceHome}
+            width={157}
+            height={80}
+            src="writon_logo_blue.svg"
+          />
         </div>
         <div className="navi-list">
           <img onClick={sidebarToggle} src="menu.svg" />
@@ -59,24 +72,29 @@ const Navigation = () => {
             <div className="count"> 2/2</div>
           </div>
           {auth ? (
-            <div className="user-info" onClick={userInfoToggle}>
-              <img width={22} src="user_img.svg" />
-              <div className="name">라이언님</div>
-              <img width={12} src={!userToggle ? "arrow1.svg" : "arrow2.svg"} />
+            <div className="user-info">
+              <div className="user-info-container" onClick={userInfoToggle}>
+                <img width={22} src="user_img.svg" />
+                <div className="name">라이언</div>
+              </div>
+
               {userToggle ? (
                 <div>
                   <div className="drop">
-                    <div className="drop-container">
-                      <div
-                        className="text"
-                        style={{ textAlign: "center", lineHeight: "28px" }}
-                      >
-                        라이언님 하이
+                    <div className="user">
+                      <div className="user-name">
+                        <img src="drop_user_img.svg" />
+                        라이언
                       </div>
-                      <div className="control">
-                        <div>마이페이지</div>
-                        <div onClick={Logout}>로그아웃</div>
-                      </div>
+                      <div className="user-id">ㄷㄹㅂㅈㄹㄷㅈ</div>
+                    </div>
+                    <div className="mypage" onClick={SpaceToMypage}>
+                      <img src="drop_user.svg" />
+                      마이페이지
+                    </div>
+                    <div className="logout" onClick={Logout}>
+                      <img width={14} src="logout.svg" />
+                      로그아웃
                     </div>
                   </div>
                 </div>
@@ -203,13 +221,18 @@ const ContainerRight = styled.div`
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid #d9d9d9;
     border-radius: 32px;
-    width: 148px;
+    width: 104px;
     height: 38px;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     position: relative;
+  }
+  .user-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .user-info .name {
@@ -226,34 +249,62 @@ const ContainerRight = styled.div`
     display: block;
   }
 
-  .drop-triangle {
-    position: absolute;
-    z-index: 2;
-    border-bottom: 20px solid lightgray;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    margin-right: 60px;
-    right: 0;
-    margin-top: 25px;
-    border-radius: 10px;
-  }
   .drop {
     position: absolute;
     z-index: 3;
-    width: 148px;
-    height: 232px;
-    background-color: violet;
-    margin-top: 20px;
+    width: 220px;
+    height: 147px;
+    background-color: #ffffff;
+    margin-top: 28px;
     right: 0;
-    border-radius: 10px;
-    display: flex;
+    border-radius: 8px;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 14px;
+
+    color: #272727;
   }
-  .drop-container {
-    width: 134px;
-    height: 165px;
-    margin: auto;
+
+  .drop .user {
+    height: 67px;
+    width: 218px;
+    border-bottom: 1px solid #e2e4e7;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+  }
+
+  .user .user-name {
+    display: flex;
+    align-items: center;
+  }
+  .user .user-id {
+    margin-left: 40px;
+    font-size: 12px;
+    line-height: 16px;
+    margin-top: 10px;
+    color: #72777a;
+  }
+
+  .drop .mypage {
+    height: 40px;
+    width: 218px;
+    border-bottom: 1px solid #e2e4e7;
+    display: flex;
+    align-items: center;
+  }
+
+  .drop img {
+    margin-right: 8px;
+    margin-left: 17px;
+  }
+
+  .drop .logout {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 218px;
   }
 `;
