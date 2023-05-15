@@ -2,19 +2,31 @@ import React from "react";
 import styled from "styled-components";
 import Progress from "../components/Progress";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { authState } from "../atoms/auth";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { authState, sideBarState } from "../atoms/auth";
+import { useNavigate } from "react-router-dom";
 
 const ChallengeStory = () => {
   const [close, setClose] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const auth = useRecoilValue(authState);
+  const navigate = useNavigate();
+  const [menuNum, setMenuNum] = useRecoilState(sideBarState);
+
+  const AddStory = () => {
+    if (auth) {
+      setMenuNum(1);
+      navigate("/challenge");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <Container>
       {auth ? (
         <div className="story-container">
-          <div className="add-challenge">
+          <div className="add-challenge" onClick={AddStory}>
             <img src="addStory.svg" />
           </div>
           <Progress />
@@ -41,7 +53,7 @@ const ChallengeStory = () => {
               <div className="close">
                 <img
                   onClick={() => setClose(false)}
-                  width={8}
+                  width={10}
                   src="close.svg"
                 />
               </div>
@@ -52,12 +64,12 @@ const ChallengeStory = () => {
         </div>
       ) : (
         <div className="story-container">
-          <div className="add-challenge">
+          <div className="add-challenge" onClick={AddStory}>
             <img src="addStory.svg" />
           </div>
           {close ? (
             <div className="before-challenge-text">
-              <div>🔥 로그인 후 챌린지를 시작해보세요</div>
+              <div>🔥 30일 글 챌린지로 꾸준한 글쓰기를 시작해볼까요?</div>
               <div className="close">
                 <img
                   onClick={() => setClose(false)}
@@ -124,6 +136,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    background-color: #fff8e0;
   }
 
   .before-challenge-text {
@@ -132,7 +145,7 @@ const Container = styled.div`
     padding: 8px 16px;
 
     position: absolute;
-    width: 280px;
+    width: 390px;
     height: 32px;
 
     background: #fff8e0;
