@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { authState, sideToggleState } from "../atoms/auth";
 import { patchLogoutUser } from "../remotes";
 
@@ -9,6 +9,7 @@ const Navigation = () => {
   const navigate = useNavigate();
   const [listToggle, setListToggle] = useRecoilState(sideToggleState);
   const [userToggle, setUserToggle] = useState(false);
+  const auth = useRecoilValue(authState);
 
   const sidebarToggle = () => {
     setListToggle(!listToggle);
@@ -17,20 +18,28 @@ const Navigation = () => {
     setUserToggle(!userToggle);
   };
 
-  //   const Logout = () => {
-  //     patchLogoutUser()
-  //       .then((res) => {
-  //         console.log(res);
-  //       })
-  //       .catch((err) => console.log(err));
-  //     localStorage.removeItem("accessToken");
-  //     localStorage.removeItem("refreshToken");
-  //     setAuth(false);
-  //     navigate("/");
-  //   };
+  const Logout = () => {
+    patchLogoutUser()
+      .then((res) => {
+        console.log(res);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+    setAuth(false);
+  };
 
   const SpaceHome = () => {
     navigate("/");
+  };
+
+  const SpaceToLogin = () => {
+    navigate("/login");
+  };
+
+  const SpaceToRegister = () => {
+    navigate("/register");
   };
 
   return (
@@ -44,33 +53,42 @@ const Navigation = () => {
         </div>
       </ContainerLeft>
       <ContainerRight>
-        <div className="challenge-title">
-          <div>5월 25일 오늘 진행 중인 챌린지</div>
-          <div className="count">3</div>
-        </div>
-        <div className="user-info" onClick={userInfoToggle}>
-          <img width={22} src="user_img.svg" />
-          <div className="name">라이언님</div>
-          <img width={12} src={!userToggle ? "arrow1.svg" : "arrow2.svg"} />
-          {userToggle ? (
-            <div>
-              <div className="drop">
-                <div className="drop-container">
-                  <div
-                    className="text"
-                    style={{ textAlign: "center", lineHeight: "28px" }}
-                  >
-                    라이언님 하이
-                  </div>
-                  <div className="control">
-                    <div>마이페이지</div>
-                    <div>로그아웃</div>
+        <div className={auth ? "after-right" : "before-right"}>
+          <div className="challenge-title">
+            <div>5월 25일 오늘 진행 중인 챌린지 </div>
+            <div className="count"> 2/2</div>
+          </div>
+          {auth ? (
+            <div className="user-info" onClick={userInfoToggle}>
+              <img width={22} src="user_img.svg" />
+              <div className="name">라이언님</div>
+              <img width={12} src={!userToggle ? "arrow1.svg" : "arrow2.svg"} />
+              {userToggle ? (
+                <div>
+                  <div className="drop">
+                    <div className="drop-container">
+                      <div
+                        className="text"
+                        style={{ textAlign: "center", lineHeight: "28px" }}
+                      >
+                        라이언님 하이
+                      </div>
+                      <div className="control">
+                        <div>마이페이지</div>
+                        <div onClick={Logout}>로그아웃</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                ""
+              )}
             </div>
           ) : (
-            ""
+            <div className="before-user">
+              <div onClick={SpaceToLogin}>로그인</div>
+              <div onClick={SpaceToRegister}>회원가입</div>
+            </div>
           )}
         </div>
       </ContainerRight>
@@ -118,12 +136,42 @@ const ContainerLeft = styled.div`
 `;
 
 const ContainerRight = styled.div`
-  display: flex;
-  margin: auto;
-  margin-left: 205px;
-  justify-content: space-between;
-  width: 1106px;
-  z-index: 2;
+  .before-right {
+    display: flex;
+    margin: auto;
+    margin-left: 205px;
+    justify-content: space-between;
+    width: 1062px;
+    z-index: 2;
+  }
+
+  .after-right {
+    display: flex;
+    margin: auto;
+    margin-left: 205px;
+    justify-content: space-between;
+    width: 1106px;
+    z-index: 2;
+  }
+
+  .before-user {
+    width: 134px;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 16px;
+
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .before-user div {
+    cursor: pointer;
+  }
+
   .challenge-title {
     display: flex;
     font-family: "Happiness-Sans-Bold";
@@ -135,22 +183,15 @@ const ContainerRight = styled.div`
     align-items: center;
   }
   .count {
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff;
-    color: #266cf4;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 10px 30px rgba(136, 51, 255, 0.15);
+    font-family: "Pretendard";
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 17px;
+    text-align: center;
     margin-left: 8px;
+    color: #ffffff;
+    margin-bottom: 2px;
   }
 
   .user-info {

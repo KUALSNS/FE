@@ -115,6 +115,7 @@ const Container = styled.div`
     width: 256px;
     height: 34.96px;
     justify-content: center;
+    background-color: #ffffff;
   }
 
   .write img {
