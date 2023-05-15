@@ -2,14 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import ChallengeItem from "./ChallengeItem";
 
-const ChallengeList = () => {
-  return (
-    <Container>
-      <ChallengeItem />
-      <ChallengeItem />
-      <ChallengeItem />
-    </Container>
-  );
+const ChallengeList = ({ item }) => {
+  //const categoryName = Object.keys(categoryObject)[0]
+  {
+    return (
+      <Container>
+        <ChallengeItem title={item.title} category={item.category} />
+      </Container>
+    );
+  }
 };
 
 export default ChallengeList;

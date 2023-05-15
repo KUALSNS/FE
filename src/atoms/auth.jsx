@@ -27,3 +27,13 @@ export const mypageModalState = atom({
     content: "",
   },
 });
+
+export const sideBarState = atom({
+  key: "src/atoms/auth.jsx-sideBarState",
+  default: 0,
+});
+
+export const challengeState = atom({
+  key: "src/atoms/auth.jsx-challengeState",
+  default: [],
+});

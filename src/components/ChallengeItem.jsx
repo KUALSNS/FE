@@ -1,14 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
-const ChallengeItem = () => {
+const ChallengeItem = ({ title, category }) => {
+  const emoticon = ["☘️", "🌕", "🗒", "👍"];
+
   return (
     <Container>
       <div className="container">
         <div className="inner">
-          <div className="text">나를 위해 미래 일기 작성하기</div>
+          <div className="text">{title}</div>
           <div className="tag">
-            <div className="tag-left">☘️ 내일 일기</div>
+            <div className="tag-left">
+              {category === "내일 일기"
+                ? emoticon[0]
+                : category === "감정 노트"
+                ? emoticon[1]
+                : category === "하루 기록"
+                ? emoticon[2]
+                : category === "오늘 칭찬"
+                ? emoticon[3]
+                : ""}{" "}
+              {category}
+            </div>
             <div className="tag-right"> 30일</div>
           </div>
           <div className="write">
