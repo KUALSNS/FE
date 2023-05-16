@@ -125,6 +125,7 @@ const Container = styled.div`
   height: 80px;
   background-color: #266cf4;
   display: flex;
+
   /* justify-content: space-between; */
   align-items: center;
   padding-left: 60px;
@@ -154,12 +155,13 @@ const ContainerLeft = styled.div`
 `;
 
 const ContainerRight = styled.div`
+  width: 100%;
   .before-right {
     display: flex;
     margin: auto;
     margin-left: 205px;
     justify-content: space-between;
-    width: 1062px;
+    width: 81.29%;
     z-index: 2;
   }
 
@@ -168,7 +170,7 @@ const ContainerRight = styled.div`
     margin: auto;
     margin-left: 205px;
     justify-content: space-between;
-    width: 1106px;
+    width: 84.65%;
     z-index: 2;
   }
 
@@ -263,7 +265,7 @@ const ContainerRight = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 14px;
-
+    box-shadow: 0px 2px 38px -8px rgba(39, 39, 39, 0.2);
     color: #272727;
   }
 
