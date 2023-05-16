@@ -10,7 +10,7 @@ const Progress = () => {
   return (
     <ProgressBar1>
       <CircularProgressbarWithChildren
-        strokeWidth={7}
+        strokeWidth={5}
         background={true}
         value={7}
         styles={{
@@ -19,12 +19,12 @@ const Progress = () => {
             strokeLinecap: "butt",
           },
           trail: {
-            stroke: "#d6d6d6",
+            stroke: "#E1EAF8",
             strokeLinecap: "butt",
-            transition: "stroke-dashoffset 0.5s ease 0s",
-            // Rotate the path
-            transform: "rotate(0.25turn)",
-            transformOrigin: "center center",
+            // transition: "stroke-dashoffset 0.5s ease 0s",
+            // // Rotate the path
+            // transform: "rotate(0.25turn)",
+            // transformOrigin: "center center",
           },
           background: {
             fill: "#ffffff",
@@ -32,9 +32,10 @@ const Progress = () => {
         }}
       >
         <img
-          width={62}
-          style={{ fontSize: 12, marginTop: 10 }}
-          src="progress1.svg"
+          width={47}
+          height={47}
+          style={{ fontSize: 12, display: "flex", marginRight: "1px" }}
+          src="progress4.svg"
           alt="doge"
         />
 

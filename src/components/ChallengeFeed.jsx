@@ -1,14 +1,49 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import ChallengeList from "./ChallengeList";
+import { getChallenge } from "../remotes";
+import { useRecoilState } from "recoil";
+import { challengeState } from "../atoms/auth";
+import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
-  const category = ["전체", "내일 일기", "감정 노트", "하루 기록", "오늘 칭찬"];
+  const CATEGORIES = ["내일 일기", "감정 노트", "하루 기록", "오늘 칭찬"];
+  const [challenge, setChallenge] = useRecoilState(challengeState);
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const [selectCategory, setSelectCategory] = useState(0);
+  const [activeCategories, setActiveCategories] = useState([]);
+
+  const onSelectAll = () => {
+    setActiveCategories([]);
+  };
+
+  const onSelectCategory = (e) => {
+    const { name } = e.target;
+    if (activeCategories.includes(name)) {
+      setActiveCategories((prev) => prev.filter((c) => c !== name));
+    } else {
+      setActiveCategories((prev) => [...prev, name]);
+    }
+  };
+
+  const filteredItems = challenge.filter((item) => {
+    if (activeCategories.length === 0) {
+      return true;
+    } else {
+      return activeCategories.includes(item.category);
+    }
+  });
+
+  useEffect(() => {
+    getChallenge()
+      .then((res) => {
+        console.log(res.data.data.challenges);
+        setChallenge(res.data.data.challenges);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <Container>
@@ -22,9 +57,7 @@ const ChallengeFeed = () => {
           ?
         </div>
 
-        {!isHovered ? (
-          ""
-        ) : (
+        {isHovered && (
           <div>
             <div className="hover-question">
               챌린지를 위한 관심 태그를 설정해보세요
@@ -35,75 +68,70 @@ const ChallengeFeed = () => {
 
       <Category>
         <div className="category">
-          {category.map((item, idx) => {
-            return (
-              <div className={idx == 0 ? "itemAll" : "itemExcept"}>
-                <div
-                  onClick={() => setSelectCategory(idx)}
-                  key={idx}
-                  className={`button ${
-                    idx == selectCategory
-                      ? idx == 0
-                        ? "all"
-                        : "except"
-                      : idx !== 0
-                      ? "not"
-                      : "notall"
-                  }`}
-                >
-                  {item}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="select">골라보기</div>
-      </Category>
-
-      {category.map((item, idx) => {
-        return (
-          <div>
-            {selectCategory === 0 ? (
-              idx > 0 ? (
-                <ChallengeList />
-              ) : (
-                ""
-              )
-            ) : selectCategory === 1 ? (
-              idx == 1 ? (
-                <ChallengeList />
-              ) : (
-                ""
-              )
-            ) : selectCategory === 2 ? (
-              idx == 2 ? (
-                <ChallengeList />
-              ) : (
-                ""
-              )
-            ) : selectCategory === 3 ? (
-              idx == 3 ? (
-                <ChallengeList />
-              ) : (
-                ""
-              )
-            ) : selectCategory === 4 ? (
-              idx == 4 ? (
-                <ChallengeList />
-              ) : (
-                ""
-              )
-            ) : (
-              ""
-            )}
+          <div className="itemAll">
+            <button
+              onClick={onSelectAll}
+              className={`button ${
+                activeCategories.length === 0 ? "all" : "notall"
+              }`}
+            >
+              전체
+            </button>
           </div>
-        );
-      })}
+          {CATEGORIES.map((category) => (
+            <div className="itemExcept">
+              <button
+                key={category}
+                name={category}
+                onClick={onSelectCategory}
+                className={`button ${
+                  activeCategories.includes(category) ? "except" : "not"
+                }`}
+              >
+                {category}
+                <div className="img-category">
+                  <img
+                    src={
+                      activeCategories.includes(category)
+                        ? "minus.svg"
+                        : "plus.svg"
+                    }
+                  />
+                </div>
+              </button>
+            </div>
+          ))}
+        </div>
+      </Category>
+      <div className="search">검색된 챌린지 주제 {filteredItems.length}개</div>
+   
+      <ChallengeLists>
+        {
+          filteredItems.map((item) => {
+            console.log(item);
+            return (
+              <ChallengeItem title={item.title} category={item.category} />
+            );
+          })
+        }
+      </ChallengeLists>
     </Container>
   );
 };
 
 export default ChallengeFeed;
+
+const ChallengeLists = styled.div`
+  width: 920px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 열을 생성 */
+
+  grid-column-gap: 28px; /* 열 간격 설정 */
+  grid-row-gap: 32px;
+  grid-auto-rows: 180px;
+  justify-content: space-between;
+`;
 
 const Container = styled.div`
   background-color: #ffffff;
@@ -112,6 +140,18 @@ const Container = styled.div`
   height: 700px;
   margin-top: 44px;
   position: relative;
+
+  .search {
+    float: right;
+    margin-bottom: 14px;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+
+    color: #7c8089;
+  }
 `;
 
 const Title = styled.div`
@@ -173,14 +213,15 @@ const Title = styled.div`
 `;
 
 const Category = styled.div`
-  width: 640px;
+  width: 612px;
   height: 40px;
   background-color: #ffffff;
   display: flex;
   margin: auto;
   margin-top: 33px;
-  margin-bottom: 53px;
+  margin-bottom: 18px;
   position: relative;
+  justify-content: center;
 
   .category {
     display: flex;
@@ -191,15 +232,34 @@ const Category = styled.div`
     line-height: 16px;
   }
 
+  .category button {
+    border: 0;
+    background-color: transparent;
+  }
+
   .category .itemAll {
-    width: 72px;
-    padding-right: 12px;
+    width: 76px;
+    padding-right: 16px;
+    margin-right: 16px;
+    border-right: 1px solid #e2e4e7;
     cursor: pointer;
+    color: #272727;
   }
   .category .itemExcept {
-    width: 104px;
+    width: 118px;
     padding-right: 12px;
     cursor: pointer;
+    margin-right: 16px;
+  }
+
+  .itemExcept .img-category {
+    width: 16px;
+    border-left: 1px solid #bcd6ff;
+    margin-left: 8px;
+    padding-left: 8px;
+  }
+  .img-category img {
+    margin-bottom: 3px;
   }
 
   .category .button {
@@ -209,47 +269,43 @@ const Category = styled.div`
   }
 
   .category .all {
-    width: 60px;
+    width: 62px;
     height: 40px;
-    background: #272727;
-    color: #ffffff;
+    background: #e1eaf8;
+    border: 1px solid #bcd6ff;
+    border-radius: 32px;
   }
   .category .except {
-    width: 92px;
+    width: 118px;
     height: 40px;
-    background: #272727;
-    color: #ffffff;
+
+    background: #e1eaf8;
+    border: 1px solid #bcd6ff;
+    border-radius: 32px;
   }
 
   .category .not {
-    width: 92px;
+    width: 118px;
     height: 40px;
-    background: #f3f5f9;
-
+    background: #ffffff;
+    border: 1px solid #bcd6ff;
     color: #272727;
   }
 
   .category .not:hover {
-    width: 94px;
-    height: 40px;
-    background: #e1dddd;
-
-    color: #272727;
+    background: #eef1f7;
   }
 
   .category .notall {
-    width: 60px;
+    width: 62px;
     height: 40px;
-    background: #f3f5f9;
+    background: #ffffff;
+    border: 1px solid #bcd6ff;
     color: #272727;
   }
 
   .category .notall:hover {
-    width: 62px;
-    height: 40px;
-    background: #e1dddd;
-
-    color: #272727;
+    background: #eef1f7;
   }
 
   .select {

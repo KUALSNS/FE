@@ -39,10 +39,10 @@ const postSignup = (userId, userEmail, userPassword, nickname, phoneNumber) =>
     'phoneNumber':phoneNumber,
   });
 
-const getCategory = () => WritonAxios.get("/api/challenge/whole-category");
+const getChallenge = () => WritonAxios.get("/api/challenge/whole-category");
 
 const getLoginMain = () =>
-  WritonAxios.get("api/challenge/main", {
+  WritonAxios.get("/api/challenge/main", {
     headers: { access: localStorage.getItem("accessToken") },
   });
 
@@ -53,6 +53,6 @@ export {
   postEmail,
   getEmailCode,
   postSignup,
-  getCategory,
   getLoginMain,
+  getChallenge,
 };

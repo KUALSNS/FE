@@ -2,8 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import { sideToggleState } from "../atoms/auth";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { sideToggleState, sideBarState } from "../atoms/auth";
 
 function LeftNav() {
   const navigate = useNavigate();
@@ -18,7 +18,8 @@ function LeftNav() {
     ["마이페이지", "/mypage"],
   ];
 
-  const [menuNum, setMenuNum] = useState(0);
+  // const [menuNum, setMenuNum] = useState(0);
+  const [menuNum, setMenuNum] = useRecoilState(sideBarState);
 
   const selectMenu = (url, idx) => {
     setMenuNum(idx);
@@ -26,6 +27,7 @@ function LeftNav() {
   };
 
   const SpaceHome = () => {
+    setMenuNum(0);
     navigate("/");
   };
 
@@ -39,7 +41,7 @@ function LeftNav() {
                 onClick={() => selectMenu(menu[1], idx)}
                 className={idx === menuNum ? "selectMenu" : ""}
               >
-                {idx === menuNum ? <img src="list_logo.svg" /> : ""}
+                {idx === menuNum ? <img height={40} src="list_logo.svg" /> : ""}
                 <div className="menu">
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <div>{menu[0]}</div>
@@ -140,5 +142,8 @@ const Sidebar = styled.div`
     /* height: 110px; 
     cursor: pointer;
     /* margin-top: auto; */
+  }
+  .list-bottom img {
+    cursor: pointer;
   }
 `;

@@ -8,7 +8,7 @@ import Template from "./pages/Template";
 import Record from "./pages/Record";
 import Mypage from "./pages/Mypage";
 import LeftNav from "./components/LeftNav";
-import { getAccessToken, getCategory } from "./remotes";
+import { getAccessToken } from "./remotes";
 import { useRecoilState } from "recoil";
 import { authState } from "./atoms/auth";
 import jwt_decode from "jwt-decode";
