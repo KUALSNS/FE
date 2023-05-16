@@ -104,11 +104,9 @@ const ChallengeFeed = () => {
         </div>
       </Category>
       <div className="search">검색된 챌린지 주제 {filteredItems.length}개</div>
-      {/* 아직 작업 전 */}
-
+   
       <ChallengeLists>
         {
-          // 배열 갯수 뺴오기  배열 아마 따로 밖으로 뺴야할 듯
           filteredItems.map((item) => {
             console.log(item);
             return (
