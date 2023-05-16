@@ -28,6 +28,7 @@ export const mypageModalState = atom({
   },
 });
 
+
 export const sideBarState = atom({
   key: "src/atoms/auth.jsx-sideBarState",
   default: 0,
@@ -36,4 +37,10 @@ export const sideBarState = atom({
 export const challengeState = atom({
   key: "src/atoms/auth.jsx-challengeState",
   default: [],
+});
+
+export const challengeModalState = atom({
+  key: "src/atoms/auth.jsx-challengeModalState",
+  default: true,
+
 });
