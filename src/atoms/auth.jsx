@@ -44,3 +44,18 @@ export const challengeModalState = atom({
   default: true,
 
 });
+
+export const recordModalState = atom({
+  key: "src/atoms/auth.jsx-recordModalState",
+  default: false,
+});
+
+export const subscribeModalState = atom({
+  key: "src/atoms/auth.jsx-subscribeModalState",
+  default: false,
+});
+
+export const subscribedState = atom({
+  key: "src/atoms/auth.jsx-subscribedState",
+  default: false,
+});
