@@ -3,19 +3,18 @@ import styled from "styled-components";
 import Progress from "../components/Progress";
 import { useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { authState, sideBarState } from "../atoms/auth";
+import { activeChallengeState, authState } from "../atoms/auth";
 import { useNavigate } from "react-router-dom";
 
 const ChallengeStory = () => {
   const [close, setClose] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const auth = useRecoilValue(authState);
+  const activeChallenge = useRecoilValue(activeChallengeState);
   const navigate = useNavigate();
-  const [menuNum, setMenuNum] = useRecoilState(sideBarState);
-
+  console.log(activeChallenge);
   const AddStory = () => {
     if (auth) {
-      setMenuNum(1);
       navigate("/challenge");
     } else {
       navigate("/login");
@@ -27,11 +26,13 @@ const ChallengeStory = () => {
       {auth ? (
         <div className="story-container">
           <div className="add-challenge" onClick={AddStory}>
-            <img src="addStory.svg" />
+            <img src="/addStory.svg" />
           </div>
-          <Progress />
-          <Progress />
-          <Progress />
+          <div className="progressies">
+            {activeChallenge?.userChallengeArray?.map((item, idx) => {
+              return <Progress item={item} idx={idx} key={idx} />;
+            })}
+          </div>
           {close ? (
             <div
               className="challenge-text"
@@ -74,7 +75,7 @@ const ChallengeStory = () => {
                 <img
                   onClick={() => setClose(false)}
                   width={8}
-                  src="close.svg"
+                  src="/close.svg"
                 />
               </div>
             </div>
@@ -90,6 +91,18 @@ const ChallengeStory = () => {
 export default ChallengeStory;
 
 const Container = styled.div`
+  .progressies {
+    display: flex;
+    width: 400px;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 110px;
+    margin-top: 40px;
+  }
+
+  .progressies::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera 용 */
+  }
   .story-container {
     background-color: #ffffff;
     max-width: 920px;
