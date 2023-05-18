@@ -28,10 +28,14 @@ export const mypageModalState = atom({
   },
 });
 
+// export const sideBarState = atom({
+//   key: "src/atoms/auth.jsx-sideBarState",
+//   default: "/",
+// });
 
-export const sideBarState = atom({
-  key: "src/atoms/auth.jsx-sideBarState",
-  default: 0,
+export const detailuserState = atom({
+  key: "src/atoms/auth.jsx-detailuserState",
+  default: { nickname: "", challengeCertain: false },
 });
 
 export const challengeState = atom({
@@ -39,8 +43,32 @@ export const challengeState = atom({
   default: [],
 });
 
+export const categoryState = atom({
+  key: "src/atoms/auth.jsx-categoryState",
+  default: [],
+});
+
+export const activeChallengeState = atom({
+  key: "src/atoms/auth.jsx-nicknameState",
+  default: { userChallengeSu: 0, coopen: 0, userChallengeArray: [] },
+});
+
 export const challengeModalState = atom({
   key: "src/atoms/auth.jsx-challengeModalState",
   default: true,
+});
 
+export const loadingState = atom({
+  key: "src/atoms/auth.jsx-challengeModalState",
+  default: true,
+});
+
+export const ChallengeWriteState = atom({
+  key: "src/atoms/auth.jsx-ChallengewriteState",
+  default: { challengeName: [], templateData: {} },
+});
+
+export const selectChallengeState = atom({
+  key: "src/atoms/auth.jsx-selectChallengeState",
+  default: "",
 });

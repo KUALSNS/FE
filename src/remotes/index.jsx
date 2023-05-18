@@ -21,28 +21,34 @@ const patchLogoutUser = () =>
   });
 
 const postEmail = (userEmail) =>
-  WritonAxios.post('/api/user/signup/verify-email-code', {'email': userEmail})
+  WritonAxios.post("/api/user/signup/verify-email-code", { email: userEmail });
 
 const getEmailCode = (userEmail, userEmailCode) =>
-  WritonAxios.get("/api/user/signup/verify-email", {params:{
-    'email': userEmail,
-    'code': userEmailCode
-  }
+  WritonAxios.get("/api/user/signup/verify-email", {
+    params: {
+      email: userEmail,
+      code: userEmailCode,
+    },
   });
 
 const postSignup = (userId, userEmail, userPassword, nickname, phoneNumber) =>
   WritonAxios.post("/api/user/signup", {
-    'userId':userId,
-    'email':userEmail,
-    'password':userPassword,
-    'nickname':nickname,
-    'phoneNumber':phoneNumber,
+    userId: userId,
+    email: userEmail,
+    password: userPassword,
+    nickname: nickname,
+    phoneNumber: phoneNumber,
   });
 
-const getChallenge = () => WritonAxios.get("/api/challenge/whole-category");
+const getChallenge = () => WritonAxios.get("/api/challenge");
 
-const getLoginMain = () =>
-  WritonAxios.get("/api/challenge/main", {
+const postLoginMain = () =>
+  WritonAxios.post("/api/challenge/main", "", {
+    headers: { access: localStorage.getItem("accessToken") },
+  });
+
+const getChallengePage = (name) =>
+  WritonAxios.get(`/api/challenge/start/${name}`, {
     headers: { access: localStorage.getItem("accessToken") },
   });
 
@@ -53,6 +59,7 @@ export {
   postEmail,
   getEmailCode,
   postSignup,
-  getLoginMain,
+  postLoginMain,
   getChallenge,
+  getChallengePage,
 };
