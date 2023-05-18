@@ -28,6 +28,11 @@ export const mypageModalState = atom({
   },
 });
 
+export const mypageSubscribeState = atom({
+  key: "src/atoms/auth.jsx-mypageSubscribeState",
+  default: false,
+});
+
 
 export const sideBarState = atom({
   key: "src/atoms/auth.jsx-sideBarState",

@@ -1,12 +1,104 @@
 import { useState } from "react";
 import { styled } from "styled-components";
-import { mypageModalState } from "../atoms/auth";
+import { mypageModalState, mypageSubscribeState } from "../atoms/auth";
 import { useRecoilState } from "recoil";
 import MypageModal from "../components/MypageModal";
+import MypageSubscribe from "../components/MypageSubscribe";
 
 const check = false; //needfix: email check button, change into atom
 
+function Mypage() {
+  const [editing, setEditing] = useState(false);
+  const [modalState, setModalState] = useRecoilState(mypageModalState);
+  const [subscribeState, setSubscribeState] = useRecoilState(mypageSubscribeState);
+  const handleModalClick = (clicked) => {
+    setModalState({ show: true, content: clicked });
+  };
+  return (
+    <>
+      <MypageSubscribe/>
+    <Container>
+      {modalState.show && <MypageModal />}
+      <h1 className="title">nickname님, 오늘의 글 기록을 응원해요!</h1> <button className="subscribe" onClick={()=>setSubscribeState(!subscribeState)}>멤버십 관리</button>
+      <div className="contents">
+        <h2>기본 정보</h2>
+        <hr />
+        <div>
+          <h3>아이디</h3>
+          <span>id</span>
+        </div>
+        <div>
+          <h3>비밀번호</h3>
+          {editing ? (
+            <>
+              <input></input>
+              <button
+                className="modalBtn"
+                onClick={() => handleModalClick("password")}
+              >
+                비밀번호 변경
+              </button>
+            </>
+          ) : (
+            <span>********</span>
+          )}
+        </div>
+        <div>
+          <h3>닉네임</h3>
+          {editing ? <input></input> : <span>nickname</span>}
+        </div>
+      </div>
+      <div className="contents">
+        <h2>연락처 정보</h2>
+        <hr />
+        <div>
+          <h3>휴대전화</h3>
+          {editing ? <input></input> : <span>010-****-1234</span>}
+        </div>
+        <div>
+          <h3>이메일</h3>
+          {editing ? (
+            <>
+              <input></input>
+              <button
+                className="modalBtn"
+                onClick={() => handleModalClick("email")}
+              >
+                인증
+              </button>
+            </>
+          ) : (
+            <span>email@email.com</span>
+          )}
+        </div>
+        <div>
+          <h3>마케팅 수신 동의</h3>
+          <img src={check ? "mypage_check.svg" : "mypage_check_disabled.svg"} />
+          <span>이메일</span>
+        </div>
+      </div>
+      {editing ? (
+        <>
+          <button className="edit cancle" onClick={() => setEditing(false)}>
+            취소
+          </button>
+          <button className="edit" onClick={() => setEditing(false)}>
+            저장
+          </button>
+        </>
+      ) : (
+        <button className="edit" onClick={() => setEditing(true)}>
+          수정하기
+        </button>
+      )}
+    </Container>
+    </>
+  );
+}
+
+
 const Container = styled.div`
+position: relative;
   max-width: 1106px;
   margin-top: 80px;
   padding-top: 52px;
@@ -18,6 +110,17 @@ const Container = styled.div`
     font-family: "Happiness-Sans-Bold";
     font-size: 28px;
     margin-bottom: 56px;
+  }
+
+  .subscribe{
+    position: absolute;
+    right: 0;
+    top: 52px;
+    width: 123px;
+    height: 40px;
+    background: #DEE9FD;
+    border: 1px solid #BCD6FF;
+    border-radius: 2px;
   }
 
   hr {
@@ -104,89 +207,5 @@ const Container = styled.div`
   }
 `;
 
-function Mypage() {
-  const [editing, setEditing] = useState(false);
-  const [modalState, setModalState] = useRecoilState(mypageModalState);
-  const handleModalClick = (clicked) => {
-    setModalState({ show: true, content: clicked });
-  };
-  return (
-    <Container>
-      {modalState.show && <MypageModal />}
-      <h1 className="title">nickname님, 오늘의 글 기록을 응원해요!</h1>
-      <div className="contents">
-        <h2>기본 정보</h2>
-        <hr />
-        <div>
-          <h3>아이디</h3>
-          <span>id</span>
-        </div>
-        <div>
-          <h3>비밀번호</h3>
-          {editing ? (
-            <>
-              <input></input>
-              <button
-                className="modalBtn"
-                onClick={() => handleModalClick("password")}
-              >
-                비밀번호 변경
-              </button>
-            </>
-          ) : (
-            <span>********</span>
-          )}
-        </div>
-        <div>
-          <h3>닉네임</h3>
-          {editing ? <input></input> : <span>nickname</span>}
-        </div>
-      </div>
-      <div className="contents">
-        <h2>연락처 정보</h2>
-        <hr />
-        <div>
-          <h3>휴대전화</h3>
-          {editing ? <input></input> : <span>010-****-1234</span>}
-        </div>
-        <div>
-          <h3>이메일</h3>
-          {editing ? (
-            <>
-              <input></input>
-              <button
-                className="modalBtn"
-                onClick={() => handleModalClick("email")}
-              >
-                인증
-              </button>
-            </>
-          ) : (
-            <span>email@email.com</span>
-          )}
-        </div>
-        <div>
-          <h3>마케팅 수신 동의</h3>
-          <img src={check ? "mypage_check.svg" : "mypage_check_disabled.svg"} />
-          <span>이메일</span>
-        </div>
-      </div>
-      {editing ? (
-        <>
-          <button className="edit cancle" onClick={() => setEditing(false)}>
-            취소
-          </button>
-          <button className="edit" onClick={() => setEditing(false)}>
-            저장
-          </button>
-        </>
-      ) : (
-        <button className="edit" onClick={() => setEditing(true)}>
-          수정하기
-        </button>
-      )}
-    </Container>
-  );
-}
 
 export default Mypage;
