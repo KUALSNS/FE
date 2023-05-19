@@ -47,5 +47,16 @@ export const challengeState = atom({
 export const challengeModalState = atom({
   key: "src/atoms/auth.jsx-challengeModalState",
   default: true,
-
 });
+
+export const mypageInfoState = atom({
+  key: "src/atoms/auth.jsx-mypageInfoState",
+  default: {
+    "id":"",
+    "password":"",
+    "nickname":"",
+    "phone":"",
+    "email":"",
+    "mar":""
+  }
+})

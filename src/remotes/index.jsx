@@ -46,6 +46,34 @@ const getLoginMain = () =>
     headers: { access: localStorage.getItem("accessToken") },
   });
 
+const getMypageInfo = () => 
+  WritonAxios.get("/api/profile", {
+    headers: { access: localStorage.getItem("accessToken") },
+  });
+
+const patchNamePhone = (nickName, phoneNumber) =>
+  WritonAxios.patch("/api/profile", {
+    "nickname": nickName,
+    "phoneNumber": phoneNumber
+  }, {
+    headers: { access: localStorage.getItem("accessToken") }
+});
+
+const patchPassword = (oldPassword, newPassword) =>
+  WritonAxios.patch("/api/profile/password", {
+    "oldPassword": oldPassword,
+    "newPassword": newPassword
+  }, {
+    headers: { access: localStorage.getItem("accessToken") }
+});
+
+const patchEmail = (newEmail) =>
+  WritonAxios.patch("/api/profile/email", {
+    "email": newEmail
+  }, {
+    headers: { access: localStorage.getItem("accessToken") }
+});
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -55,4 +83,8 @@ export {
   postSignup,
   getLoginMain,
   getChallenge,
+  getMypageInfo,
+  patchNamePhone,
+  patchPassword,
+  patchEmail,
 };

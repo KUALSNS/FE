@@ -1,37 +1,103 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "styled-components";
-import { mypageModalState, mypageSubscribeState } from "../atoms/auth";
+import { mypageInfoState, mypageModalState, mypageSubscribeState } from "../atoms/auth";
 import { useRecoilState } from "recoil";
 import MypageModal from "../components/MypageModal";
 import MypageSubscribe from "../components/MypageSubscribe";
+import { getMypageInfo, getAccessToken, patchNamePhone } from "../remotes";
 
 const check = false; //needfix: email check button, change into atom
 
 function Mypage() {
   const [editing, setEditing] = useState(false);
+  const [nicknameInput, setNicknameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [userInfo, setUserInfo] = useRecoilState(mypageInfoState)
   const [modalState, setModalState] = useRecoilState(mypageModalState);
   const [subscribeState, setSubscribeState] = useRecoilState(mypageSubscribeState);
   const handleModalClick = (clicked) => {
     setModalState({ show: true, content: clicked });
   };
+
+  useEffect(() => {
+    mypageInit();
+  }, []);
+
+  const mypageInit = () => {
+    console.log("mypageinit");
+    getMypageInfo()
+      .then((res) => {
+        console.log(res);
+        const data = res.data.responseData;
+        setUserInfo({
+          "id":data.identifier,
+          "password": data.password,
+          "nickname": data.nickname,
+          "phone": data.phone,
+          "email":data.email,
+          "mar":data.mar_email,
+        })
+        setNicknameInput(data.nickname);
+        setPhoneInput(data.phone);
+      })
+      .catch((err) => {
+        console.log(err.response.data.code);
+        if (err.response.data.code === 419) {
+          Retoken();
+          //mypageInit();
+        } else {
+          console.log(err);
+        }
+      });
+  };
+
+  const Retoken = () => {
+    getAccessToken()
+      .then((res) => {
+        localStorage.setItem("accessToken", res.data.data.accessToken);
+        console.log("Retoken: access 토큰 재발급");
+      })
+      .catch((error) => {
+        if (error.response.data.code === 419) {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          alert("로그인을 다시 하세요");
+          window.location.reload();
+        } else {
+          console.log(error);
+        }
+      });
+  };
+
+  const saveEdit = ()=>{
+    patchNamePhone(nicknameInput, phoneInput)
+    .then((res)=>{
+      console.log(res);
+      setUserInfo({...userInfo, "nickname":nicknameInput, "phone":phoneInput});
+      alert("저장되었습니다.");
+    })
+    .catch((err)=>{console.log(err)})
+    setEditing(false);
+  }
+
   return (
     <>
-      <MypageSubscribe/>
+    <MypageSubscribe/>
+    {modalState.show && <MypageModal />}
     <Container>
-      {modalState.show && <MypageModal />}
-      <h1 className="title">nickname님, 오늘의 글 기록을 응원해요!</h1> <button className="subscribe" onClick={()=>setSubscribeState(!subscribeState)}>멤버십 관리</button>
+      <h1 className="title">{userInfo.nickname}님, 오늘의 글 기록을 응원해요!</h1> <button className="subscribe" onClick={()=>setSubscribeState(!subscribeState)}>멤버십 관리</button>
       <div className="contents">
         <h2>기본 정보</h2>
         <hr />
         <div>
           <h3>아이디</h3>
-          <span>id</span>
+          <span>{userInfo.id}</span>
         </div>
         <div>
           <h3>비밀번호</h3>
           {editing ? (
             <>
-              <input></input>
+              <input disabled value="******"></input>
               <button
                 className="modalBtn"
                 onClick={() => handleModalClick("password")}
@@ -45,7 +111,10 @@ function Mypage() {
         </div>
         <div>
           <h3>닉네임</h3>
-          {editing ? <input></input> : <span>nickname</span>}
+          {editing ? 
+          <input value={nicknameInput} onChange={(e)=>setNicknameInput(e.target.value)}></input> 
+          :
+          <span>{userInfo.nickname}</span>}
         </div>
       </div>
       <div className="contents">
@@ -53,13 +122,16 @@ function Mypage() {
         <hr />
         <div>
           <h3>휴대전화</h3>
-          {editing ? <input></input> : <span>010-****-1234</span>}
+          {editing ?
+          <input value={phoneInput} onChange={(e)=>setPhoneInput(e.target.value)}></input> 
+          :
+          <span>{userInfo.phone.slice(0, 3)}-****-{userInfo.phone.slice(-4)}</span>}
         </div>
         <div>
           <h3>이메일</h3>
           {editing ? (
             <>
-              <input></input>
+              <input disabled value={userInfo.email}></input>
               <button
                 className="modalBtn"
                 onClick={() => handleModalClick("email")}
@@ -68,7 +140,7 @@ function Mypage() {
               </button>
             </>
           ) : (
-            <span>email@email.com</span>
+            <span>{userInfo.email}</span>
           )}
         </div>
         <div>
@@ -82,7 +154,7 @@ function Mypage() {
           <button className="edit cancle" onClick={() => setEditing(false)}>
             취소
           </button>
-          <button className="edit" onClick={() => setEditing(false)}>
+          <button className="edit" onClick={saveEdit}>
             저장
           </button>
         </>
