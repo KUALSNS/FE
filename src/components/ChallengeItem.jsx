@@ -45,10 +45,10 @@ const ChallengeItem = ({ title, category, image }) => {
         setWriteChallenge(res.data.data);
         setSelectChallenge(
           "[" +
-            res.data.data.challengeName[0].category +
+            res.data.data.templateData.challengeCategory +
             "]" +
             " " +
-            res.data.data.challengeName[0].challengeName
+            res.data.data.templateData.challengeName
         );
         setLoading(false);
         navigate("/challenge");

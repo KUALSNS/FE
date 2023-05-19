@@ -205,7 +205,7 @@ function Challenge() {
               </div>
               {activeDropdown ? (
                 <div className="drop">
-                  {writeChallenge?.challengeName?.map((item) => {
+                  {writeChallenge?.challengingArray?.map((item) => {
                     return (
                       <div
                         className="drop-item"
@@ -275,16 +275,20 @@ function Challenge() {
               <div className="challenging">진행 중인 챌린지</div>
               <div className="currentChallenge">
                 <span className="catTag">
-                  {writeChallenge?.challengeName[0]?.category === "내일 일기"
+                  {writeChallenge?.templateData.challengeCategory ===
+                  "내일 일기"
                     ? emoticon[0]
-                    : writeChallenge?.challengeName[0]?.category === "감정 노트"
+                    : writeChallenge?.templateData.challengeCategory ===
+                      "감정 노트"
                     ? emoticon[1]
-                    : writeChallenge?.challengeName[0]?.category === "하루 기록"
+                    : writeChallenge?.templateData.challengeCategory ===
+                      "하루 기록"
                     ? emoticon[2]
-                    : writeChallenge?.challengeName[0]?.category === "오늘 칭찬"
+                    : writeChallenge?.templateData.challengeCategory ===
+                      "오늘 칭찬"
                     ? emoticon[3]
                     : ""}{" "}
-                  {writeChallenge?.challengeName[0]?.category}
+                  {writeChallenge?.templateData.challengeCategory}
                 </span>
                 <span className="currentTitle">
                   {writeChallenge.templateData.challengeName}
