@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const WritonAxios = axios.create({
-  baseURL: "https://www.tarae.store",
+  baseURL: "http://13.125.64.157",
 });
 
 const postLoginUser = (userIdentifier, userPassword) =>
