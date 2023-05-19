@@ -49,7 +49,7 @@ export const categoryState = atom({
 });
 
 export const activeChallengeState = atom({
-  key: "src/atoms/auth.jsx-nicknameState",
+  key: "src/atoms/auth.jsx-activeChallengeState",
   default: { userChallengeSu: 0, coopen: 0, userChallengeArray: [] },
 });
 
@@ -59,7 +59,7 @@ export const challengeModalState = atom({
 });
 
 export const loadingState = atom({
-  key: "src/atoms/auth.jsx-challengeModalState",
+  key: "src/atoms/auth.jsx-loadingState",
   default: true,
 });
 
