@@ -98,7 +98,7 @@ function RecordGrowth() {
 }
 const RecordGrowthWrapper = styled.div`
     font-family: 'Pretendard', sans-serif;
-    position: absolute;
+    position: fixed;
     top: 0;
     right: 0;
     height: 100%;
