@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {postEmail, getEmailCode, postSignup } from '../remotes';
+import SignupTerm from '../components/SignupTerm';
 
 const SignupWrapper = styled.div`
   font-family: 'Pretendard';
@@ -186,6 +187,8 @@ const Signup = () => {
       }
     }, [idError, password1Error, password2Error, username, email, emailCodeError, phone, ...check])
     
+    const [showTerm, setShowTerm] = useState(-1);
+
     const homeRoute = (e)=>{
       navigate('/')
     }
@@ -205,14 +208,7 @@ const Signup = () => {
     }
 
     const handleIdChange = (e)=>{
-      const value = e.target.value;
-      const regex = /^[a-zA-Z0-9]{0,11}$/
-      if (regex.test(value)){
-        setUserId(value)
-      }
-      else if (value.length < userId.length){
-        setPhone(value);
-      }
+      setUserId(e.target.value)
     }
 
     const handlePassword1Change = (e)=>{
@@ -324,8 +320,8 @@ const Signup = () => {
     }
 
     return (
-
     <SignupWrapper>
+        {(showTerm>=0)&&<SignupTerm term={showTerm} setTerm={setShowTerm}/>}
         <img className='logo' src='writon_logo.svg' alt='writon' onClick={homeRoute}/>
       <SignupForm>
         <div className='field'>
@@ -399,17 +395,17 @@ const Signup = () => {
             <div className='check'>
               <img onClick={()=>handleCheck(0)} src={check[0]?'signup_check.svg':'signup_check_disabled.svg'}/>
               <span>[필수] 라이톤 이용약관 동의</span>
-              <a>자세히</a>
+              <a onClick={()=>{setShowTerm(0)}}>자세히</a>
             </div>
             <div className='check'>
               <img onClick={()=>handleCheck(1)} src={check[1]?'signup_check.svg':'signup_check_disabled.svg'}/>
               <span>[필수] 개인정보 수집 및 이용 동의</span>
-              <a>자세히</a>
+              <a onClick={()=>setShowTerm(1)}>자세히</a>
             </div>
             <div className='check'>
               <img onClick={()=>handleCheck(2)} src={check[2]?'signup_check.svg':'signup_check_disabled.svg'}/>
               <span>[선택] 광고성 정보 수신 동의</span>
-              <a>자세히</a>
+              <a onClick={()=>setShowTerm(2)}>자세히</a>
             </div>
           </div>
           <button className='hidden'/>
