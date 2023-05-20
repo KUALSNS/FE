@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import ChallengeList from "./ChallengeList";
-import { getChallenge } from "../remotes";
-import { useRecoilState } from "recoil";
-import { challengeState } from "../atoms/auth";
+import { useRecoilValue } from "recoil";
+import { challengeState, categoryState } from "../atoms/auth";
 import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
-  const CATEGORIES = ["내일 일기", "감정 노트", "하루 기록", "오늘 칭찬"];
-  const [challenge, setChallenge] = useRecoilState(challengeState);
+  const challenge = useRecoilValue(challengeState);
+  console.log(challenge);
+  const categories = useRecoilValue(categoryState);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -28,22 +28,13 @@ const ChallengeFeed = () => {
     }
   };
 
-  const filteredItems = challenge.filter((item) => {
+  const filteredItems = challenge?.filter((item) => {
     if (activeCategories.length === 0) {
       return true;
     } else {
       return activeCategories.includes(item.category);
     }
   });
-
-  useEffect(() => {
-    getChallenge()
-      .then((res) => {
-        console.log(res.data.data.challenges);
-        setChallenge(res.data.data.challenges);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <Container>
@@ -78,7 +69,7 @@ const ChallengeFeed = () => {
               전체
             </button>
           </div>
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <div className="itemExcept">
               <button
                 key={category}
@@ -104,16 +95,17 @@ const ChallengeFeed = () => {
         </div>
       </Category>
       <div className="search">검색된 챌린지 주제 {filteredItems.length}개</div>
-   
+
       <ChallengeLists>
-        {
-          filteredItems.map((item) => {
-            console.log(item);
-            return (
-              <ChallengeItem title={item.title} category={item.category} />
-            );
-          })
-        }
+        {filteredItems.map((item) => {
+          return (
+            <ChallengeItem
+              title={item.title}
+              category={item.category}
+              image={item.image}
+            />
+          );
+        })}
       </ChallengeLists>
     </Container>
   );

@@ -3,31 +3,42 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { sideToggleState, sideBarState } from "../atoms/auth";
+import {
+  loadingState,
+  sideToggleState,
+  detailuserState,
+  authState,
+} from "../atoms/auth";
+import { useLocation } from "react-router-dom";
 
 function LeftNav() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = useRecoilValue(sideToggleState);
-
+  const loading = useRecoilValue(loadingState);
+  const detailuser = useRecoilValue(detailuserState);
+  const [auth, setAuth] = useRecoilState(authState);
   const sidemenu = [
     ["라이톤 홈", "/"],
     ["글 챌린지", "/challenge"],
-    ["글 템플릿", "/template"],
     ["글 플래너", "/record"],
     ["마이페이지", "/mypage"],
   ];
 
-  // const [menuNum, setMenuNum] = useState(0);
-  const [menuNum, setMenuNum] = useRecoilState(sideBarState);
+  const location = useLocation();
+  const pathname = location.pathname;
+  const pattern = /\/[^/]*$/;
+  const extractedPathname = pathname.replace(pattern, "");
 
   const selectMenu = (url, idx) => {
-    setMenuNum(idx);
-    navigate(url);
+    if (auth) {
+      navigate(url);
+    } else {
+      navigate("/login");
+    }
   };
 
   const SpaceHome = () => {
-    setMenuNum(0);
     navigate("/");
   };
 
@@ -38,10 +49,15 @@ function LeftNav() {
           {sidemenu.map((menu, idx) => {
             return (
               <li
+                key={idx}
                 onClick={() => selectMenu(menu[1], idx)}
-                className={idx === menuNum ? "selectMenu" : ""}
+                className={menu[1] === pathname ? "selectMenu" : ""}
               >
-                {idx === menuNum ? <img height={40} src="list_logo.svg" /> : ""}
+                {menu[1] === pathname ? (
+                  <img height={40} src="/list_logo.svg" />
+                ) : (
+                  ""
+                )}
                 <div className="menu">
                   <div style={{ display: "flex", alignItems: "center" }}>
                     <div>{menu[0]}</div>
@@ -56,7 +72,7 @@ function LeftNav() {
             onClick={SpaceHome}
             width={114}
             height={27}
-            src="list_bottom.svg"
+            src="/list_bottom.svg"
           />
         </div>
       </div>

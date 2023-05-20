@@ -9,26 +9,21 @@ import Record from "./pages/Record";
 import Mypage from "./pages/Mypage";
 import LeftNav from "./components/LeftNav";
 import { getAccessToken } from "./remotes";
-import { useRecoilState } from "recoil";
-import { authState } from "./atoms/auth";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState, detailuserState } from "./atoms/auth";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { patchLogoutUser } from "./remotes";
 import Navigation from "./components/Navigation";
+import ChallengeModal from "./components/ChallengeModal";
 
 function App() {
   const location = useLocation();
   const [auth, setAuth] = useRecoilState(authState);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const detailuser = useRecoilValue(detailuserState);
 
   const checkTokenExpiration = () => {
-    // getCategory()
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       // 토큰의 만료 시간을 체크
@@ -57,7 +52,7 @@ function App() {
     }
   };
 
-  setInterval(checkTokenExpiration, 60000);
+  //setInterval(checkTokenExpiration, 60000);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -75,31 +70,8 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const Logout = () => {
-    patchLogoutUser()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log(err));
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setAuth(false);
-    navigate("/");
-  };
-
   return (
     <div>
-      {/* {!auth ? (
-        <div className="sign" style={{ position: "relative", zIndex: "30" }}>
-          <Link to="/login">Sign in</Link>
-          <Link to="/register">Sign up</Link>
-        </div>
-      ) : (
-        <button style={{ position: "relative", zIndex: "30" }} onClick={Logout}>
-          로그아웃
-        </button>
-      )} */}
-      {/* <button onClick={checkTokenExpiration}>토큰 재발급 </button> */}
       {location.pathname == "/login" || location.pathname == "/register" ? (
         ""
       ) : (
@@ -116,7 +88,13 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<Home />} />
+        {detailuser.challengeCertain ? (
+          <Route path="/challenge" element={<Challenge />} />
+        ) : (
+          "" //모달창
+        )}
         <Route path="/challenge" element={<Challenge />} />
+        {/* <Route path="/challenge/:name" element={<Challenge />} /> */}
         <Route path="/record" element={<Record />} />
         <Route path="/template" element={<Template />} />
         <Route path="/mypage" element={<Mypage />} />

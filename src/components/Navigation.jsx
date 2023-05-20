@@ -2,15 +2,21 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authState, sideToggleState, sideBarState } from "../atoms/auth";
+import {
+  authState,
+  detailuserState,
+  sideToggleState,
+  activeChallengeState,
+} from "../atoms/auth";
 import { patchLogoutUser } from "../remotes";
 
 const Navigation = () => {
   const navigate = useNavigate();
   const [listToggle, setListToggle] = useRecoilState(sideToggleState);
   const [userToggle, setUserToggle] = useState(false);
-  const auth = useRecoilValue(authState);
-  const [menuNum, setMenuNum] = useRecoilState(sideBarState);
+  const [auth, setAuth] = useRecoilState(authState);
+  const detailuser = useRecoilValue(detailuserState);
+  const activeChallenge = useRecoilValue(activeChallengeState);
 
   const sidebarToggle = () => {
     setListToggle(!listToggle);
@@ -22,17 +28,15 @@ const Navigation = () => {
   const Logout = () => {
     patchLogoutUser()
       .then((res) => {
-        console.log(res);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        setAuth(false);
         window.location.reload();
       })
       .catch((err) => console.log(err));
-    setAuth(false);
   };
 
   const SpaceHome = () => {
-    setMenuNum(0);
     navigate("/");
   };
 
@@ -45,7 +49,6 @@ const Navigation = () => {
   };
 
   const SpaceToMypage = () => {
-    setMenuNum(4);
     setUserToggle(false);
     navigate("/mypage");
   };
@@ -58,24 +61,27 @@ const Navigation = () => {
             onClick={SpaceHome}
             width={157}
             height={80}
-            src="writon_logo_blue.svg"
+            src="/writon_logo_blue.svg"
           />
         </div>
         <div className="navi-list">
-          <img onClick={sidebarToggle} src="menu.svg" />
+          <img onClick={sidebarToggle} src="/menu.svg" />
         </div>
       </ContainerLeft>
       <ContainerRight>
         <div className={auth ? "after-right" : "before-right"}>
           <div className="challenge-title">
             <div>5월 25일 오늘 진행 중인 챌린지 </div>
-            <div className="count"> 2/2</div>
+            <div className="count">
+              {activeChallenge.userChallengeSu} /
+              {activeChallenge.coopen ? " ∞" : " 2"}
+            </div>
           </div>
           {auth ? (
             <div className="user-info">
               <div className="user-info-container" onClick={userInfoToggle}>
-                <img width={22} src="user_img.svg" />
-                <div className="name">라이언</div>
+                <img width={22} src="/user_img.svg" />
+                <div className="name">{detailuser.nickname}</div>
               </div>
 
               {userToggle ? (
@@ -83,17 +89,17 @@ const Navigation = () => {
                   <div className="drop">
                     <div className="user">
                       <div className="user-name">
-                        <img src="drop_user_img.svg" />
-                        라이언
+                        <img src="/drop_user_img.svg" />
+                        {detailuser.nickname}
                       </div>
                       <div className="user-id">ㄷㄹㅂㅈㄹㄷㅈ</div>
                     </div>
                     <div className="mypage" onClick={SpaceToMypage}>
-                      <img src="drop_user.svg" />
+                      <img src="/drop_user.svg" />
                       마이페이지
                     </div>
                     <div className="logout" onClick={Logout}>
-                      <img width={14} src="logout.svg" />
+                      <img width={14} src="/logout.svg" />
                       로그아웃
                     </div>
                   </div>
@@ -149,9 +155,12 @@ const ContainerLeft = styled.div`
     z-index: 4;
     top: 25px;
     cursor: pointer;
-    left: -40px;
+    left: -10px;
   }
 
+  .navi-logo {
+    margin-left: 25px;
+  }
   .navi-logo img {
     cursor: pointer;
   }
@@ -214,7 +223,6 @@ const ContainerRight = styled.div`
     text-align: center;
     margin-left: 8px;
     color: #ffffff;
-    margin-bottom: 2px;
   }
 
   .user-info {
@@ -241,6 +249,7 @@ const ContainerRight = styled.div`
   }
 
   .user-info .name {
+    width: 50px;
     margin-left: 8px;
     margin-right: 8px;
     font-family: "Pretendard";
@@ -248,6 +257,9 @@ const ContainerRight = styled.div`
     font-weight: 500;
     font-size: 18px;
     line-height: 16px;
+    white-space: nowrap; /* 줄 바꿈 없이 한 줄에 텍스트를 표시 */
+    overflow: hidden; /* 너비를 넘어가는 텍스트를 숨김 */
+    text-overflow: ellipsis;
   }
 
   .sign {
