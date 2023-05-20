@@ -520,6 +520,7 @@ const Container = styled.div`
   .right h2 {
     margin-top: 36px;
     margin-bottom: 15px;
+    font-size: 20px; //추가된 부분
   }
 
   .currentChallenge {
@@ -527,7 +528,7 @@ const Container = styled.div`
     height: 72px;
     padding: 24px;
     border-radius: 8px;
-    background-color: #edeff3;
+    background-color: #f3f5f9; //추가된 부분
     font-size: 18px;
   }
 
