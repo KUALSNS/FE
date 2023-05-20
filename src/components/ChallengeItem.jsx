@@ -1,12 +1,82 @@
-import React from "react";
+import { React, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
+import { useRecoilValue, useRecoilState } from "recoil";
+import {
+  authState,
+  loadingState,
+  ChallengeWriteState,
+  selectChallengeState,
+} from "../atoms/auth";
+import { getChallengePage, getAccessToken } from "../remotes";
 
-const ChallengeItem = ({ title, category }) => {
+const ChallengeItem = ({ title, category, image }) => {
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
+  const auth = useRecoilValue(authState);
+  const navigate = useNavigate();
+  const [selectChallenge, setSelectChallenge] =
+    useRecoilState(selectChallengeState);
+  const [writeChallenge, setWriteChallenge] =
+    useRecoilState(ChallengeWriteState);
+  const [proceeding, setProceeding] = useState(false);
+  const [loading, setLoading] = useRecoilState(loadingState);
+
+  function Retoken() {
+    // 토큰 재발급 API 호출
+    return getAccessToken()
+      .then((res) => {
+        const newAccessToken = res.data.data.accessToken;
+
+        localStorage.setItem("accessToken", newAccessToken);
+        // 재발급 받은 리프레시 토큰도 필요한 경우 저장 또는 업데이트
+
+        return Promise.resolve(newAccessToken);
+      })
+      .catch((error) => {
+        console.error("토큰 재발급 에러:", error);
+        return Promise.reject(error);
+      });
+  }
+
+  function getChallengePageWithTokenRefresh(title) {
+    return getChallengePage(title)
+      .then((res) => {
+        console.log(res.data.data);
+        setWriteChallenge(res.data.data);
+        setSelectChallenge(
+          "[" +
+            res.data.data.templateData.challengeCategory +
+            "]" +
+            " " +
+            res.data.data.templateData.challengeName
+        );
+        setLoading(false);
+        navigate("/challenge");
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 419) {
+          return Retoken().then(() => getChallengePage(title));
+        } else if (err.response && err.response.status === 415) {
+          setLoading(false);
+          alert("이미 진행 중인 챌린지 입니다.");
+        } else {
+          console.error(err);
+        }
+      });
+  }
+
+  const spaceChallengePage = () => {
+    if (auth) {
+      setLoading(true);
+      getChallengePageWithTokenRefresh(title);
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <Container>
-      <div className="container">
+      <div className="container" onClick={spaceChallengePage}>
         <div className="inner">
           <div className="text">{title}</div>
           <div className="tag">
