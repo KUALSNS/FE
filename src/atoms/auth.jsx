@@ -28,10 +28,17 @@ export const mypageModalState = atom({
   },
 });
 
+export const mypageSubscribeState = atom({
+  key: "src/atoms/auth.jsx-mypageSubscribeState",
+  default: false,
+});
+
+
 // export const sideBarState = atom({
 //   key: "src/atoms/auth.jsx-sideBarState",
 //   default: "/",
 // });
+
 
 export const detailuserState = atom({
   key: "src/atoms/auth.jsx-detailuserState",
@@ -56,6 +63,7 @@ export const activeChallengeState = atom({
 export const challengeModalState = atom({
   key: "src/atoms/auth.jsx-challengeModalState",
   default: true,
+
 });
 
 export const loadingState = atom({
@@ -87,3 +95,15 @@ export const subscribedState = atom({
   key: "src/atoms/auth.jsx-subscribedState",
   default: false,
 });
+
+export const mypageInfoState = atom({
+  key: "src/atoms/auth.jsx-mypageInfoState",
+  default: {
+    "id":"",
+    "password":"",
+    "nickname":"",
+    "phone":"",
+    "email":"",
+    "mar":""
+  }
+})
