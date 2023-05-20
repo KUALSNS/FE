@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import ChallengeList from "./ChallengeList";
 import { useRecoilValue } from "recoil";
-import { challengeState, categoryState } from "../atoms/auth";
+import { challengeState, categoryState, detailuserState } from "../atoms/auth";
 import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
@@ -12,7 +12,7 @@ const ChallengeFeed = () => {
   const categories = useRecoilValue(categoryState);
 
   const [isHovered, setIsHovered] = useState(false);
-
+  const detailuser = useRecoilValue(detailuserState);
   const [activeCategories, setActiveCategories] = useState([]);
 
   const onSelectAll = () => {
@@ -39,22 +39,21 @@ const ChallengeFeed = () => {
   return (
     <Container>
       <Title>
-        <div>라이언님을 위한 라이톤 30일 글 챌린지</div>
-        <div
-          className="question"
-          onMouseOver={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          ?
-        </div>
-
-        {isHovered && (
-          <div>
+        <div>{detailuser.nickname}님을 위한 라이톤 30일 글 챌린지</div>
+        <div style={{ justifyContent: "left" }}>
+          <div
+            className="question"
+            onMouseOver={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            ?
+          </div>
+          {isHovered && (
             <div className="hover-question">
               챌린지를 위한 관심 태그를 설정해보세요
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </Title>
 
       <Category>
@@ -169,7 +168,7 @@ const Title = styled.div`
     width: 23px;
     height: 23px;
     border-radius: 50%;
-    margin-left: 12px;
+    margin-left: 8px;
     background: #fce184;
     font-family: "Pretendard";
     font-style: normal;
@@ -183,13 +182,14 @@ const Title = styled.div`
     align-items: center;
     justify-content: center;
     z-index: 1;
+    position: relative;
   }
 
   .hover-question {
     position: absolute;
     width: 304px;
     height: 32px;
-    right: -35px;
+
     background: #fff8e0;
     border: 1px solid #fce184;
     border-radius: 16px;
