@@ -249,6 +249,7 @@ const ContainerRight = styled.div`
   }
 
   .user-info .name {
+    width: 50px;
     margin-left: 8px;
     margin-right: 8px;
     font-family: "Pretendard";
@@ -256,6 +257,9 @@ const ContainerRight = styled.div`
     font-weight: 500;
     font-size: 18px;
     line-height: 16px;
+    white-space: nowrap; /* 줄 바꿈 없이 한 줄에 텍스트를 표시 */
+    overflow: hidden; /* 너비를 넘어가는 텍스트를 숨김 */
+    text-overflow: ellipsis;
   }
 
   .sign {
