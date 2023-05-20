@@ -99,6 +99,8 @@ function RecordGrowth() {
 const RecordGrowthWrapper = styled.div`
     font-family: 'Pretendard', sans-serif;
     position: fixed;
+    max-height: 100vh;
+    overflow-y: auto;
     top: 0;
     right: 0;
     height: 100%;

@@ -36,7 +36,9 @@ function SubscribeCupon() {
 }
 const SubscribeCuponWrapper = styled.div`
     font-family: 'Pretendard', sans-serif;
-    position:absolute;
+    position: fixed;
+    max-height: 100vh;
+    overflow-y: auto;
     top: 0;
     left: 0;
     height: 100vh;
