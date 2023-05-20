@@ -10,7 +10,7 @@ import {
   selectChallengeState,
 } from "../atoms/auth";
 import { useParams } from "react-router";
-import { getChallengePage, getAccessToken } from "../remotes";
+import { getEachChallenge } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
 
@@ -150,6 +150,16 @@ function Challenge() {
     // url 굳이 써야하나. 그냥 페이지만 이동 시키고, 그때 넣어주면 되지않을까., 챌린지이름을
     // 첼린지 페이지 들어와서 여기 안에 들어와서 뿌려주기만 하고,  여기 안에서 드롭다운 버튼으로 이동시, 뿌려줬던 데이터를 업데이트만 해준다.
 
+    getEachChallenge(item.challengeName)
+      .then((res) => {
+        console.log(res.data.data.templateData);
+        setWriteChallenge({
+          ...writeChallenge,
+          templateData: res.data.data.templateData,
+        });
+        console.log(writeChallenge.templateData);
+      })
+      .catch((err) => console.log(err));
     setActiveDropdown(false);
   };
 
@@ -205,9 +215,10 @@ function Challenge() {
               </div>
               {activeDropdown ? (
                 <div className="drop">
-                  {writeChallenge?.challengingArray?.map((item) => {
+                  {writeChallenge?.challengingArray?.map((item, idx) => {
                     return (
                       <div
+                        key={idx}
                         className="drop-item"
                         onClick={() => onSelectChallenge(item)}
                       >
@@ -296,8 +307,8 @@ function Challenge() {
               </div>
               <h2>질문 템플릿 상세 검색</h2>
               <div className="currentTemplateContainer">
-                {writeChallenge.templateData?.template?.map((t, idx) => (
-                  <div className="currentTemplate">
+                {writeChallenge.templateData?.templates?.map((t, idx) => (
+                  <div className="currentTemplate" key={idx}>
                     <div>{t.templateTitle}</div>
                     <span className="catTag">
                       {t.category === "내일 일기"
