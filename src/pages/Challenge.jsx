@@ -8,51 +8,29 @@ import {
   loadingState,
   ChallengeWriteState,
   selectChallengeState,
+  recordSubmitState,
+  sideState,
 } from "../atoms/auth";
 import { useParams } from "react-router";
-import { getEachChallenge } from "../remotes";
+import { getEachChallenge, postPreSubmit, postRecordSubmit } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
+import ChallengeRecordModal from "../components/modal/ChallengeRecordModal";
+// import ChallengePreModal from "../components/modal/ChallengePreModal";
 
 function Challenge() {
+  const [side, setSide] = useRecoilState(sideState);
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
-  let { name } = useParams();
-  console.log(name);
+
   const navigate = useNavigate();
 
-  const template = [
-    {
-      title: "템플릿1",
-      contents: "<div>테스트 div입니당. 템플릿1</div>",
-    },
-    {
-      title: "템플릿2",
-      contents: "<div style='color: red;'>얘는 빨간색. 템플릿2</div>",
-    },
-    {
-      title: "템플릿3",
-      contents: "<h1>h1 템플릿3</h1>",
-    },
-    {
-      title: "템플릿4",
-      contents: "<div>첫째줄 테스트 div</div><div>둘째줄 템플릿4</div>",
-    },
-    {
-      title: "템플릿5",
-      contents: "<div>테스트 div입니당. 템플릿5</div>",
-    },
-    {
-      title: "템플릿6",
-      contents: "<div>테스트 div입니당. 템플릿6</div>",
-    },
-  ];
-  const challenge = "챌린지명";
-  const category = "카테고리명";
+  const [recordSubmit, setRecordSubmit] = useRecoilState(recordSubmitState);
+
   const [newChallengeFlag, setFlag] = useRecoilState(challengeModalState);
   //dummy data
   console.log(newChallengeFlag);
   const [loading, setLoading] = useRecoilState(loadingState);
-
+  const [title, setTitle] = useState("");
   const [saveAlert, setSaveAlert] = useState(false);
   const [saveDisappear, setSaveDisappear] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(false);
@@ -60,6 +38,9 @@ function Challenge() {
     useRecoilState(selectChallengeState);
   const [writeChallenge, setWriteChallenge] =
     useRecoilState(ChallengeWriteState);
+  const [premodal, setPremodal] = useState(false);
+  const [reocordmodal, setRecordmodal] = useState(false);
+
   const editorRef = useRef(null);
   const imgUploadRef = useRef(null);
 
@@ -67,14 +48,44 @@ function Challenge() {
     //needfix: server connection
     if (editorRef.current) {
       console.log(editorRef.current.getContent());
+      // setRecordSubmit({
+      //   challengeName: writeChallenge.templateData.challengeName,
+      //   templateName: writeChallenge.templateData.templates[0].templateTitle,
+      //   challengeTitle: title,
+      //   challengeContent: editorRef.current.getContent(),
+      // });
     }
+    postRecordSubmit(
+      writeChallenge.templateData.challengeName,
+      writeChallenge.templateData.templates[0].templateTitle,
+      title,
+      editorRef.current.getContent()
+    )
+      .then((res) => {
+        console.log(res); // 오케아 모달창 보내기 (오늘 기록이 완료되었습니다.)// 여기에 오케이 모달창 확인 누르면 navigate(record)
+        setRecordmodal(true);
+      })
+      .catch((err) => console.log(err));
+
+    //navigate("/record");
   };
+
   const handleSaveClick = (idx) => {
     setSaveAlert(true);
     //needfix: server connection
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
+    // if (editorRef.current) {
+    //   console.log(editorRef.current.setContent("<div>dfdfsffd</div>"));
+    // }
+    postPreSubmit(
+      writeChallenge.templateData.challengeName,
+      writeChallenge.templateData.templates[0].templateTitle,
+      title,
+      editorRef.current.getContent()
+    )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handlePlusClick = (t, idx) => {
@@ -121,49 +132,49 @@ function Challenge() {
       });*/
   }, []);
 
-  // const Retoken = () => {
-  //   getAccessToken()
-  //     .then((res) => {
-  //       localStorage.setItem("accessToken", res.data.data.accessToken);
-  //       console.log("access 토큰 만 재발급");
-  //     })
-  //     .catch((error) => {
-  //       if (error.response.data.code === 419) {
-  //         localStorage.removeItem("accessToken");
-  //         localStorage.removeItem("refreshToken");
-  //         alert("로그인을 다시 하세요");
-  //         window.location.reload();
-  //       } else {
-  //         console.log(error);
-  //       }
-  //     });
-  // };
-
   const DropdownChallenge = () => {
     setActiveDropdown(!activeDropdown);
   };
 
   const onSelectChallenge = (item) => {
     setSelectChallenge("[" + item.category + "]" + " " + item.challengeName);
-    // 드롭다운 버튼 누를시, 챌린지 이름에 맞는 api 호출
-    // 근데, url도 바꿔어야하지않나?
-    // url 굳이 써야하나. 그냥 페이지만 이동 시키고, 그때 넣어주면 되지않을까., 챌린지이름을
-    // 첼린지 페이지 들어와서 여기 안에 들어와서 뿌려주기만 하고,  여기 안에서 드롭다운 버튼으로 이동시, 뿌려줬던 데이터를 업데이트만 해준다.
-
     getEachChallenge(item.challengeName)
       .then((res) => {
-        console.log(res.data.data.templateData);
+        console.log(res.data);
         setWriteChallenge({
           ...writeChallenge,
           templateData: res.data.data.templateData,
         });
-        console.log(writeChallenge.templateData);
+        if (res.data.data.templateCertain) {
+          setTitle(res.data.data.temporaryChallenge[0].title);
+          editorRef.current.setContent(
+            res.data.data.temporaryChallenge[0].writing
+          );
+        }
       })
       .catch((err) => console.log(err));
     setActiveDropdown(false);
   };
 
+  const preclick = () => {
+    if (side && editorRef.current && writeChallenge.templateCertain) {
+      console.log(2);
+      setTitle(writeChallenge.temporaryChallenge[0].title);
+      editorRef.current.setContent(
+        writeChallenge.temporaryChallenge[0].writing
+      );
+      setPremodal(false);
+    }
+  };
+
   useEffect(() => {
+    if (side && writeChallenge.templateCertain) {
+      setPremodal(true);
+      console.log(2);
+    }
+    // -> 모달창 띄우는 상태값 하나 관리해서 모달창 띄우기 ( 임시저장된게 있네요?? )
+    // 확인 누르면 precclcick 함수 실행
+
     if (saveAlert) {
       setSaveDisappear(false);
       setTimeout(() => {
@@ -173,7 +184,23 @@ function Challenge() {
         }, 500);
       }, 1500);
     }
-  }, [saveAlert]);
+  }, [saveAlert, side, writeChallenge.templateCertain]);
+
+  function ChallengePreModal() {
+    return (
+      <ChallengeModalWrapper>
+        <ChallengeBox>
+          <div className="text">임시 저장한 챌린지를 이어 쓸까요?</div>
+          <div className="btn-1">
+            <div className="no">아니오</div>
+            <div className="good" onClick={preclick}>
+              좋아요
+            </div>
+          </div>
+        </ChallengeBox>
+      </ChallengeModalWrapper>
+    );
+  }
 
   if (loading) {
     return (
@@ -191,7 +218,8 @@ function Challenge() {
   } else {
     return (
       <>
-        {newChallengeFlag && <ChallengeModal />}
+        {premodal && <ChallengePreModal />}
+        {reocordmodal && <ChallengeRecordModal />}
         <div>
           <Container>
             {!saveDisappear && (
@@ -201,12 +229,10 @@ function Challenge() {
                 작성 중인 글이 저장되었습니다.
               </div>
             )}
+
             <div className="left">
               <div className="challenge-dropdown" onClick={DropdownChallenge}>
-                <h2>
-                  {selectChallenge || "[카테고리명] 챌린지명"}
-                  {/* [{category}] {challenge}{" "} */}
-                </h2>
+                <h2>{selectChallenge || "[카테고리명] 챌린지명"}</h2>
                 <img
                   width={19}
                   height={19}
@@ -230,7 +256,13 @@ function Challenge() {
               ) : (
                 ""
               )}
-              <input type="text" placeholder="나의 제목을 기록해보세요"></input>
+
+              <input
+                type="text"
+                placeholder="나의 제목을 기록해보세요"
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+              ></input>
 
               <hr />
               <div className="editor">
@@ -412,6 +444,7 @@ const Container = styled.div`
     text-align: center;
     color: #f43226;
     background: #e3e4e5;
+    z-index: 1;
   }
 
   .showSaved {
@@ -478,7 +511,7 @@ const Container = styled.div`
   .right {
     flex-basis: 540px;
     padding-left: 48px;
-    padding-top: 49px;
+    padding-top: 37px;
   }
 
   .saveBtns {
@@ -514,6 +547,13 @@ const Container = styled.div`
 
   .record-btn {
     background-color: #dee9fd;
+  }
+
+  .record-btn:hover {
+    background: #dee9fd;
+    border: 1px solid #bcd6ff;
+    color: #266cf4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
 
   .record-btn img {
@@ -609,5 +649,75 @@ const Container = styled.div`
     100% {
       transform: translateY(0);
     }
+  }
+`;
+
+const ChallengeModalWrapper = styled.div`
+  font-family: "Pretendard";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #272727;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 20;
+`;
+
+const ChallengeBox = styled.div`
+  width: 390px;
+  height: 195px;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 56px;
+
+  .text {
+    margin-bottom: 49px;
+  }
+
+  .btn-1 {
+    width: 288px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .btn-1 div {
+    width: 136px;
+    border-radius: 2px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Pretendard";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    cursor: pointer;
+  }
+
+  .btn-1 .no {
+    background-color: #272727;
+    color: #ffffff;
+  }
+  .btn-1 .good {
+    border: 1px solid #266cf4;
+    color: #266cf4;
   }
 `;
