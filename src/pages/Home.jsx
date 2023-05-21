@@ -15,7 +15,12 @@ import {
   authState,
   loadingState,
   activeChallengeState,
+  challengeToastState,
+  certainToastState,
 } from "../atoms/auth";
+import ChallengeModal from "../components/ChallengeModal";
+import ChallengeToast from "../components/toast/ChallengeToast";
+import CertainToast from "../components/toast/CertainToast";
 
 const Home = () => {
   const [loading, setLoading] = useRecoilState(loadingState);
@@ -24,6 +29,8 @@ const Home = () => {
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
   const [auth, setAuth] = useRecoilState(authState);
+  const [certainToast, setCertainToast] = useRecoilState(certainToastState);
+  const [toast, setToast] = useRecoilState(challengeToastState);
 
   const Retoken = () => {
     getAccessToken()
@@ -48,7 +55,7 @@ const Home = () => {
     if (accessToken) {
       postLoginMain()
         .then((res) => {
-          console.log(res.data.data.challengesArray);
+          console.log(res);
           setChallenge(res.data.data.challengesArray);
           setCategory(res.data.data.category);
           setDetailuser({
@@ -82,6 +89,18 @@ const Home = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (certainToast) {
+      setTimeout(() => {
+        setCertainToast(false);
+      }, 800);
+    } else if (toast) {
+      setTimeout(() => {
+        setToast(false);
+      }, 800);
+    }
+  }, [certainToast, toast]);
+
   if (loading) {
     return (
       <div
@@ -98,6 +117,8 @@ const Home = () => {
   } else {
     return (
       <div>
+        {certainToast ? <CertainToast /> : toast ? <ChallengeToast /> : ""}
+
         <Container>
           <ChallengeStory />
           <ChallengeFeed />

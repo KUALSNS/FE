@@ -8,8 +8,13 @@ import {
   sideToggleState,
   detailuserState,
   authState,
+  sideState,
+  ChallengeWriteState,
+  selectChallengeState,
+  certainToastState,
 } from "../atoms/auth";
 import { useLocation } from "react-router-dom";
+import { postSideBarChallenge } from "../remotes";
 
 function LeftNav() {
   const navigate = useNavigate();
@@ -18,6 +23,8 @@ function LeftNav() {
   const loading = useRecoilValue(loadingState);
   const detailuser = useRecoilValue(detailuserState);
   const [auth, setAuth] = useRecoilState(authState);
+  const [side, setSide] = useRecoilState(sideState);
+  const [certain, setCertain] = useRecoilState(certainToastState);
   const sidemenu = [
     ["라이톤 홈", "/"],
     ["글 챌린지", "/challenge"],
@@ -30,9 +37,41 @@ function LeftNav() {
   const pattern = /\/[^/]*$/;
   const extractedPathname = pathname.replace(pattern, "");
 
+  const [selectChallenge, setSelectChallenge] =
+    useRecoilState(selectChallengeState);
+  const [writeChallenge, setWriteChallenge] =
+    useRecoilState(ChallengeWriteState);
+
   const selectMenu = (url, idx) => {
     if (auth) {
-      navigate(url);
+      if (url === "/challenge") {
+        if (detailuser.challengeCertain) {
+          // 진행중인 챌린지가 있냐 없냐
+          postSideBarChallenge()
+            .then((res) => {
+              console.log(res);
+              setWriteChallenge(res.data.data);
+
+              console.log(writeChallenge);
+              setSelectChallenge(
+                "[" +
+                  res.data.data.templateData.challengeCategory +
+                  "]" +
+                  " " +
+                  res.data.data.templateData.challengeName
+              );
+              setSide(true);
+            })
+            .catch((err) => console.log(err));
+
+          navigate(url);
+        } else {
+          setCertain(true);
+          // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
+        }
+      } else {
+        navigate(url);
+      }
     } else {
       navigate("/login");
     }

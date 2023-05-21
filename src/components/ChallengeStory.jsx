@@ -3,19 +3,47 @@ import styled from "styled-components";
 import Progress from "../components/Progress";
 import { useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { activeChallengeState, authState } from "../atoms/auth";
+import {
+  activeChallengeState,
+  authState,
+  certainToastState,
+  detailuserState,
+} from "../atoms/auth";
 import { useNavigate } from "react-router-dom";
+import { postSideBarChallenge } from "../remotes";
 
 const ChallengeStory = () => {
   const [close, setClose] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const auth = useRecoilValue(authState);
   const activeChallenge = useRecoilValue(activeChallengeState);
+  const detailuser = useRecoilValue(detailuserState);
+  const [certain, setCertain] = useRecoilState(certainToastState);
   const navigate = useNavigate();
-  console.log(activeChallenge);
   const AddStory = () => {
     if (auth) {
-      navigate("/challenge");
+      if (detailuser.challengeCertain) {
+        postSideBarChallenge()
+          .then((res) => {
+            console.log(res);
+            setWriteChallenge(res.data.data);
+
+            console.log(writeChallenge);
+            setSelectChallenge(
+              "[" +
+                res.data.data.templateData.challengeCategory +
+                "]" +
+                " " +
+                res.data.data.templateData.challengeName
+            );
+            setSide(true);
+          })
+          .catch((err) => console.log(err));
+        navigate("/challenge");
+      } else {
+        setCertain(true);
+        // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
+      }
     } else {
       navigate("/login");
     }

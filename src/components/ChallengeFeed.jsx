@@ -8,7 +8,6 @@ import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
   const challenge = useRecoilValue(challengeState);
-  console.log(challenge);
   const categories = useRecoilValue(categoryState);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -261,7 +260,7 @@ const Category = styled.div`
   }
 
   .category .all {
-    width: 62px;
+    width: 63px;
     height: 40px;
     background: #e1eaf8;
     border: 1px solid #bcd6ff;
@@ -289,7 +288,7 @@ const Category = styled.div`
   }
 
   .category .notall {
-    width: 62px;
+    width: 63px;
     height: 40px;
     background: #ffffff;
     border: 1px solid #bcd6ff;
