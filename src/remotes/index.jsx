@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const WritonAxios = axios.create({
-  baseURL: "http://13.125.64.157",
+  baseURL: "https://www.writon.store",
 });
 
 const postLoginUser = (userIdentifier, userPassword) =>
@@ -97,6 +97,49 @@ const getEachChallenge = (name) =>
     headers: { access: localStorage.getItem("accessToken") },
   });
 
+const postRecordSubmit = (
+  challengeName,
+  templateName,
+  challengeTitle,
+  challengeContent
+) =>
+  WritonAxios.post(
+    "/api/challenge/write/register",
+    {
+      challengeName: challengeName,
+      templateName: templateName,
+      challengeTitle: challengeTitle,
+      challengeContent: challengeContent,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
+
+const postPreSubmit = (
+  challengeName,
+  templateName,
+  challengeTitle,
+  challengeContent
+) =>
+  WritonAxios.post(
+    "/api/challenge/write/temporary-storage",
+    {
+      challengeName: challengeName,
+      templateName: templateName,
+      challengeTitle: challengeTitle,
+      challengeContent: challengeContent,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
+
+const postSideBarChallenge = () =>
+  WritonAxios.post("/api/challenge/write", "", {
+    headers: { access: localStorage.getItem("accessToken") },
+  });
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -112,4 +155,7 @@ export {
   patchEmail,
   getChallengePage,
   getEachChallenge,
+  postRecordSubmit,
+  postPreSubmit,
+  postSideBarChallenge,
 };
