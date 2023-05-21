@@ -1,44 +1,69 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { styled } from 'styled-components';
 import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil'
 import { subscribedState, recordModalState, subscribeModalState } from '../atoms/auth'
 import RecordGrowthGraph from './RecordGrowthGraph';
 import RecordGrowthTable from './RecordGrowthTable';
+import RecordGrowthBlocks from './RecordGrowthBlocks';
+import { getPlannerStatistic } from '../remotes';
 
 function RecordGrowth() {
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    const thisMonthTotalDate = new Date(year, month+1, 0).getDate();
+    const lastMonthTotalDate = new Date(year, month, 0).getDate();
+    const [monthState, setMonthState] = useState({
+        "comparisonWord": "0일 더",
+        "lastMonth":0,
+        "missed":0,
+        "ongoing":0,
+        "thisMonth":0,
+        "thisMonthTotalDate": thisMonthTotalDate,
+        "lastMonthTotalDate": lastMonthTotalDate,
+        "showThisMonth": month+1,
+        "showLastMonth": month
+    })
+    const [weekState, setWeekState]=useState({
+        "comparisonWord": "0일 더",
+        "lastWeek": [],
+        "lastWeekCount": 0,
+        "missed": 7,
+        "ongoing": 0,
+        "thisWeek": [],
+        "thisWeekCount":0,
+    })
     const [showState, setShowState] = useRecoilState(recordModalState);
     const subscribeState = useSetRecoilState(subscribeModalState)
     const subscriber = useRecoilValue(subscribedState)
-    //needfix: dummy data
-    const monthlyStatData = [
-        {
-          tag: <span><span className='blue'>2</span>/30일</span>,
-          text: '참여일'
-        },
-        {
-          tag: <span className='blue'>1</span>,
-          text: '진행 중 챌린지'
-        },
-        {
-          tag: <span>0일</span>,
-          text: '미달성일'
+
+    useEffect(() => {
+    getPlannerStatistic()
+    .then((res)=>{
+        const userMonth = res.data.data.userStatistics.month;
+        setMonthState({...monthState, 
+        "comparisonWord": userMonth.comparisonWord,
+        "lastMonth": userMonth.lastMonth,
+        "missed": userMonth.missed,
+        "ongoing": userMonth.ongoing,
+        "thisMonth": userMonth.thisMonth
+        })
+        const userWeek = res.data.data.userStatistics.week;
+        if (userWeek){
+            setWeekState({
+                "comparisonWord": userWeek.comparisonWord,
+                "lastWeek": userWeek.lastWeek,
+                "lastWeekCount": userWeek.lastWeekCount,
+                "missed": userWeek.missed,
+                "ongoing": userWeek.ongoing,
+                "thisWeek": userWeek.thisWeek,
+                "thisWeekCount":userWeek.thisWeekCount,
+            })
         }
-    ];
-    const weeklyStatData = [
-        {
-          tag: <span><span className='blue'>2</span>/7일</span>,
-          text: '참여일'
-        },
-        {
-          tag: <span className='blue'>1</span>,
-          text: '진행 중 챌린지'
-        },
-        {
-          tag: <span>0일</span>,
-          text: '미달성일'
-        }
-    ];
-      //dummy data
+    })
+    .catch(err=>console.log(err));
+    }, [])
+      
   return (
     <RecordGrowthWrapper showState={showState}>
         <div className='topbar'>
@@ -47,37 +72,26 @@ function RecordGrowth() {
         </div>
 
         <div className='statistics'>
-            <h2>라이언님,<br/>이번 달은 20일 챌린지를 완료했어요</h2>
-            <p>지난 달보다 <span className='blue'>1일 더 달성</span>했어요!</p>
+            <h2>라이언님,<br/>이번 달은 {monthState.thisMonth}일 챌린지를 완료했어요</h2>
+            <p>지난 달보다 <span className='blue'>{monthState.comparisonWord} 달성</span>했어요!</p>
             <div className='visualized'>
-                <RecordGrowthGraph/>
+                <RecordGrowthGraph props={monthState}/>
             </div>
             <div className='explain'>
-            {monthlyStatData.map((item, index) => (
-                <div className='explainitem' key={index}>
-                    <div className='tag'>{item.tag}</div>
-                    <div className='text'>{item.text}</div>
-                </div>
-            ))}
+                <RecordGrowthBlocks props={monthState}/>
             </div>
         </div>
 
         <div className='weeklyStatistics'>
             {subscriber?
             <>
-                <h2>이번주는 2일 챌린지를 완료했어요.</h2>
-                <p>지난 주보다 <span className='blue'>1일 더 달성</span>했어요!</p>
+                <h2>이번주는 {weekState.thisWeekCount}일 챌린지를 완료했어요</h2>
+                <p>지난 주보다 <span className='blue'>{weekState.comparisonWord} 달성</span>했어요!</p>
                 <div className='visualized'>
-                    <RecordGrowthTable/>
+                    <RecordGrowthTable props={weekState}/>
                 </div>
                 <div className='explain'>
-
-                {weeklyStatData.map((item, index) => (
-                    <div className='explainitem' key={index}>
-                        <div className='tag'>{item.tag}</div>
-                        <div className='text'>{item.text}</div>
-                    </div>
-                ))}
+                    <RecordGrowthBlocks props={weekState}/>
                 </div>
             </>
             :
