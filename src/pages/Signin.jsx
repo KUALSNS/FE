@@ -8,6 +8,7 @@ import { postLoginUser } from '../remotes';
 import { authState } from '../atoms/auth';
 
 const SigninWrapper = styled.div`
+  font-family: 'Pretendard', sans-serif;
   text-align: center;
   min-height: 100vh;
   padding-top: 83px;

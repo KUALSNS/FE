@@ -2,20 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import RecordCalendar from "../components/RecordCalendar";
 import RecordChallenges from "../components/RecordChallenges";
-import RecordGrowth from '../components/RecordGrowth'
+import RecordGrowth from "../components/RecordGrowth";
 import SubscribeCupon from "../components/SubscribeCupon";
 import { useRecoilValue } from "recoil";
 import { recordModalState } from "../atoms/auth";
 function Record() {
-  const showGrowth = useRecoilValue(recordModalState)
+  const showGrowth = useRecoilValue(recordModalState);
   return (
     <div>
-      <SubscribeCupon/>
+      <SubscribeCupon />
       <Container>
-        <RecordCalendar/>
-        <RecordChallenges/>
+        <RecordCalendar />
+        <RecordChallenges />
       </Container>
-      <RecordGrowth/>
+      <RecordGrowth />
     </div>
   );
 }
@@ -23,12 +23,12 @@ function Record() {
 export default Record;
 
 const Container = styled.div`
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
   position: relative;
   max-width: 1038px;
   margin: auto;
   margin-left: 260px;
   height: auto;
   margin-top: 80px;
-  padding-bottom:85px;
+  padding-bottom: 85px;
 `;
