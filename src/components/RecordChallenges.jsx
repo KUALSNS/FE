@@ -8,30 +8,11 @@ import { useRecoilValue } from 'recoil';
 import { challengeState } from '../atoms/auth';
 
 function RecordChallenges() {
-  //needfix: dummy data
-  const category = "내일 일기 ☘️";
-  const challenge = "30일 희망 일기";
-  const content = "<div>다가오는 휴일 먹고 싶었던 <span style=background-color:yellow>바스크 치즈 케이크</span>가 생각만큼 맛있었으면 좋겠다. 이번에는 고양이와 시간을 보낸 후 보고 싶었던 카지노 3화를 보면서 여유롭게 시간을 보낼 수 있다면 정말 행복할 것 같다.</div> <div>여름 대비 옷 쇼핑도 해야하는데 나에게 딱 맞는 옷들이 많기를 바라고 여행용 바캉스룩도 많이 나와 있었으면 좋겠다.</div><div>알차고 멋진 여름방학을 보낼 것이 기대된다. 더 길게 써서 아래로 쭉 늘어나는 게 보고 싶다. 날씨가 너무 덥다. 여름이 사라졌으면 좋겠다. 이제 여름이 시작이라니 말도 안 된다. 정말이지 말이 하나도 안 된다. 여름이 너무 싫다. 어제 방에서 모기가 나와서 깜짝 놀랐다. 그래도 여름방학이 있으니까 행복하다. 끝!</div>"
-  const progress = 50;
-  const userChallenge = [
-    {"category": category,
-    "challenge": challenge,
-    "content": content,
-    "progress": progress,
-    },
-    {"category": category,
-    "challenge": challenge,
-    "content": content,
-    "progress": progress,
-    }
-  ]
-  //dummy data
   const allChallengeServed = useRecoilValue(challengeState);
   const [finChallenge, setFinChallenge] = useState([])
   const [ongoChallenge, setOngoChallenge] = useState([])
   const [tempChallenge, setTempChallenge] = useState([])
   const [selectedChallenge, setSelectedChallenge] = useState([])
-  const [selectedChallengeTemplate, setSelectedChallengeTemplate] = useState([])
   const [longContent, setLongContent] = useState([])
   const [showFilter, setShowFilter] = useState(false);
   const [emptyFlag, setEmptyFlag] = useState(true);
@@ -41,7 +22,6 @@ function RecordChallenges() {
   useEffect(() => {
     getPlannerHistory()
     .then((res)=>{
-      console.log("history:",res.data.data);
       const allChallenge = res.data.data.userChallengeHistory;
       setFinChallenge(allChallenge.finishedChallenges);
       setOngoChallenge(allChallenge.ongoingChallenges);
@@ -49,10 +29,6 @@ function RecordChallenges() {
       setSelectedChallenge(allChallenge.ongoingChallenges);
     })
     .catch(err=>console.log(err));
-    getPlannerStatistic()
-    .then((res)=>{
-      console.log("statistic:",res)
-    })
   }, [])
   
   useEffect(() => {
@@ -69,14 +45,10 @@ function RecordChallenges() {
     else if (filterIdx===2){
       setSelectedChallenge(finChallenge);
     }
-    else{
-      console.log("useEffect: filterindex error")
-    }
   }, [filterIdx])
   
 
   const showTextOnly = (content)=>{
-    console.log("showTextOnly, cont:" , content);
     if (content===undefined) return;
     return content.replace(/<[^>]*>?/g, '');
   }
