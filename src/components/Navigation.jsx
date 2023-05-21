@@ -94,7 +94,7 @@ const Navigation = () => {
                         <img src="/drop_user_img.svg" />
                         {detailuser.nickname}
                       </div>
-                      <div className="user-id">{userInfo.id}</div>
+                      <div className="user-id">{userInfo.id || "아이디"}</div>
                     </div>
                     <div className="mypage" onClick={SpaceToMypage}>
                       <img src="/drop_user.svg" />
