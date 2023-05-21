@@ -1,7 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { styled } from 'styled-components';
 import Parser from 'html-react-parser';
 import RecordProgressTape from './RecordProgressTape';
+import { getPlannerHistory, getPlannerStatistic } from '../remotes';
+import ChallengeItem from './ChallengeItem';
+import { useRecoilValue } from 'recoil';
+import { challengeState } from '../atoms/auth';
+
 function RecordChallenges() {
   //needfix: dummy data
   const category = "내일 일기 ☘️";
@@ -21,11 +26,58 @@ function RecordChallenges() {
     }
   ]
   //dummy data
+  const allChallengeServed = useRecoilValue(challengeState);
+  const [finChallenge, setFinChallenge] = useState([])
+  const [ongoChallenge, setOngoChallenge] = useState([])
+  const [tempChallenge, setTempChallenge] = useState([])
+  const [selectedChallenge, setSelectedChallenge] = useState([])
+  const [selectedChallengeTemplate, setSelectedChallengeTemplate] = useState([])
   const [longContent, setLongContent] = useState([])
   const [showFilter, setShowFilter] = useState(false);
+  const [emptyFlag, setEmptyFlag] = useState(true);
   const filter = ["진행 중인 챌린지", "임시 저장 챌린지", "종료된 챌린지"];
   const [filterIdx, setFilterIdx] = useState(0);
+
+  useEffect(() => {
+    getPlannerHistory()
+    .then((res)=>{
+      console.log("history:",res.data.data);
+      const allChallenge = res.data.data.userChallengeHistory;
+      setFinChallenge(allChallenge.finishedChallenges);
+      setOngoChallenge(allChallenge.ongoingChallenges);
+      setTempChallenge(allChallenge.temporarilySavedChallenges);
+      setSelectedChallenge(allChallenge.ongoingChallenges);
+    })
+    .catch(err=>console.log(err));
+    getPlannerStatistic()
+    .then((res)=>{
+      console.log("statistic:",res)
+    })
+  }, [])
+  
+  useEffect(() => {
+    if (finChallenge.length > 0 || ongoChallenge.length > 0 || tempChallenge.length > 0) setEmptyFlag(false);
+  }, [finChallenge, ongoChallenge, tempChallenge, selectedChallenge]);
+  
+  useEffect(() => {
+    if (filterIdx===0){
+      setSelectedChallenge(ongoChallenge);
+    }
+    else if (filterIdx===1){
+      setSelectedChallenge(tempChallenge);
+    }
+    else if (filterIdx===2){
+      setSelectedChallenge(finChallenge);
+    }
+    else{
+      console.log("useEffect: filterindex error")
+    }
+  }, [filterIdx])
+  
+
   const showTextOnly = (content)=>{
+    console.log("showTextOnly, cont:" , content);
+    if (content===undefined) return;
     return content.replace(/<[^>]*>?/g, '');
   }
   const handleContentClick = (idx)=>{
@@ -38,46 +90,100 @@ function RecordChallenges() {
         setLongContent(newLongContent);
     }
   }
+  const handleFilterClick = (idx) =>{
+    setFilterIdx(idx);
+    setShowFilter(false);
+  }
 
   return (
     <RecordChallengesWrapper>
+      {emptyFlag?
+      <>
+      <div className='empty'>
+        <h2>이런 챌린지는 어때요?</h2>
+        <p>라이톤은 지속적인 글쓰기를 위한 글 챌린지를 응원해요</p>
+        <ChallengeLists>
+        {allChallengeServed.map((item) => {
+          return (
+            <ChallengeItem
+              title={item.title}
+              category={item.category}
+              image={item.image}
+            />
+          );
+        })}
+      </ChallengeLists>
+      </div>
+      </>
+      :
+      <>
         <div className='topbar'>
             <h2>{filter[filterIdx]}</h2><img className='dropdown' onClick={()=>setShowFilter(!showFilter)} src='calendar_title_dropdown.svg'/>
             {showFilter&&
             <div className='filter'>
                 {filter.map((item, idx)=>(
-                    <div key={idx} className={filterIdx===idx?"selected":"notselected"} onClick={()=>{setFilterIdx(idx);setShowFilter(false)}}>{item}</div>
+                    <div key={idx} className={filterIdx===idx?"selected":"notselected"} onClick={()=>handleFilterClick(idx)}>{item}</div>
                 ))}
             </div>}
         </div>
         <div className='challengeList'>
-            {userChallenge.map((item, idx)=>(
-                <div className={longContent.indexOf(idx)>-1?"challengeItem longerItem":"challengeItem"}>
+            {selectedChallenge.map((chal, idx) => (
+              chal.user_challenge_templetes?.map((item, temIdx) => (
+                <div className={longContent.indexOf(idx*100+temIdx)>-1?"challengeItem longerItem":"challengeItem"}>
                     <div className='challengeInfo'>
                         <div className='titlebar'>
-                            <div className='tag'>{item.category}</div><h2>{item.challenge}</h2>
+                            <div className='tag'><img className='emoji' src={chal.challenges.category.emogi}/>{chal.challenges.category.name}</div><h2>{chal.challenges.title}</h2>
                             <button><img src='calendar_edit.svg'/>수정하기</button>
                         </div>
-                        <div onClick={()=>{handleContentClick(idx)}} className={longContent.indexOf(idx)>-1?"challengeContent longerItem":"challengeContent shorterItem"}>
-                            {longContent.indexOf(idx)>-1?
-                            Parser(item.content)
-                            :showTextOnly(item.content)}
+                        <div onClick={()=>{handleContentClick(idx*100+temIdx)}} className={longContent.indexOf(idx*100+temIdx)>-1?"challengeContent longerItem":"challengeContent shorterItem"}>
+                          <h2 className='contentTitle'>{item.title}</h2>
+                          <p>
+                            {longContent.indexOf(idx*100+temIdx)>-1?
+                            Parser(item.writing)
+                            :
+                            showTextOnly(item.writing)}
+                          </p>
                         </div>
                     </div>
                     <div className='progressTape'>
-                        <RecordProgressTape progress={item.progress}/>
+                        <RecordProgressTape progress={chal.achievement}/>
                     </div>
                 </div>
-            ))}
+                ))
+              ))}
         </div>
+      </>
+      }
     </RecordChallengesWrapper>
 
   )
 }
 
-const RecordChallengesWrapper = styled.div`
+const ChallengeLists = styled.div`
+  width: 920px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3개의 열을 생성 */
 
-.topbar{
+  grid-column-gap: 28px; /* 열 간격 설정 */
+  grid-row-gap: 32px;
+  grid-auto-rows: 180px;
+  justify-content: space-between;
+`;
+
+const RecordChallengesWrapper = styled.div`
+  .empty h2{
+    font-family: 'Happiness-Sans-Bold', sans-serif;
+    font-size: 24px;
+    margin-top: 55px;
+    margin-bottom: 10px;
+  }
+  .empty p{
+    font-size: 18px;
+    color: #7C8089;
+    margin-bottom: 33px;
+  }
+  .topbar{
     position: relative;
     padding-top: 68px;
     padding-bottom: 25px;
@@ -85,7 +191,6 @@ const RecordChallengesWrapper = styled.div`
   .topbar h2{
     font-family: 'Happiness-Sans-Bold', sans-serif;
     font-size: 18px;
-    width: 126px;
     height: 23px;
     margin-right: 2px;
     display: inline-block;
@@ -155,6 +260,11 @@ const RecordChallengesWrapper = styled.div`
     background: #E1EAF8;
     border: 1px solid #BCD6FF;
   }
+  .titlebar .emoji{
+    width: 14px;
+    height: 14px;
+    margin-right: 2px;
+  }
   .titlebar h2{
     font-size: 18px;
     margin: 0;
@@ -182,6 +292,12 @@ const RecordChallengesWrapper = styled.div`
     line-height: 28px;
     font-size: 18px;
     cursor: pointer;
+  }
+
+  .contentTitle{
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
   }
 
   .longerItem{
