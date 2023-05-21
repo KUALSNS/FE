@@ -7,6 +7,7 @@ import {
   detailuserState,
   sideToggleState,
   activeChallengeState,
+  mypageInfoState,
 } from "../atoms/auth";
 import { patchLogoutUser } from "../remotes";
 
@@ -17,6 +18,7 @@ const Navigation = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const detailuser = useRecoilValue(detailuserState);
   const activeChallenge = useRecoilValue(activeChallengeState);
+  const userInfo = useRecoilValue(mypageInfoState);
 
   const sidebarToggle = () => {
     setListToggle(!listToggle);
@@ -92,7 +94,7 @@ const Navigation = () => {
                         <img src="/drop_user_img.svg" />
                         {detailuser.nickname}
                       </div>
-                      <div className="user-id">ㄷㄹㅂㅈㄹㄷㅈ</div>
+                      <div className="user-id">{userInfo.id}</div>
                     </div>
                     <div className="mypage" onClick={SpaceToMypage}>
                       <img src="/drop_user.svg" />
