@@ -76,7 +76,7 @@ const Navigation = () => {
             <div>5월 25일 오늘 진행 중인 챌린지 </div>
             <div className="count">
               {activeChallenge.userChallengeSu} /
-              {activeChallenge.coopen ? " ∞" : " 2"}
+              {activeChallenge.coopen ? " ∞" : " 3"}
             </div>
           </div>
           {auth ? (

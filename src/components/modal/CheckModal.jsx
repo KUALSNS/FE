@@ -2,17 +2,21 @@ import React from "react";
 import { useNavigate } from "react-router";
 import { styled } from "styled-components";
 
-function ChallengeRecordModal() {
+function CheckModal({ message }) {
   const navigate = useNavigate();
-  const SpaceRecord = () => {
-    navigate("/record");
+  const SpaceRecord = (message) => {
+    if (message == "회원가입이 완료되었습니다.") {
+      navigate("/login");
+    } else {
+      navigate("/record");
+    }
   };
   return (
     <ChallengeModalWrapper>
       <ChallengeBox>
-        <div className="text">오늘의 기록을 완료했어요</div>
+        <div className="text">{message}</div>
         <img src="recordModal.svg" />
-        <div className="okay" onClick={SpaceRecord}>
+        <div className="okay" onClick={() => SpaceRecord(message)}>
           확인
         </div>
       </ChallengeBox>
@@ -92,4 +96,4 @@ const ChallengeBox = styled.div`
   }
 `;
 
-export default ChallengeRecordModal;
+export default CheckModal;

@@ -1,14 +1,20 @@
 import React from "react";
 import { styled } from "styled-components";
 
-const ChallengeToast = () => {
+const ChallengeToast = ({ message }) => {
+  // const message = [
+  //   "이미 진행 중인 챌린지에요!",
+  //   "진행중인 챌린지가 없어요!",
+  //   "더 이상 챌린지를 진행할 수 없어요!",
+  // ];
+
   return (
     <ChallengeToastWrapper>
       <ChallengeBox>
         <div className="sqaure">
           <img src="check.svg" />
         </div>
-        <div>이미 진행 중인 챌린지에요!</div>
+        <div>{message}</div>
       </ChallengeBox>
     </ChallengeToastWrapper>
   );
@@ -48,6 +54,7 @@ const ChallengeBox = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 12px;
+  animation: slideUp 1s;
 
   .sqaure {
     width: 24px;
@@ -57,6 +64,16 @@ const ChallengeBox = styled.div`
     border: 1px solid #272727;
     border-radius: 4px;
     margin-bottom: 16px;
+    @keyframes slideUp {
+      0% {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
   }
 `;
 

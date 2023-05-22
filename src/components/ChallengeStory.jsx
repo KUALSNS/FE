@@ -6,8 +6,8 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import {
   activeChallengeState,
   authState,
-  certainToastState,
   detailuserState,
+  challengeToastState,
 } from "../atoms/auth";
 import { useNavigate } from "react-router-dom";
 import { postSideBarChallenge } from "../remotes";
@@ -18,7 +18,7 @@ const ChallengeStory = () => {
   const auth = useRecoilValue(authState);
   const activeChallenge = useRecoilValue(activeChallengeState);
   const detailuser = useRecoilValue(detailuserState);
-  const [certain, setCertain] = useRecoilState(certainToastState);
+  const [toast, setToast] = useRecoilState(challengeToastState);
   const navigate = useNavigate();
   const AddStory = () => {
     if (auth) {
@@ -41,7 +41,7 @@ const ChallengeStory = () => {
           .catch((err) => console.log(err));
         navigate("/challenge");
       } else {
-        setCertain(true);
+        setToast("진행중인 챌린지가 없어요!");
         // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
       }
     } else {

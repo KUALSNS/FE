@@ -90,16 +90,17 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (certainToast) {
-      setTimeout(() => {
-        setCertainToast(false);
-      }, 800);
-    } else if (toast) {
+    // if (certainToast) {
+    //   setTimeout(() => {
+    //     setCertainToast(false);
+    //   }, 800);
+    // }
+    if (toast) {
       setTimeout(() => {
         setToast(false);
-      }, 800);
+      }, 1500);
     }
-  }, [certainToast, toast]);
+  }, [toast]);
 
   if (loading) {
     return (
@@ -117,7 +118,15 @@ const Home = () => {
   } else {
     return (
       <div>
-        {certainToast ? <CertainToast /> : toast ? <ChallengeToast /> : ""}
+        {toast === "이미 진행 중인 챌린지에요!" ? (
+          <ChallengeToast message={toast} />
+        ) : toast == "진행중인 챌린지가 없어요!" ? (
+          <ChallengeToast message={toast} />
+        ) : toast == "더 이상 챌린지를 진행할 수 없어요!" ? (
+          <ChallengeToast message={toast} />
+        ) : (
+          ""
+        )}
 
         <Container>
           <ChallengeStory />

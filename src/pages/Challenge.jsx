@@ -15,12 +15,12 @@ import { useParams } from "react-router";
 import { getEachChallenge, postPreSubmit, postRecordSubmit } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
-import ChallengeRecordModal from "../components/modal/ChallengeRecordModal";
-// import ChallengePreModal from "../components/modal/ChallengePreModal";
+import CheckModal from "../components/modal/CheckModal";
 
 function Challenge() {
   const [side, setSide] = useRecoilState(sideState);
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
+  // const API_KEY = process.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
 
@@ -219,7 +219,7 @@ function Challenge() {
     return (
       <>
         {premodal && <ChallengePreModal />}
-        {reocordmodal && <ChallengeRecordModal />}
+        {reocordmodal && <CheckModal message={"오늘의 기록을 완료했어요"} />}
         <div>
           <Container>
             {!saveDisappear && (
@@ -275,7 +275,7 @@ function Challenge() {
                   style={{ display: "none" }}
                 />
                 <Editor
-                  apiKey="g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20"
+                  apiKey={"g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20"}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   placeholder="내용을 입력해주세요."
                   init={{

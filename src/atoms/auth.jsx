@@ -127,5 +127,5 @@ export const certainToastState = atom({
 
 export const challengeToastState = atom({
   key: "src/atoms/auth.jsx-challengeToastState",
-  default: false,
+  default: "",
 });
