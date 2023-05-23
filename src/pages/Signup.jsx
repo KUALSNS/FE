@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +7,7 @@ import ChallengeToast from "../components/toast/ChallengeToast";
 import { challengeToastState } from "../atoms/auth";
 import { useRecoilState } from "recoil";
 import CheckModal from "../components/modal/CheckModal";
-import SignupTerm from '../components/SignupTerm';
-
+import SignupTerm from "../components/SignupTerm";
 
 const SignupWrapper = styled.div`
   font-family: "Pretendard";
@@ -160,7 +158,6 @@ const SignupForm = styled.form`
 `;
 
 const Signup = () => {
-
   const navigate = useNavigate();
   const [userId, setUserId] = useState("");
   const [password1, setPassword1] = useState("");
@@ -178,6 +175,7 @@ const Signup = () => {
   const [signupFlag, setSignupFlag] = useState(false);
   const [toast, setToast] = useRecoilState(challengeToastState);
   const [okaymodal, setOkaymodal] = useState(false);
+  const [showTerm, setShowTerm] = useState(-1);
 
   useEffect(() => {
     if (
@@ -253,7 +251,6 @@ const Signup = () => {
       setPassword1Error(true);
     } else {
       setPassword1Error(false);
-
     }
   };
 
@@ -361,10 +358,9 @@ const Signup = () => {
     }
   }, [toast]);
 
-
   return (
     <SignupWrapper>
-    {(showTerm>=0)&&<SignupTerm term={showTerm} setTerm={setShowTerm}/>}
+      {showTerm >= 0 && <SignupTerm term={showTerm} setTerm={setShowTerm} />}
       {okaymodal && <CheckModal message={"회원가입이 완료되었습니다."} />}
       {toast === "이메일 인증이 완료되었습니다." ? (
         <ChallengeToast message={toast} />
@@ -540,7 +536,13 @@ const Signup = () => {
                 }
               />
               <span>[필수] 라이톤 이용약관 동의</span>
-              <a onClick={()=>{setShowTerm(0)}}>자세히</a>
+              <a
+                onClick={() => {
+                  setShowTerm(0);
+                }}
+              >
+                자세히
+              </a>
             </div>
             <div className="check">
               <img
@@ -550,7 +552,7 @@ const Signup = () => {
                 }
               />
               <span>[필수] 개인정보 수집 및 이용 동의</span>
-              <a onClick={()=>setShowTerm(1)}>자세히</a>
+              <a onClick={() => setShowTerm(1)}>자세히</a>
             </div>
             <div className="check">
               <img
@@ -560,7 +562,7 @@ const Signup = () => {
                 }
               />
               <span>[선택] 광고성 정보 수신 동의</span>
-              <a onClick={()=>setShowTerm(2)}>자세히</a>
+              <a onClick={() => setShowTerm(2)}>자세히</a>
             </div>
           </div>
           <button className="hidden" />
