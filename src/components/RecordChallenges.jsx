@@ -5,7 +5,7 @@ import RecordProgressTape from './RecordProgressTape';
 import { getPlannerHistory, getPlannerStatistic } from '../remotes';
 import ChallengeItem from './ChallengeItem';
 import { useRecoilValue } from 'recoil';
-import { challengeState } from '../atoms/auth';
+import { challengeState, selectChallengeState } from '../atoms/auth';
 
 function RecordChallenges() {
   const allChallengeServed = useRecoilValue(challengeState);
@@ -99,7 +99,14 @@ function RecordChallenges() {
             </div>}
         </div>
         <div className='challengeList'>
-            {selectedChallenge.map((chal, idx) => (
+            {!selectedChallenge.length
+            ?
+            <>
+              <div className="emptyInfo">아직 {filter[filterIdx]}가 없어요</div>
+              <img className="emptyTape" src='record_challenge_emptytape.svg'/>
+            </>
+            :
+            selectedChallenge.map((chal, idx) => (
               chal.user_challenge_templetes?.map((item, temIdx) => (
                 <div className={longContent.indexOf(idx*100+temIdx)>-1?"challengeItem longerItem":"challengeItem"}>
                     <div className='challengeInfo'>
@@ -194,6 +201,7 @@ const RecordChallengesWrapper = styled.div`
     border: 0;
   }
   .challengeList{
+    position: relative;
     width: 100%;
     border: 1px solid #E2E4E7;
     border-radius: 8px;
@@ -205,6 +213,22 @@ const RecordChallengesWrapper = styled.div`
   }
   .challengeItem:last-of-type{
     margin-bottom: 0;
+  }
+  .emptyInfo{
+    width: 720px;
+    height: 182px;
+    background: #F3F5F9;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #7C8089;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .emptyTape{
+    position: absolute;
+    top: 53px;
+    right: 77px;
   }
   .challengeInfo{
     background: #F3F5F9;
