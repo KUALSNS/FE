@@ -27,7 +27,6 @@ const Container = styled.div`
   position: relative;
   max-width: 1038px;
   margin: auto;
-  margin-left: 260px;
   height: auto;
   margin-top: 80px;
   padding-bottom: 85px;

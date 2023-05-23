@@ -1,8 +1,9 @@
 import { addMonths, subMonths } from "date-fns";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import RenderDays from "./RenderDays";
 import RenderCells from "./RenderCells";
+import { getPlannerCalendar } from "../../remotes";
 
 const Calendar = ({ showAll, currentMonth }) => {
   const [selectDate, setSelectDate] = useState(new Date());
@@ -11,6 +12,13 @@ const Calendar = ({ showAll, currentMonth }) => {
   const onDateClick = (day) => {
     setSelectDate(day);
   };
+
+  useEffect(() => {
+    getPlannerCalendar("2023-05-23", "2023-05-24")
+    .then((res)=>console.log(res))
+    .catch((err)=>console.log(err));
+  }, [])
+  
 
   return (
     <div className="calendar">

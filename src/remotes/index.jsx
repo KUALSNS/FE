@@ -140,6 +140,25 @@ const postSideBarChallenge = () =>
     headers: { access: localStorage.getItem("accessToken") },
   });
 
+const getPlannerHistory = () => 
+  WritonAxios.get("/api/planner/history", {
+  headers: { access: localStorage.getItem("accessToken") },
+}); 
+
+const getPlannerStatistic = () => 
+  WritonAxios.get("/api/planner/statistic", {
+  headers: { access: localStorage.getItem("accessToken") },
+}); 
+
+const getPlannerCalendar = (start, finish) => 
+  WritonAxios.get("/api/planner/calendar", {
+  headers: { access: localStorage.getItem("accessToken") },
+  params: {
+    startDate: start,
+    finishDate: finish,
+  },
+}); 
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -154,6 +173,9 @@ export {
   patchPassword,
   patchEmail,
   getChallengePage,
+  getPlannerHistory,
+  getPlannerStatistic,
+  getPlannerCalendar,
   getEachChallenge,
   postRecordSubmit,
   postPreSubmit,
