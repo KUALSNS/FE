@@ -52,33 +52,93 @@ const getChallengePage = (name) =>
     headers: { access: localStorage.getItem("accessToken") },
   });
 
-const getMypageInfo = () => 
+const getMypageInfo = () =>
   WritonAxios.get("/api/profile", {
     headers: { access: localStorage.getItem("accessToken") },
   });
 
 const patchNamePhone = (nickName, phoneNumber) =>
-  WritonAxios.patch("/api/profile", {
-    "nickname": nickName,
-    "phoneNumber": phoneNumber
-  }, {
-    headers: { access: localStorage.getItem("accessToken") }
-});
+  WritonAxios.patch(
+    "/api/profile",
+    {
+      nickname: nickName,
+      phoneNumber: phoneNumber,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
 
 const patchPassword = (oldPassword, newPassword) =>
-  WritonAxios.patch("/api/profile/password", {
-    "oldPassword": oldPassword,
-    "newPassword": newPassword
-  }, {
-    headers: { access: localStorage.getItem("accessToken") }
-});
+  WritonAxios.patch(
+    "/api/profile/password",
+    {
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
 
 const patchEmail = (newEmail) =>
-  WritonAxios.patch("/api/profile/email", {
-    "email": newEmail
-  }, {
-    headers: { access: localStorage.getItem("accessToken") }
-});
+  WritonAxios.patch(
+    "/api/profile/email",
+    {
+      email: newEmail,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
+
+const getEachChallenge = (name) =>
+  WritonAxios.get(`/api/challenge/write/${name}`, {
+    headers: { access: localStorage.getItem("accessToken") },
+  });
+
+const postRecordSubmit = (
+  challengeName,
+  templateName,
+  challengeTitle,
+  challengeContent
+) =>
+  WritonAxios.post(
+    "/api/challenge/write/register",
+    {
+      challengeName: challengeName,
+      templateName: templateName,
+      challengeTitle: challengeTitle,
+      challengeContent: challengeContent,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
+
+const postPreSubmit = (
+  challengeName,
+  templateName,
+  challengeTitle,
+  challengeContent
+) =>
+  WritonAxios.post(
+    "/api/challenge/write/temporary-storage",
+    {
+      challengeName: challengeName,
+      templateName: templateName,
+      challengeTitle: challengeTitle,
+      challengeContent: challengeContent,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
+
+const postSideBarChallenge = () =>
+  WritonAxios.post("/api/challenge/write", "", {
+    headers: { access: localStorage.getItem("accessToken") },
+  });
 
 const getPlannerHistory = () => 
   WritonAxios.get("/api/planner/history", {
@@ -108,15 +168,20 @@ export {
   postSignup,
   postLoginMain,
   getChallenge,
-
   getMypageInfo,
   patchNamePhone,
   patchPassword,
   patchEmail,
-
   getChallengePage,
+<<<<<<< HEAD
 
   getPlannerHistory,
   getPlannerStatistic,
   getPlannerCalendar
+=======
+  getEachChallenge,
+  postRecordSubmit,
+  postPreSubmit,
+  postSideBarChallenge,
+>>>>>>> develop
 };

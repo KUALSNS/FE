@@ -7,6 +7,7 @@ import {
   loadingState,
   ChallengeWriteState,
   selectChallengeState,
+  challengeToastState,
 } from "../atoms/auth";
 import { getChallengePage, getAccessToken } from "../remotes";
 
@@ -20,6 +21,7 @@ const ChallengeItem = ({ title, category, image }) => {
     useRecoilState(ChallengeWriteState);
   const [proceeding, setProceeding] = useState(false);
   const [loading, setLoading] = useRecoilState(loadingState);
+  const [toast, setToast] = useRecoilState(challengeToastState);
 
   function Retoken() {
     // 토큰 재발급 API 호출
@@ -43,6 +45,7 @@ const ChallengeItem = ({ title, category, image }) => {
       .then((res) => {
         console.log(res.data.data);
         setWriteChallenge(res.data.data);
+
         setSelectChallenge(
           "[" +
             res.data.data.templateData.challengeCategory +
@@ -58,7 +61,11 @@ const ChallengeItem = ({ title, category, image }) => {
           return Retoken().then(() => getChallengePage(title));
         } else if (err.response && err.response.status === 415) {
           setLoading(false);
-          alert("이미 진행 중인 챌린지 입니다.");
+          setToast("이미 진행 중인 챌린지에요!");
+        } else if (err.response && err.response.status === 418) {
+          setLoading(false);
+          setToast("더 이상 챌린지를 진행할 수 없어요!");
+          //  더 이상 챌린지를 진행할 수 없습니다.
         } else {
           console.error(err);
         }
