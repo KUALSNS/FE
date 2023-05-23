@@ -5,8 +5,10 @@ import {
   CircularProgressbar,
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useState } from "react";
 
 const Progress = ({ item, idx }) => {
+  const [isHovered, setIsHovered] = useState(false);
   return (
     <ProgressBar1>
       <CircularProgressbarWithChildren
@@ -57,7 +59,13 @@ const Progress = ({ item, idx }) => {
 
         <div className="percentage">{item.achievement}%</div>
       </CircularProgressbarWithChildren>
-      <div className="text">{item.challenges}</div>
+      <div
+        className={`text ${isHovered && "hover-challenge"}`}
+        onMouseOver={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {item.challenges}
+      </div>
     </ProgressBar1>
   );
 };
@@ -69,9 +77,11 @@ const ProgressBar1 = styled.div`
   /* width: 100%; */
 
   width: 65px;
-  height: 65px;
-  z-index: 1;
   margin-right: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .percentage {
     position: absolute;
@@ -99,8 +109,16 @@ const ProgressBar1 = styled.div`
     overflow: hidden; /* 너비를 넘어가는 텍스트를 숨김 */
     text-overflow: ellipsis;
   }
-  .text:hover {
-    overflow: visible;
-    white-space: normal;
+  .hover-challenge {
+    width: fit-content;
+    background: #ffffff;
+    border: 1px solid #e2e4e7;
+    border-radius: 32px;
+    z-index: 10;
+    height: 26px;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    padding: 5px 12px;
   }
 `;
