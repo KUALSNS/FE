@@ -173,15 +173,11 @@ export {
   patchPassword,
   patchEmail,
   getChallengePage,
-<<<<<<< HEAD
-
   getPlannerHistory,
   getPlannerStatistic,
-  getPlannerCalendar
-=======
+  getPlannerCalendar,
   getEachChallenge,
   postRecordSubmit,
   postPreSubmit,
   postSideBarChallenge,
->>>>>>> develop
 };

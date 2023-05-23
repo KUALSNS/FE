@@ -14,7 +14,7 @@ const Calendar = ({ showAll, currentMonth }) => {
   };
 
   useEffect(() => {
-    getPlannerCalendar("2023-05-01", "2023-05-20")
+    getPlannerCalendar("2023-05-23", "2023-05-24")
     .then((res)=>console.log(res))
     .catch((err)=>console.log(err));
   }, [])

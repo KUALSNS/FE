@@ -59,7 +59,11 @@ function RecordChallenges() {
   }
   const showTextOnly = (content)=>{
     if (content===undefined) return;
-    return content.replace(/<[^>]*>?/g, '');
+    const div = document.createElement('div');
+    div.innerHTML = content;
+  
+    return div.textContent || '';
+  
   }
   const handleContentClick = (idx)=>{
     if (longContent.indexOf(idx)>-1){

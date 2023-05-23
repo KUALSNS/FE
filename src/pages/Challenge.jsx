@@ -12,7 +12,6 @@ import {
   sideState,
 } from "../atoms/auth";
 import { useLocation, useParams } from "react-router";
-import { useParams } from "react-router";
 import { getEachChallenge, postPreSubmit, postRecordSubmit } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
@@ -48,7 +47,7 @@ function Challenge() {
   const editorRef = useRef(null);
   const imgUploadRef = useRef(null);
 
-  if (editorRef.current){
+  if (editorRef.current && tempSaved.content){
     editorRef.current.setContent(content);
   }
 
