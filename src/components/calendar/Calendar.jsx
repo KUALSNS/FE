@@ -3,7 +3,7 @@ import { useState } from "react";
 import RenderDays from "./RenderDays";
 import RenderCells from "./RenderCells";
 
-const Calendar = ({ showAll, currentMonth }) => {
+const Calendar = ({ showAll, currentMonth, weekNumber }) => {
   const [selectDate, setSelectDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const onDateClick = (day) => {
@@ -18,6 +18,7 @@ const Calendar = ({ showAll, currentMonth }) => {
         selectDate={selectDate}
         onDateClick={onDateClick}
         open={showAll}
+        weekNumber={weekNumber}
       />
     </div>
   );

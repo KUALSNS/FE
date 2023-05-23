@@ -9,7 +9,7 @@ import {
 import { isSameMonth, isSameDay, addDays, parse, format } from "date-fns";
 import { getPlannerCalendar } from "../../remotes";
 
-const RenderCells = ({ currentMonth, selectDate, onDateClick, open }) => {
+const RenderCells = ({ currentMonth, selectDate, onDateClick, open, weekNumber }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -25,12 +25,10 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open }) => {
     const end = format(endDate, "yyyy-MM-dd");
     getPlannerCalendar(start, end)
     .then((res)=>{
-      console.log("calendar:",res.data.data.completedChallengesDate)
       const completeDateRaw = res.data.data.completedChallengesDate;
       const completeDate = completeDateRaw.map(d=>{
         return format(new Date(d), "d")
       })
-      console.log("formatted days:", completeDate);
       setCompleteDate(completeDate);
     })
     .catch((err)=>console.log(err));
@@ -39,7 +37,6 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open }) => {
   const today = new Date();
   const startOfMonthDate = startOfMonth(today);
   const startOfWeekDate = startOfWeek(startOfMonthDate);
-  const weekNumber = getISOWeek(today) - getISOWeek(startOfWeekDate) - 1;
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
@@ -69,7 +66,7 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open }) => {
               {formattedDate}
             </div>
             {completeDate.indexOf(formattedDate)>-1? (
-              <img width={20} src={stampImgArr[formattedDate%3]} alt="대체이미지" />
+              <img width={20} src={stampImgArr[formattedDate%3]} alt="스탬프" />
             ) : (
               ""
             )}
