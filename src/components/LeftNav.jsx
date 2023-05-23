@@ -62,6 +62,7 @@ function LeftNav() {
                     res.data.data.templateData.challengeName
                 );
                 setSide(true);
+                localStorage.removeItem("challengeName");
                 navigate(url);
               } else {
                 setToast("오늘은 모두 다 작성하셨어요!");
@@ -129,6 +130,7 @@ const Sidebar = styled.div`
   width: 236px;
   height: 100%;
   overflow-x: hidden;
+  z-index: 20;
 
   .sidebar {
     position: relative;

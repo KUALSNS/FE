@@ -2,7 +2,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import ChallengeModal from "../components/ChallengeModal";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   challengeModalState,
   loadingState,
@@ -12,7 +12,13 @@ import {
   sideState,
 } from "../atoms/auth";
 import { useParams } from "react-router";
-import { getEachChallenge, postPreSubmit, postRecordSubmit } from "../remotes";
+import {
+  getEachChallenge,
+  postPreSubmit,
+  postRecordSubmit,
+  postSideBarChallenge,
+  getChallengePage,
+} from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
 import CheckModal from "../components/modal/CheckModal";
@@ -20,7 +26,7 @@ import CheckModal from "../components/modal/CheckModal";
 function Challenge() {
   const [side, setSide] = useRecoilState(sideState);
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
-  // const API_KEY = process.env.REACT_APP_API_KEY;
+  //const API_KEY = process.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
 
@@ -146,10 +152,7 @@ function Challenge() {
           templateData: res.data.data.templateData,
         });
         if (res.data.data.templateCertain) {
-          setTitle(res.data.data.temporaryChallenge[0].title);
-          editorRef.current.setContent(
-            res.data.data.temporaryChallenge[0].writing
-          );
+          setPremodal(true);
         }
       })
       .catch((err) => console.log(err));
@@ -172,7 +175,46 @@ function Challenge() {
       setPremodal(true);
       console.log(2);
     }
-    // -> 모달창 띄우는 상태값 하나 관리해서 모달창 띄우기 ( 임시저장된게 있네요?? )
+    const title = localStorage.getItem("challengeName");
+    if (title) {
+      getEachChallenge(title) // 이 부분 수정필요.. 백엔드 수정 부탁함.
+        .then((res) => {
+          console.log(res.data);
+          setWriteChallenge(res.data.data);
+          setSelectChallenge(
+            "[" +
+              res.data.data.templateData.challengeCategory +
+              "]" +
+              " " +
+              res.data.data.templateData.challengeName
+          );
+          setLoading(false);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      postSideBarChallenge()
+        .then((res) => {
+          if (res.data.data.challengingArray.length) {
+            console.log(res);
+            setWriteChallenge(res.data.data);
+
+            console.log(writeChallenge);
+            setSelectChallenge(
+              "[" +
+                res.data.data.templateData.challengeCategory +
+                "]" +
+                " " +
+                res.data.data.templateData.challengeName
+            );
+            setLoading(false);
+          } else {
+            setToast("오늘은 모두 다 작성하셨어요!");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+
+    //나 관리해서 모달창 띄우기 ( 임시저장된게 있네요?? )
     // 확인 누르면 precclcick 함수 실행
 
     if (saveAlert) {
@@ -378,7 +420,6 @@ const Container = styled.div`
   font-family: "Pretendard", sans-serif;
   max-width: 1106px;
   margin: auto;
-  margin-left: 260px;
   width: 1106px;
   height: 1000px;
   margin-top: 80px;
