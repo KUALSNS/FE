@@ -15,7 +15,6 @@ import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { patchLogoutUser } from "./remotes";
 import Navigation from "./components/Navigation";
-import ChallengeModal from "./components/ChallengeModal";
 
 function App() {
   const location = useLocation();
@@ -88,11 +87,6 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<Home />} />
-        {detailuser.challengeCertain ? (
-          <Route path="/challenge" element={<Challenge />} />
-        ) : (
-          "" //모달창
-        )}
         <Route path="/challenge" element={<Challenge />} />
         {/* <Route path="/challenge/:name" element={<Challenge />} /> */}
         <Route path="/record" element={<Record />} />

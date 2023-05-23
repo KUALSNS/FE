@@ -33,12 +33,10 @@ export const mypageSubscribeState = atom({
   default: false,
 });
 
-
 // export const sideBarState = atom({
 //   key: "src/atoms/auth.jsx-sideBarState",
 //   default: "/",
 // });
-
 
 export const detailuserState = atom({
   key: "src/atoms/auth.jsx-detailuserState",
@@ -63,7 +61,6 @@ export const activeChallengeState = atom({
 export const challengeModalState = atom({
   key: "src/atoms/auth.jsx-challengeModalState",
   default: true,
-
 });
 
 export const loadingState = atom({
@@ -99,11 +96,36 @@ export const subscribedState = atom({
 export const mypageInfoState = atom({
   key: "src/atoms/auth.jsx-mypageInfoState",
   default: {
-    "id":"",
-    "password":"",
-    "nickname":"",
-    "phone":"",
-    "email":"",
-    "mar":""
-  }
-})
+    id: "",
+    password: "",
+    nickname: "",
+    phone: "",
+    email: "",
+    mar: "",
+  },
+});
+
+export const recordSubmitState = atom({
+  key: "src/atoms/auth.jsx-recordSubmitState",
+  default: {
+    challengeName: "",
+    templateName: "",
+    challengeTitle: "",
+    challengeContent: "",
+  },
+});
+
+export const sideState = atom({
+  key: "src/atoms/auth.jsx-sideState",
+  default: false,
+});
+
+export const certainToastState = atom({
+  key: "src/atoms/auth.jsx-certainToastState",
+  default: false,
+});
+
+export const challengeToastState = atom({
+  key: "src/atoms/auth.jsx-challengeToastState",
+  default: "",
+});

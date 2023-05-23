@@ -3,14 +3,18 @@ import styled from "styled-components";
 import { useState } from "react";
 import ChallengeList from "./ChallengeList";
 import { useRecoilValue } from "recoil";
-import { challengeState, categoryState, detailuserState } from "../atoms/auth";
+import {
+  challengeState,
+  categoryState,
+  detailuserState,
+  authState,
+} from "../atoms/auth";
 import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
   const challenge = useRecoilValue(challengeState);
-  console.log(challenge);
   const categories = useRecoilValue(categoryState);
-
+  const auth = useRecoilValue(authState);
   const [isHovered, setIsHovered] = useState(false);
   const detailuser = useRecoilValue(detailuserState);
   const [activeCategories, setActiveCategories] = useState([]);
@@ -39,7 +43,9 @@ const ChallengeFeed = () => {
   return (
     <Container>
       <Title>
-        <div>{detailuser.nickname}님을 위한 라이톤 30일 글 챌린지</div>
+        <div>
+          {auth ? detailuser.nickname : "익명"}님을 위한 라이톤 30일 글 챌린지
+        </div>
         <div style={{ justifyContent: "left" }}>
           <div
             className="question"
@@ -261,7 +267,7 @@ const Category = styled.div`
   }
 
   .category .all {
-    width: 62px;
+    width: 63px;
     height: 40px;
     background: #e1eaf8;
     border: 1px solid #bcd6ff;
@@ -289,7 +295,7 @@ const Category = styled.div`
   }
 
   .category .notall {
-    width: 62px;
+    width: 63px;
     height: 40px;
     background: #ffffff;
     border: 1px solid #bcd6ff;
