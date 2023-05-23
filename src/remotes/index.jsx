@@ -90,6 +90,15 @@ const getPlannerStatistic = () =>
   headers: { access: localStorage.getItem("accessToken") },
 }); 
 
+const getPlannerCalendar = (start, finish) => 
+  WritonAxios.get("/api/planner/calendar", {
+  headers: { access: localStorage.getItem("accessToken") },
+  params: {
+    startDate: start,
+    finishDate: finish,
+  },
+}); 
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -109,4 +118,5 @@ export {
 
   getPlannerHistory,
   getPlannerStatistic,
+  getPlannerCalendar
 };

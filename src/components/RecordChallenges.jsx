@@ -6,6 +6,7 @@ import { getPlannerHistory, getPlannerStatistic } from '../remotes';
 import ChallengeItem from './ChallengeItem';
 import { useRecoilValue } from 'recoil';
 import { challengeState, selectChallengeState } from '../atoms/auth';
+import { useNavigate } from 'react-router';
 
 function RecordChallenges() {
   const allChallengeServed = useRecoilValue(challengeState);
@@ -19,6 +20,7 @@ function RecordChallenges() {
   const filter = ["진행 중인 챌린지", "임시 저장 챌린지", "종료된 챌린지"];
   const [filterIdx, setFilterIdx] = useState(0);
 
+  const navigate = useNavigate();
   useEffect(() => {
     getPlannerHistory()
     .then((res)=>{
@@ -47,7 +49,14 @@ function RecordChallenges() {
     }
   }, [filterIdx])
   
-
+  const handleEditClick = (title, content)=>{
+    navigate('/challenge', {
+      state: {
+        title: title,
+        content: content,
+      },
+    });
+  }
   const showTextOnly = (content)=>{
     if (content===undefined) return;
     return content.replace(/<[^>]*>?/g, '');
@@ -112,7 +121,7 @@ function RecordChallenges() {
                     <div className='challengeInfo'>
                         <div className='titlebar'>
                             <div className='tag'><img className='emoji' src={chal.challenges.category.emogi}/>{chal.challenges.category.name}</div><h2>{chal.challenges.title}</h2>
-                            <button><img src='calendar_edit.svg'/>수정하기</button>
+                            <button onClick={()=>handleEditClick(item.title, item.writing)}><img src='calendar_edit.svg'/>수정하기</button>
                         </div>
                         <div onClick={()=>{handleContentClick(idx*100+temIdx)}} className={longContent.indexOf(idx*100+temIdx)>-1?"challengeContent longerItem":"challengeContent shorterItem"}>
                           <h2 className='contentTitle'>{item.title}</h2>

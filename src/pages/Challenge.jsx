@@ -9,7 +9,7 @@ import {
   ChallengeWriteState,
   selectChallengeState,
 } from "../atoms/auth";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { getChallengePage, getAccessToken } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
@@ -19,37 +19,12 @@ function Challenge() {
   let { name } = useParams();
   console.log(name);
   const navigate = useNavigate();
-
-  const template = [
-    {
-      title: "템플릿1",
-      contents: "<div>테스트 div입니당. 템플릿1</div>",
-    },
-    {
-      title: "템플릿2",
-      contents: "<div style='color: red;'>얘는 빨간색. 템플릿2</div>",
-    },
-    {
-      title: "템플릿3",
-      contents: "<h1>h1 템플릿3</h1>",
-    },
-    {
-      title: "템플릿4",
-      contents: "<div>첫째줄 테스트 div</div><div>둘째줄 템플릿4</div>",
-    },
-    {
-      title: "템플릿5",
-      contents: "<div>테스트 div입니당. 템플릿5</div>",
-    },
-    {
-      title: "템플릿6",
-      contents: "<div>테스트 div입니당. 템플릿6</div>",
-    },
-  ];
-  const challenge = "챌린지명";
-  const category = "카테고리명";
+  const location = useLocation();
+  const tempSaved = { ...location.state };
+  console.log("editinfo,", tempSaved);
+  const [title, setTitle] = useState(tempSaved.title);
+  const [content, setContent] = useState(tempSaved.content);
   const [newChallengeFlag, setFlag] = useRecoilState(challengeModalState);
-  //dummy data
   console.log(newChallengeFlag);
   const [loading, setLoading] = useRecoilState(loadingState);
 
@@ -62,6 +37,10 @@ function Challenge() {
     useRecoilState(ChallengeWriteState);
   const editorRef = useRef(null);
   const imgUploadRef = useRef(null);
+
+  if (editorRef.current){
+    editorRef.current.setContent(content);
+  }
 
   const handleSubmitClick = () => {
     //needfix: server connection
@@ -219,7 +198,7 @@ function Challenge() {
               ) : (
                 ""
               )}
-              <input type="text" placeholder="나의 제목을 기록해보세요"></input>
+              <input type="text" value={title} onChange={e=>setTitle(e.target.value)}placeholder="나의 제목을 기록해보세요"></input>
 
               <hr />
               <div className="editor">
