@@ -11,8 +11,6 @@ import {
   recordSubmitState,
   sideState,
 } from "../atoms/auth";
-
-import { useParams } from "react-router";
 import {
   getEachChallenge,
   postPreSubmit,
