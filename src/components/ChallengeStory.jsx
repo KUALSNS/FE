@@ -8,6 +8,9 @@ import {
   authState,
   detailuserState,
   challengeToastState,
+  selectChallengeState,
+  ChallengeWriteState,
+  sideState,
 } from "../atoms/auth";
 import { useNavigate } from "react-router-dom";
 import { postSideBarChallenge } from "../remotes";
@@ -20,26 +23,45 @@ const ChallengeStory = () => {
   const detailuser = useRecoilValue(detailuserState);
   const [toast, setToast] = useRecoilState(challengeToastState);
   const navigate = useNavigate();
+  const [writeChallenge, setWriteChallenge] =
+    useRecoilState(ChallengeWriteState);
+  const [selectChallenge, setSelectChallenge] =
+    useRecoilState(selectChallengeState);
+  const [side, setSide] = useRecoilState(sideState);
   const AddStory = () => {
     if (auth) {
       if (detailuser.challengeCertain) {
+        // 진행중인 챌린지가 있냐 없냐
         postSideBarChallenge()
           .then((res) => {
-            console.log(res);
-            setWriteChallenge(res.data.data);
+            if (res.data.data.challengingArray.length) {
+              console.log(res);
+              setWriteChallenge(res.data.data);
 
-            console.log(writeChallenge);
-            setSelectChallenge(
-              "[" +
-                res.data.data.templateData.challengeCategory +
-                "]" +
-                " " +
-                res.data.data.templateData.challengeName
-            );
-            setSide(true);
+              console.log(writeChallenge);
+              setSelectChallenge(
+                "[" +
+                  res.data.data.templateData.challengeCategory +
+                  "]" +
+                  " " +
+                  res.data.data.templateData.challengeName
+              );
+              setSide(true);
+              localStorage.removeItem("challengeName");
+
+              localStorage.removeItem("fixChallenge");
+              navigate("/challenge");
+            } else {
+              setToast("오늘은 모두 다 작성하셨어요!");
+            }
           })
-          .catch((err) => console.log(err));
-        navigate("/challenge");
+          .catch((err) => {
+            console.log(err);
+            if (err.response && err.response.status === 404) {
+              console.log(123);
+              setToast("오늘은 모두 다 작성하셨어요!");
+            }
+          });
       } else {
         setToast("진행중인 챌린지가 없어요!");
         // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
