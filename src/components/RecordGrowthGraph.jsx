@@ -1,21 +1,20 @@
 import React from 'react'
 import { styled } from 'styled-components'
-function RecordGrowthGraph() {
-  //needfix: dummy data
-  const prevMonthHeight = `${19/31*100}%`
-  const curMonthHeight = `${20/30*100}%`
-  //dummy data
+function RecordGrowthGraph({props}) {
+  const monthState= props;
+  const prevMonthHeight = monthState.lastMonth/monthState.lastMonthTotalDate*100+"%"
+  const curMonthHeight = monthState.thisMonth/monthState.thisMonthTotalDate*100+"%"
   return (
     <Graph>
         <div className='prevMonth'>
             <div className='prevMonthbar' style={{height:prevMonthHeight}}/>
-            <span className='date'>19일</span>
-            <span className='month'>4월</span>
+            <span className='date'>{monthState.lastMonth}일</span>
+            <span className='month'>{monthState.showLastMonth}월</span>
         </div>
         <div className='curMonth'>
             <div className='curMonthbar' style={{height:curMonthHeight}}/>
-            <span className='date'>20일</span>
-            <span className='month'>5월</span>
+            <span className='date'>{monthState.thisMonth}일</span>
+            <span className='month'>{monthState.showThisMonth}월</span>
         </div>
     </Graph>
   )
@@ -43,7 +42,7 @@ const Graph = styled.div`
         color: #7C8089;
     }
     .curMonth .date{
-        color: #ffffff;
+        color: #7C8089;
     }
     div{
         position: relative;

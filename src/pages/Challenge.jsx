@@ -11,6 +11,7 @@ import {
   recordSubmitState,
   sideState,
 } from "../atoms/auth";
+
 import { useParams } from "react-router";
 import {
   getEachChallenge,
@@ -19,6 +20,8 @@ import {
   postSideBarChallenge,
   getChallengePage,
 } from "../remotes";
+import { useLocation, useParams } from "react-router";
+
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
 import CheckModal from "../components/modal/CheckModal";
@@ -29,14 +32,17 @@ function Challenge() {
   //const API_KEY = process.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const tempSaved = { ...location.state };
+  console.log("editinfo,", tempSaved);
+  const [title, setTitle] = useState(tempSaved.title);
+  const [content, setContent] = useState(tempSaved.content);
 
   const [recordSubmit, setRecordSubmit] = useRecoilState(recordSubmitState);
 
   const [newChallengeFlag, setFlag] = useRecoilState(challengeModalState);
-  //dummy data
   console.log(newChallengeFlag);
   const [loading, setLoading] = useRecoilState(loadingState);
-  const [title, setTitle] = useState("");
   const [saveAlert, setSaveAlert] = useState(false);
   const [saveDisappear, setSaveDisappear] = useState(true);
   const [activeDropdown, setActiveDropdown] = useState(false);
@@ -49,6 +55,10 @@ function Challenge() {
 
   const editorRef = useRef(null);
   const imgUploadRef = useRef(null);
+
+  if (editorRef.current && tempSaved.content){
+    editorRef.current.setContent(content);
+  }
 
   const handleSubmitClick = () => {
     //needfix: server connection
