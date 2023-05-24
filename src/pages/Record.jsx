@@ -25,9 +25,10 @@ export default Record;
 const Container = styled.div`
   font-family: "Pretendard", sans-serif;
   position: relative;
-  max-width: 1038px;
+  max-width: 1178px;
   margin: auto;
   height: auto;
   margin-top: 80px;
   padding-bottom: 85px;
+  padding-left: 140px;
 `;

@@ -11,6 +11,7 @@ import {
   recordSubmitState,
   sideState,
 } from "../atoms/auth";
+
 import {
   getEachChallenge,
   postPreSubmit,
@@ -26,15 +27,13 @@ import CheckModal from "../components/modal/CheckModal";
 
 function Challenge() {
   const [side, setSide] = useRecoilState(sideState);
+
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
   //const API_KEY = process.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
   const location = useLocation();
   const tempSaved = { ...location.state };
-  console.log("editinfo,", tempSaved);
-  const [title, setTitle] = useState(tempSaved.title);
-  const [content, setContent] = useState(tempSaved.content);
 
   const [recordSubmit, setRecordSubmit] = useRecoilState(recordSubmitState);
 
@@ -49,14 +48,11 @@ function Challenge() {
   const [writeChallenge, setWriteChallenge] =
     useRecoilState(ChallengeWriteState);
   const [premodal, setPremodal] = useState(false);
+  const [fixmodal, setFixmodal] = useState(false);
   const [reocordmodal, setRecordmodal] = useState(false);
-
+  const [title, setTitle] = useState("");
   const editorRef = useRef(null);
   const imgUploadRef = useRef(null);
-
-  if (editorRef.current && tempSaved.content){
-    editorRef.current.setContent(content);
-  }
 
   const handleSubmitClick = () => {
     //needfix: server connection
@@ -76,6 +72,8 @@ function Challenge() {
       editorRef.current.getContent()
     )
       .then((res) => {
+        localStorage.removeItem("challengeName");
+        localStorage.removeItem("fixChallenge");
         console.log(res); // 오케아 모달창 보내기 (오늘 기록이 완료되었습니다.)// 여기에 오케이 모달창 확인 누르면 navigate(record)
         setRecordmodal(true);
       })
@@ -85,7 +83,6 @@ function Challenge() {
   };
 
   const handleSaveClick = (idx) => {
-    setSaveAlert(true);
     //needfix: server connection
     // if (editorRef.current) {
     //   console.log(editorRef.current.setContent("<div>dfdfsffd</div>"));
@@ -98,6 +95,9 @@ function Challenge() {
     )
       .then((res) => {
         console.log(res);
+        setSaveAlert(true);
+        localStorage.removeItem("challengeName");
+        localStorage.removeItem("fixChallenge");
       })
       .catch((err) => console.log(err));
   };
@@ -155,12 +155,23 @@ function Challenge() {
     getEachChallenge(item.challengeName)
       .then((res) => {
         console.log(res.data);
-        setWriteChallenge({
-          ...writeChallenge,
-          templateData: res.data.data.templateData,
-        });
+        // setWriteChallenge({
+        //   ...writeChallenge,
+        //   templateData: res.data.data.templateData,
+        // });
+        setWriteChallenge(res.data.data);
         if (res.data.data.templateCertain) {
           setPremodal(true);
+          setSide(true);
+          setTitle(res.data.data.temporaryChallenge[0].title);
+          editorRef.current.setContent(
+            res.data.data.temporaryChallenge[0].writing
+          );
+
+          console.log(writeChallenge);
+        } else {
+          setTitle("");
+          editorRef.current.setContent("");
         }
       })
       .catch((err) => console.log(err));
@@ -168,17 +179,50 @@ function Challenge() {
   };
 
   const preclick = () => {
-    if (side && editorRef.current && writeChallenge.templateCertain) {
-      console.log(2);
-      setTitle(writeChallenge.temporaryChallenge[0].title);
-      editorRef.current.setContent(
-        writeChallenge.temporaryChallenge[0].writing
-      );
+    if (localStorage.getItem("fixChallenge")) {
+      setTitle(tempSaved.title);
+      editorRef.current.setContent(tempSaved.content);
+
       setPremodal(false);
+    } else {
+      if (side && editorRef.current && writeChallenge.templateCertain) {
+        console.log(2);
+        setTitle(writeChallenge.temporaryChallenge[0].title);
+        editorRef.current.setContent(
+          writeChallenge.temporaryChallenge[0].writing
+        );
+        setSide(false);
+        setPremodal(false);
+      }
     }
   };
 
+  const fixclick = () => {
+    setTitle(tempSaved.title);
+    editorRef.current.setContent(tempSaved.content);
+
+    setFixmodal(false);
+  };
+
+  const backToPage = () => {
+    if (localStorage.getItem("fixChallenge")) {
+      // 로컬 스토리지에 그 값이 있으면
+      navigate("/record");
+    } else {
+      navigate("/");
+    }
+  };
+
+  // 현재 진행중인 챌린지에 대한 수정하기 모달창
+  // 임시저장한 값에 대한 수정사항
+
   useEffect(() => {
+    if (localStorage.getItem("fixChallenge") === "진행중") {
+      setFixmodal(true);
+    } else if (localStorage.getItem("fixChallenge") === "임시저장") {
+      setPremodal(true);
+    }
+
     if (side && writeChallenge.templateCertain) {
       setPremodal(true);
       console.log(2);
@@ -215,8 +259,6 @@ function Challenge() {
                 res.data.data.templateData.challengeName
             );
             setLoading(false);
-          } else {
-            setToast("오늘은 모두 다 작성하셨어요!");
           }
         })
         .catch((err) => console.log(err));
@@ -234,7 +276,7 @@ function Challenge() {
         }, 500);
       }, 1500);
     }
-  }, [saveAlert, side, writeChallenge.templateCertain]);
+  }, [saveAlert, writeChallenge.templateCertain]);
 
   function ChallengePreModal() {
     return (
@@ -242,8 +284,28 @@ function Challenge() {
         <ChallengeBox>
           <div className="text">임시 저장한 챌린지를 이어 쓸까요?</div>
           <div className="btn-1">
-            <div className="no">아니오</div>
+            <div className="no" onClick={backToPage}>
+              아니오
+            </div>
             <div className="good" onClick={preclick}>
+              좋아요
+            </div>
+          </div>
+        </ChallengeBox>
+      </ChallengeModalWrapper>
+    );
+  }
+
+  function ChallengeFixModal() {
+    return (
+      <ChallengeModalWrapper>
+        <ChallengeBox>
+          <div className="text">저장한 챌린지를 수정 할까요?</div>
+          <div className="btn-1">
+            <div className="no" onClick={backToPage}>
+              아니오
+            </div>
+            <div className="good" onClick={fixclick}>
               좋아요
             </div>
           </div>
@@ -268,8 +330,10 @@ function Challenge() {
   } else {
     return (
       <>
+        {fixmodal && <ChallengeFixModal />}
         {premodal && <ChallengePreModal />}
         {reocordmodal && <CheckModal message={"오늘의 기록을 완료했어요"} />}
+
         <div>
           <Container>
             {!saveDisappear && (
@@ -288,24 +352,25 @@ function Challenge() {
                   height={19}
                   src={activeDropdown ? "/arrow1.svg" : "/arrow2.svg"}
                 ></img>
+
+                {activeDropdown ? (
+                  <div className="drop">
+                    {writeChallenge?.challengingArray?.map((item, idx) => {
+                      return (
+                        <div
+                          key={idx}
+                          className="drop-item"
+                          onClick={() => onSelectChallenge(item)}
+                        >
+                          [{item.category}] {item.challengeName}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
-              {activeDropdown ? (
-                <div className="drop">
-                  {writeChallenge?.challengingArray?.map((item, idx) => {
-                    return (
-                      <div
-                        key={idx}
-                        className="drop-item"
-                        onClick={() => onSelectChallenge(item)}
-                      >
-                        [{item.category}] {item.challengeName}
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                ""
-              )}
 
               <input
                 type="text"
@@ -391,7 +456,13 @@ function Challenge() {
               <div className="currentTemplateContainer">
                 {writeChallenge.templateData?.templates?.map((t, idx) => (
                   <div className="currentTemplate" key={idx}>
-                    <div>{t.templateTitle}</div>
+                    <div
+                      className={
+                        t.templateTitle.length >= 16 ? "twoline" : "oneline"
+                      }
+                    >
+                      {t.templateTitle}
+                    </div>
                     <span className="catTag">
                       {t.category === "내일 일기"
                         ? emoticon[0]
@@ -433,10 +504,12 @@ const Container = styled.div`
   margin-top: 80px;
   box-sizing: border-box;
   display: flex;
+  padding-left: 100px;
 
   .challenge-dropdown {
     height: 20px;
     cursor: pointer;
+    position: relative;
   }
   .challenge-dropdown img {
     margin-left: 10px;
@@ -449,8 +522,8 @@ const Container = styled.div`
     z-index: 3;
     width: 396px;
     background-color: #ffffff;
-    margin-top: 5px;
-    left: 261px;
+
+    top: 35px;
     border-radius: 8px;
     font-family: "Pretendard";
     font-style: normal;
@@ -664,9 +737,12 @@ const Container = styled.div`
     border-radius: 8px;
   }
 
-  .currentTemplate div {
+  .currentTemplate .oneline {
     font-size: 18px;
     margin-bottom: 13px;
+  }
+  .currentTemplate .twoline {
+    font-size: 18px;
   }
 
   .currentTemplate button {
