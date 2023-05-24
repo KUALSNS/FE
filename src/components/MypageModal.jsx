@@ -1,18 +1,29 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil'
-import { mypageModalState, mypageInfoState } from '../atoms/auth'
+import { mypageModalState, mypageInfoState, challengeToastState } from '../atoms/auth'
 import { patchPassword, postEmail, getEmailCode, patchEmail } from '../remotes'
-
+import ChallengeToast from './toast/ChallengeToast'
 function MypageModal() {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newEmail, setNewEmail] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
   const [emailConfirmed, setEmailConfirmed] = useState(false);
   const [emailCode, setEmailCode] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
   const [modalState, setModalState] = useRecoilState(mypageModalState);
   const [userInfo, setUserInfo] = useRecoilState(mypageInfoState)
+  const [toast, setToast] = useRecoilState(challengeToastState);
+  useEffect(() => {
+    if (toast) {
+      console.log("toast");
+      setTimeout(() => {
+        setToast(false);
+        setModalState({show: false, content: ""})
+      }, 1500);
+    }
+  }, [toast]);
 
   const passwordCanSubmit = ()=>{
     if (oldPassword&&newPassword&&checkPassword&&newPassword==checkPassword) return true;
@@ -20,32 +31,30 @@ function MypageModal() {
   }
   const handlePasswordSubmit = (e, oldpw, newpw)=>{
     e.preventDefault();
-    console.log("password change");
-    patchPassword(oldpw, newpw)
+      patchPassword(oldpw, newpw)
     
     .then((res)=>{
-      alert("비밀번호가 변경되었습니다.")
-      console.log(res)
+      setToast("비밀번호가 변경되었습니다.")
     })
-    .catch((err) => {
-      if (err.response.data.code === 419) {
+    .catch((err) => 
+    {
+      if (err.response.status == 419) {
         //handlePasswordSubmit(e, oldpw, newpw)
         Retoken();
-      } else if (err.response.data.status === 401) {
-        alert("기존 비밀번호가 옳지 않습니다.")
+      } else if (err.response.status == 401) {
+        setToast("기존 비밀번호가 옳지 않습니다.")
       } else {
         console.log(err);
       }
     });
-    setModalState({show: false, content: ""})
   }
 
   const emailConfirm = (email)=>{
     console.log("email confirm", email);
     postEmail(email)
     .then(res=>{
-      console.log(res);
       setEmailConfirmed(true);
+      setEmailMessage("인증번호가 전송되었습니다.");
     })
     .catch((err)=>console.log(err));
   }
@@ -53,7 +62,7 @@ function MypageModal() {
     patchEmail(email)
     .then(res=>{
       console.log(res);
-      alert("이메일이 변경되었습니다.");
+      setToast("이메일이 변경되었습니다.");
       setUserInfo({...userInfo, "email":email});
     })
     .catch(err=>{
@@ -73,16 +82,16 @@ function MypageModal() {
         Retoken();
         //handleEmailSubmit(e, email, code)
       } else if (err.response.data.status === 400) {
-        alert("이메일 인증번호가 일치하지 않습니다.");
+        setToast("이메일 인증번호가 일치하지 않습니다.");
       }
       else{
         console.log(err);
       }}
     );
-    setModalState({show: false, content: ""})
   }
   return (
     <ModalWrapper>
+      {(toast)&& <ChallengeToast message={toast} />}
       <div className='modalbox'>
         <img className='xbtn' src='mypage_modalx.svg' onClick={()=>setModalState({show: false, content: ""})}></img>
           {modalState.content==='password'&&
@@ -100,6 +109,8 @@ function MypageModal() {
             <input type='email' value={newEmail} onChange={(e)=>setNewEmail(e.target.value)} readOnly={emailConfirmed?true:false}  placeholder='이메일 주소 입력'></input>
             <button type="button" disabled={newEmail.indexOf("@")>0?false:true} onClick={()=>emailConfirm(newEmail)}>인증</button>
             </div>
+            <p className='emailMessage'>{emailMessage}</p>
+
             <input disabled={!emailConfirmed} value={emailCode} onChange={(e)=>setEmailCode(e.target.value)} placeholder='인증번호 입력'></input>
             <button disabled={emailCode.length!==6} className='submitBtn'>수정</button>
           </form>}
@@ -113,7 +124,7 @@ const ModalWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 10;
+  z-index: 20;
   height: 100vh;
   width: 100vw;
   background: rgba(0, 0, 0, 0.4);
@@ -194,6 +205,14 @@ const ModalWrapper = styled.div`
     border: 1px solid #E3E5E5;
     padding: 0 16px;
     color: #72777A;
+  }
+  .emailMessage{
+    position: absolute;
+    top: 220px;
+    left: 100px;
+    font-size: 12px;
+    color: grey;
+    margin: 0;
   }
 `
 

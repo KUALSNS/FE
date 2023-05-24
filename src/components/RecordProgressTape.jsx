@@ -2,6 +2,10 @@ import React from 'react'
 import { styled } from 'styled-components';
 function RecordProgressTape(props) {
   const progress = props.progress;
+  const progressOnTape = (progress*5)%100;
+  console.log(progressOnTape);
+  const colorIdx = props.colorIdx;
+  const colorArr = ["#266CF4", "#FF4C77", "#FF7F0A"]
   const lineNum = [1,2,3,4,5];
   const getLineClassName = (line, progress) => {
     const isOddLine = line % 2 === 1;
@@ -18,7 +22,7 @@ function RecordProgressTape(props) {
   };
   
   return (
-    <ProgressTapeWrapper>
+    <ProgressTapeWrapper progressOnTape={progressOnTape} tapeColor={colorArr[colorIdx]}>
         <div className='progressText'><span>{progress}% </span> {progress===100?"완료":"진행 중"}</div>
         <div className='tape'>
             {lineNum.map((line) => (
@@ -68,18 +72,30 @@ const ProgressTapeWrapper = styled.div`
         top: 92px;
     }
     .tape .full-left{
-        background:  #266CF4;
+        background: ${(props) => props.tapeColor};
         animation: fillLeft 1s ease-in-out;
     }
     .tape .full-right{
-        background:  #266CF4;
+        background: ${(props) => props.tapeColor};
     }
     .tape .half-left{
-        background: linear-gradient(to left, #F3F5F9, #F3F5F9 50%, #266CF4 50%, #266CF4);
+        background: linear-gradient(
+        to left,
+        #F3F5F9,
+        #F3F5F9 ${(props) => `${100 - props.progressOnTape}%`},
+        ${(props) => props.tapeColor} 0%,
+        ${(props) => props.tapeColor}
+        );
     }
     .tape .half-right{
-        background: linear-gradient(to right, #F3F5F9, #F3F5F9 50%, #266CF4 50%, #266CF4);
-    }
+        background: linear-gradient(
+        to right,
+        #F3F5F9,
+        #F3F5F9 ${(props) => `${100 - props.progressOnTape}%`},
+        ${(props) => props.tapeColor} 0%,
+        ${(props) => props.tapeColor}
+        );
+    } 
     .tape .none{
         background: #F3F5F9;
     }

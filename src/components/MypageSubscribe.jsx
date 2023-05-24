@@ -1,16 +1,17 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil';
-import { mypageSubscribeState } from '../atoms/auth';
+import { mypageSubscribeState, subscribedState } from '../atoms/auth';
 function MypageSubscribe() {
     const [showState, setShowState] = useRecoilState(mypageSubscribeState);
   return (
     <SubscribeWrapper showState={showState}>
         <div className='topbar'>
             <div className='xbtn' onClick={()=>setShowState(false)}><img src="record_modal_xbtn.svg"></img></div>
-            <div className='logoArea'><img src="record_modal_logo.svg"></img>성장 분석</div>
+            <div className='logoArea'><img src="record_modal_logo.svg"></img>멤버십 관리</div>
         </div>
         <h2>현재 이용 중인<br/>라이톤 업 멤버십이에요</h2>
+        {subscribedState && 
         <div className='membership'>
             <h3>30일 <span className='blue'>라이톤 업<img src="mypage_subscribe_logoup.svg"/></span> 체험 쿠폰</h3>
             <div className='info'><img src="mypage_subscribe_yellowcheck.svg"/>챌린지 무제한 부스터</div>
@@ -18,6 +19,7 @@ function MypageSubscribe() {
             <hr/>
             <div className='period'>이용 기간 2023.05.11  -  2023.06.11</div>
         </div>
+        }
         <button disabled className='unsubscribe'>해지하기</button>
     </SubscribeWrapper>
   )
