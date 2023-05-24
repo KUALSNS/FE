@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import {
   startOfMonth,
   endOfMonth,
@@ -7,22 +7,36 @@ import {
   getISOWeek,
 } from "date-fns";
 import { isSameMonth, isSameDay, addDays, parse, format } from "date-fns";
+import { getPlannerCalendar } from "../../remotes";
 
-const RenderCells = ({ currentMonth, selectDate, onDateClick, open }) => {
+const RenderCells = ({ currentMonth, selectDate, onDateClick, open, weekNumber }) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
   const endDate = endOfWeek(monthEnd);
-  console.log(startDate, endDate);
   const rows = [];
   let days = [];
   let day = startDate;
   let formattedDate = "";
+  const stampImgArr = ['calendar_stamp1.svg','calendar_stamp2.svg','calendar_stamp3.svg'];
+  const [completeDate, setCompleteDate] = useState([]);
+  useEffect(() => {
+    const start = format(startDate, "yyyy-MM-dd");
+    const end = format(endDate, "yyyy-MM-dd");
+    getPlannerCalendar(start, end)
+    .then((res)=>{
+      const completeDateRaw = res.data.data.completedChallengesDate;
+      const completeDate = completeDateRaw.map(d=>{
+        return format(new Date(d), "d")
+      })
+      setCompleteDate(completeDate);
+    })
+    .catch((err)=>console.log(err));
+  }, [currentMonth])
 
   const today = new Date();
   const startOfMonthDate = startOfMonth(today);
   const startOfWeekDate = startOfWeek(startOfMonthDate);
-  const weekNumber = getISOWeek(today) - getISOWeek(startOfWeekDate) - 1;
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
       formattedDate = format(day, "d");
@@ -51,10 +65,8 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open }) => {
             >
               {formattedDate}
             </div>
-            {"13" === formattedDate ||
-            "20" === formattedDate ||
-            "10" === formattedDate ? (
-              <img width={20} src="progress4.svg" alt="대체이미지" />
+            {completeDate.indexOf(formattedDate)>-1? (
+              <img width={20} src={stampImgArr[formattedDate%3]} alt="스탬프" />
             ) : (
               ""
             )}
