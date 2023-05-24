@@ -12,7 +12,7 @@ import RecordGrowthGraph from "./RecordGrowthGraph";
 import RecordGrowthTable from "./RecordGrowthTable";
 
 import RecordGrowthBlocks from "./RecordGrowthBlocks";
-import { getPlannerStatistic } from "../remotes";
+import { getPlannerStatistic, postActivateCupon } from "../remotes";
 
 function RecordGrowth() {
   const today = new Date();
@@ -41,8 +41,8 @@ function RecordGrowth() {
     thisWeekCount: 0,
   });
   const [showState, setShowState] = useRecoilState(recordModalState);
-  const subscribeState = useSetRecoilState(subscribeModalState);
-  const subscriber = useRecoilValue(subscribedState);
+  const setSubscribeModalState = useSetRecoilState(subscribeModalState);
+  const [subscriber, setSubscriber] = useRecoilState(subscribedState);
 
   useEffect(() => {
     getPlannerStatistic()
@@ -72,6 +72,15 @@ function RecordGrowth() {
       .catch((err) => console.log(err));
   }, []);
 
+  const handleCuponClick = ()=>{
+    postActivateCupon()
+    .then((res)=>{
+        console.log(res);
+        setSubscribeModalState(true);
+        setSubscriber(true);
+    })
+    .catch((err)=>console.log(err));
+  }
   return (
     <RecordGrowthWrapper showState={showState}>
       <div className="topbar">
@@ -126,7 +135,7 @@ function RecordGrowth() {
               <div className="cupon">
                 <h2>라이톤 업 구독자만 읽을 수 있어요 😢</h2>
                 <p>멤버십에 가입하려면 하단 버튼을 클릭해주세요</p>
-                <button onClick={() => subscribeState(true)}>
+                <button onClick={() => handleCuponClick()}>
                   체험하기 쿠폰 사용
                 </button>
               </div>

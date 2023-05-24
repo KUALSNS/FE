@@ -8,6 +8,7 @@ import {
   sideToggleState,
   activeChallengeState,
   mypageInfoState,
+  subscribedState,
 } from "../atoms/auth";
 import { patchLogoutUser, postLoginMain } from "../remotes";
 
@@ -21,7 +22,7 @@ const Navigation = () => {
   const userInfo = useRecoilValue(mypageInfoState);
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
-
+  const setSubscriber = useSetRecoilState(subscribedState);
   const sidebarToggle = () => {
     setListToggle(!listToggle);
   };
@@ -71,6 +72,7 @@ const Navigation = () => {
             coopen: res.data.data.coopen,
             userChallengeArray: res.data.data.userChallengeArray,
           });
+          setSubscriber(res.data.data.coopen);
           setAuth(true);
         })
         .catch((err) => {
