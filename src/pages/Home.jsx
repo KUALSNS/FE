@@ -120,6 +120,7 @@ const Container = styled.div`
   /* height: 1000px; */
   margin-top: 80px;
   padding-top: 0.1px;
+  padding-bottom: 350px;
 `;
 
 // const Main = styled.div`
