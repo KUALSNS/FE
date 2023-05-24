@@ -10,6 +10,11 @@ export const sideToggleState = atom({
   default: true,
 });
 
+export const semiListToggleState = atom({
+  key: "src/atoms/auth.jsx-semiListToggleState",
+  default: false,
+});
+
 export const userState = atom({
   key: "src/atoms/auth.jsx-userState",
   default: {
@@ -128,4 +133,9 @@ export const certainToastState = atom({
 export const challengeToastState = atom({
   key: "src/atoms/auth.jsx-challengeToastState",
   default: "",
+});
+
+export const SmallScreenState = atom({
+  key: "src/atoms/auth.jsx-SmallScreenState",
+  default: false,
 });
