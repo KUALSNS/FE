@@ -9,7 +9,7 @@ import {
   activeChallengeState,
   mypageInfoState,
 } from "../atoms/auth";
-import { patchLogoutUser, postLoginMain } from "../remotes";
+import { patchLogoutUser, postLoginMain, getMypageInfo } from "../remotes";
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Navigation = () => {
   const [auth, setAuth] = useRecoilState(authState);
   const detailuser = useRecoilValue(detailuserState);
   const activeChallenge = useRecoilValue(activeChallengeState);
-  const userInfo = useRecoilValue(mypageInfoState);
+  const [userId, setUserId] = useState("");
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
 
@@ -35,6 +35,7 @@ const Navigation = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         setAuth(false);
+        navigate("/");
         window.location.reload();
       })
       .catch((err) => console.log(err));
@@ -81,6 +82,14 @@ const Navigation = () => {
             console.log(err);
           }
         });
+
+      getMypageInfo()
+        .then((res) => {
+          setUserId(res.data.responseData.identifier);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, []);
 
@@ -105,7 +114,7 @@ const Navigation = () => {
             <div>5월 25일 오늘 진행 중인 챌린지 </div>
             <div className="count">
               {activeChallenge.userChallengeSu} /
-              {activeChallenge.coopen ? " ∞" : " 3"}
+              {activeChallenge.coopen ? " ∞" : " 2"}
             </div>
           </div>
           {auth ? (
@@ -123,7 +132,7 @@ const Navigation = () => {
                         <img src="/drop_user_img.svg" />
                         {detailuser.nickname}
                       </div>
-                      <div className="user-id">{userInfo.id || "아이디"}</div>
+                      <div className="user-id">{userId || "아이디"}</div>
                     </div>
                     <div className="mypage" onClick={SpaceToMypage}>
                       <img src="/drop_user.svg" />

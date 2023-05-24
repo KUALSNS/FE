@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   startOfMonth,
   endOfMonth,
@@ -9,7 +9,13 @@ import {
 import { isSameMonth, isSameDay, addDays, parse, format } from "date-fns";
 import { getPlannerCalendar } from "../../remotes";
 
-const RenderCells = ({ currentMonth, selectDate, onDateClick, open, weekNumber }) => {
+const RenderCells = ({
+  currentMonth,
+  selectDate,
+  onDateClick,
+  open,
+  weekNumber,
+}) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -18,21 +24,25 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open, weekNumber }
   let days = [];
   let day = startDate;
   let formattedDate = "";
-  const stampImgArr = ['calendar_stamp1.svg','calendar_stamp2.svg','calendar_stamp3.svg'];
+  const stampImgArr = [
+    "calendar_stamp1.svg",
+    "calendar_stamp2.svg",
+    "calendar_stamp3.svg",
+  ];
   const [completeDate, setCompleteDate] = useState([]);
   useEffect(() => {
     const start = format(startDate, "yyyy-MM-dd");
     const end = format(endDate, "yyyy-MM-dd");
     getPlannerCalendar(start, end)
-    .then((res)=>{
-      const completeDateRaw = res.data.data.completedChallengesDate;
-      const completeDate = completeDateRaw.map(d=>{
-        return format(new Date(d), "d")
+      .then((res) => {
+        const completeDateRaw = res.data.data.completedChallengesDate;
+        const completeDate = completeDateRaw.map((d) => {
+          return format(new Date(d), "d");
+        });
+        setCompleteDate(completeDate);
       })
-      setCompleteDate(completeDate);
-    })
-    .catch((err)=>console.log(err));
-  }, [currentMonth])
+      .catch((err) => console.log(err));
+  }, [currentMonth]);
 
   const today = new Date();
   const startOfMonthDate = startOfMonth(today);
@@ -53,7 +63,6 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open, weekNumber }
               : "valid"
           }`}
           key={day}
-          onClick={() => onDateClick(parse(cloneDay))}
         >
           <div className="innerday">
             <div
@@ -65,8 +74,12 @@ const RenderCells = ({ currentMonth, selectDate, onDateClick, open, weekNumber }
             >
               {formattedDate}
             </div>
-            {completeDate.indexOf(formattedDate)>-1? (
-              <img width={20} src={stampImgArr[formattedDate%3]} alt="스탬프" />
+            {completeDate.indexOf(formattedDate) > -1 ? (
+              <img
+                width={20}
+                src={stampImgArr[formattedDate % 3]}
+                alt="스탬프"
+              />
             ) : (
               ""
             )}

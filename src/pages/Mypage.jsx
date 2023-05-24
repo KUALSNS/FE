@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { styled } from "styled-components";
-import { mypageInfoState, mypageModalState, mypageSubscribeState } from "../atoms/auth";
+import {
+  mypageInfoState,
+  mypageModalState,
+  mypageSubscribeState,
+} from "../atoms/auth";
 import { useRecoilState } from "recoil";
 import MypageModal from "../components/MypageModal";
 import MypageSubscribe from "../components/MypageSubscribe";
@@ -12,9 +16,10 @@ function Mypage() {
   const [editing, setEditing] = useState(false);
   const [nicknameInput, setNicknameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
-  const [userInfo, setUserInfo] = useRecoilState(mypageInfoState)
+  const [userInfo, setUserInfo] = useRecoilState(mypageInfoState);
   const [modalState, setModalState] = useRecoilState(mypageModalState);
-  const [subscribeState, setSubscribeState] = useRecoilState(mypageSubscribeState);
+  const [subscribeState, setSubscribeState] =
+    useRecoilState(mypageSubscribeState);
   const handleModalClick = (clicked) => {
     setModalState({ show: true, content: clicked });
   };
@@ -30,13 +35,13 @@ function Mypage() {
         console.log(res);
         const data = res.data.responseData;
         setUserInfo({
-          "id":data.identifier,
-          "password": data.password,
-          "nickname": data.nickname,
-          "phone": data.phone,
-          "email":data.email,
-          "mar":data.mar_email,
-        })
+          id: data.identifier,
+          password: data.password,
+          nickname: data.nickname,
+          phone: data.phone,
+          email: data.email,
+          mar: data.mar_email,
+        });
         setNicknameInput(data.nickname);
         setPhoneInput(data.phone);
       })
@@ -69,108 +74,133 @@ function Mypage() {
       });
   };
 
-  const saveEdit = ()=>{
+  const saveEdit = () => {
     patchNamePhone(nicknameInput, phoneInput)
-    .then((res)=>{
-      console.log(res);
-      setUserInfo({...userInfo, "nickname":nicknameInput, "phone":phoneInput});
-      alert("저장되었습니다.");
-    })
-    .catch((err)=>{console.log(err)})
+      .then((res) => {
+        console.log(res);
+        setUserInfo({
+          ...userInfo,
+          nickname: nicknameInput,
+          phone: phoneInput,
+        });
+        alert("저장되었습니다.");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setEditing(false);
-  }
+  };
 
   return (
     <>
-    <MypageSubscribe/>
-    {modalState.show && <MypageModal />}
-    <Container>
-      <h1 className="title">{userInfo.nickname}님, 오늘의 글 기록을 응원해요!</h1> <button className="subscribe" onClick={()=>setSubscribeState(!subscribeState)}>멤버십 관리</button>
-      <div className="contents">
-        <h2>기본 정보</h2>
-        <hr />
-        <div>
-          <h3>아이디</h3>
-          <span>{userInfo.id}</span>
-        </div>
-        <div>
-          <h3>비밀번호</h3>
-          {editing ? (
-            <>
-              <input disabled value="******"></input>
-              <button
-                className="modalBtn"
-                onClick={() => handleModalClick("password")}
-              >
-                비밀번호 변경
-              </button>
-            </>
-          ) : (
-            <span>********</span>
-          )}
-        </div>
-        <div>
-          <h3>닉네임</h3>
-          {editing ? 
-          <input value={nicknameInput} onChange={(e)=>setNicknameInput(e.target.value)}></input> 
-          :
-          <span>{userInfo.nickname}</span>}
-        </div>
-      </div>
-      <div className="contents">
-        <h2>연락처 정보</h2>
-        <hr />
-        <div>
-          <h3>휴대전화</h3>
-          {editing ?
-          <input value={phoneInput} onChange={(e)=>setPhoneInput(e.target.value)}></input> 
-          :
-          <span>{userInfo.phone.slice(0, 3)}-****-{userInfo.phone.slice(-4)}</span>}
-        </div>
-        <div>
-          <h3>이메일</h3>
-          {editing ? (
-            <>
-              <input disabled value={userInfo.email}></input>
-              <button
-                className="modalBtn"
-                onClick={() => handleModalClick("email")}
-              >
-                인증
-              </button>
-            </>
-          ) : (
-            <span>{userInfo.email}</span>
-          )}
-        </div>
-        <div>
-          <h3>마케팅 수신 동의</h3>
-          <img src={check ? "mypage_check.svg" : "mypage_check_disabled.svg"} />
-          <span>이메일</span>
-        </div>
-      </div>
-      {editing ? (
-        <>
-          <button className="edit cancle" onClick={() => setEditing(false)}>
-            취소
-          </button>
-          <button className="edit" onClick={saveEdit}>
-            저장
-          </button>
-        </>
-      ) : (
-        <button className="edit" onClick={() => setEditing(true)}>
-          수정하기
+      <MypageSubscribe />
+      {modalState.show && <MypageModal />}
+      <Container>
+        <h1 className="title">
+          {userInfo.nickname}님, 오늘의 글 기록을 응원해요!
+        </h1>{" "}
+        <button
+          className="subscribe"
+          onClick={() => setSubscribeState(!subscribeState)}
+        >
+          멤버십 관리
         </button>
-      )}
-    </Container>
+        <div className="contents">
+          <h2>기본 정보</h2>
+          <hr />
+          <div>
+            <h3>아이디</h3>
+            <span>{userInfo.id}</span>
+          </div>
+          <div>
+            <h3>비밀번호</h3>
+            {editing ? (
+              <>
+                <input disabled value="******"></input>
+                <button
+                  className="modalBtn"
+                  onClick={() => handleModalClick("password")}
+                >
+                  비밀번호 변경
+                </button>
+              </>
+            ) : (
+              <span>********</span>
+            )}
+          </div>
+          <div>
+            <h3>닉네임</h3>
+            {editing ? (
+              <input
+                value={nicknameInput}
+                onChange={(e) => setNicknameInput(e.target.value)}
+              ></input>
+            ) : (
+              <span>{userInfo.nickname}</span>
+            )}
+          </div>
+        </div>
+        <div className="contents">
+          <h2>연락처 정보</h2>
+          <hr />
+          <div>
+            <h3>휴대전화</h3>
+            {editing ? (
+              <input
+                value={phoneInput}
+                onChange={(e) => setPhoneInput(e.target.value)}
+              ></input>
+            ) : (
+              <span>
+                {userInfo.phone.slice(0, 3)}-****-{userInfo.phone.slice(-4)}
+              </span>
+            )}
+          </div>
+          <div>
+            <h3>이메일</h3>
+            {editing ? (
+              <>
+                <input disabled value={userInfo.email}></input>
+                <button
+                  className="modalBtn"
+                  onClick={() => handleModalClick("email")}
+                >
+                  인증
+                </button>
+              </>
+            ) : (
+              <span>{userInfo.email}</span>
+            )}
+          </div>
+          <div>
+            <h3>마케팅 수신 동의</h3>
+            <img
+              src={check ? "mypage_check.svg" : "mypage_check_disabled.svg"}
+            />
+            <span>이메일</span>
+          </div>
+        </div>
+        {editing ? (
+          <>
+            <button className="edit cancle" onClick={() => setEditing(false)}>
+              취소
+            </button>
+            <button className="edit" onClick={saveEdit}>
+              저장
+            </button>
+          </>
+        ) : (
+          <button className="edit" onClick={() => setEditing(true)}>
+            수정하기
+          </button>
+        )}
+      </Container>
     </>
   );
 }
 
-
 const Container = styled.div`
-position: relative;
+  position: relative;
   max-width: 1106px;
   margin-top: 80px;
   padding-top: 52px;
@@ -184,14 +214,14 @@ position: relative;
     margin-bottom: 56px;
   }
 
-  .subscribe{
+  .subscribe {
     position: absolute;
     right: 0;
     top: 52px;
     width: 123px;
     height: 40px;
-    background: #DEE9FD;
-    border: 1px solid #BCD6FF;
+    background: #dee9fd;
+    border: 1px solid #bcd6ff;
     border-radius: 2px;
   }
 
@@ -278,6 +308,5 @@ position: relative;
     margin-right: 20px;
   }
 `;
-
 
 export default Mypage;
