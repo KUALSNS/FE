@@ -233,12 +233,7 @@ const Signup = () => {
 
   const handleIdChange = (e) => {
     const value = e.target.value;
-    const regex = /^[a-zA-Z0-9]{0,11}$/;
-    if (regex.test(value)) {
-      setUserId(value);
-    } else if (value.length < userId.length) {
-      setPhone(value);
-    }
+    setUserId(value);
   };
 
   const handlePassword1Change = (e) => {
