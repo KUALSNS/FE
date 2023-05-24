@@ -42,7 +42,7 @@ const Graph = styled.div`
         color: #7C8089;
     }
     .curMonth .date{
-        color: #7C8089;
+        color: #ffffff;
     }
     div{
         position: relative;
