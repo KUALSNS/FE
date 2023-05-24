@@ -18,9 +18,6 @@ import {
   challengeToastState,
   certainToastState,
 } from "../atoms/auth";
-import ChallengeModal from "../components/ChallengeModal";
-import ChallengeToast from "../components/toast/ChallengeToast";
-import CertainToast from "../components/toast/CertainToast";
 
 const Home = () => {
   const [loading, setLoading] = useRecoilState(loadingState);
@@ -30,7 +27,6 @@ const Home = () => {
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
   const [auth, setAuth] = useRecoilState(authState);
   const [certainToast, setCertainToast] = useRecoilState(certainToastState);
-  const [toast, setToast] = useRecoilState(challengeToastState);
 
   const Retoken = () => {
     getAccessToken()
@@ -51,6 +47,7 @@ const Home = () => {
   };
 
   useEffect(() => {
+    localStorage.removeItem("fixChallenge");
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
       postLoginMain()
@@ -89,19 +86,6 @@ const Home = () => {
     }
   }, []);
 
-  useEffect(() => {
-    // if (certainToast) {
-    //   setTimeout(() => {
-    //     setCertainToast(false);
-    //   }, 800);
-    // }
-    if (toast) {
-      setTimeout(() => {
-        setToast(false);
-      }, 1500);
-    }
-  }, [toast]);
-
   if (loading) {
     return (
       <div
@@ -118,16 +102,6 @@ const Home = () => {
   } else {
     return (
       <div>
-        {toast === "이미 진행 중인 챌린지에요!" ? (
-          <ChallengeToast message={toast} />
-        ) : toast == "진행중인 챌린지가 없어요!" ? (
-          <ChallengeToast message={toast} />
-        ) : toast == "더 이상 챌린지를 진행할 수 없어요!" ? (
-          <ChallengeToast message={toast} />
-        ) : (
-          ""
-        )}
-
         <Container>
           <ChallengeStory />
           <ChallengeFeed />

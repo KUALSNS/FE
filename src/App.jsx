@@ -10,17 +10,19 @@ import Mypage from "./pages/Mypage";
 import LeftNav from "./components/LeftNav";
 import { getAccessToken } from "./remotes";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authState, detailuserState } from "./atoms/auth";
+import { authState, detailuserState, challengeToastState } from "./atoms/auth";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { patchLogoutUser } from "./remotes";
 import Navigation from "./components/Navigation";
+import ChallengeToast from "./components/toast/ChallengeToast";
 
 function App() {
   const location = useLocation();
   const [auth, setAuth] = useRecoilState(authState);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const detailuser = useRecoilValue(detailuserState);
+  const [toast, setToast] = useRecoilState(challengeToastState);
 
   const checkTokenExpiration = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -68,7 +70,19 @@ function App() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+  useEffect(() => {
+    // if (certainToast) {
+    //   setTimeout(() => {
+    //     setCertainToast(false);
+    //   }, 800);
+    // }
+    console.log(345);
+    if (toast) {
+      setTimeout(() => {
+        setToast(false);
+      }, 1500);
+    }
+  }, [toast]);
   return (
     <div>
       {location.pathname == "/login" || location.pathname == "/register" ? (
@@ -84,6 +98,15 @@ function App() {
             ""
           )}
         </div>
+      )}
+      {toast === "이미 진행 중인 챌린지에요!" ? (
+        <ChallengeToast message={toast} />
+      ) : toast === "진행중인 챌린지가 없어요!" ? (
+        <ChallengeToast message={toast} />
+      ) : toast === "오늘은 모두 다 작성하셨어요!" ? (
+        <ChallengeToast message={toast} />
+      ) : (
+        ""
       )}
       <Routes>
         <Route path="/" element={<Home />} />
