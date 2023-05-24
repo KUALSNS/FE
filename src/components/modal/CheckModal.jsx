@@ -30,6 +30,7 @@ const ChallengeModalWrapper = styled.div`
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
+  overflow: auto;
   /* identical to box height */
 
   text-align: center;

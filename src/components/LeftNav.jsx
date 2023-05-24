@@ -63,12 +63,20 @@ function LeftNav() {
                 );
                 setSide(true);
                 localStorage.removeItem("challengeName");
+
+                localStorage.removeItem("fixChallenge");
                 navigate(url);
               } else {
                 setToast("오늘은 모두 다 작성하셨어요!");
               }
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+              console.log(err);
+              if (err.response && err.response.status === 404) {
+                console.log(123);
+                setToast("오늘은 모두 다 작성하셨어요!");
+              }
+            });
         } else {
           setToast("진행중인 챌린지가 없어요!");
           // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
@@ -130,7 +138,6 @@ const Sidebar = styled.div`
   width: 236px;
   height: 100%;
   overflow-x: hidden;
-  z-index: 20;
 
   .sidebar {
     position: relative;

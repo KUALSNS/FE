@@ -13,6 +13,7 @@ import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
   const challenge = useRecoilValue(challengeState);
+  console.log(challenge);
   const categories = useRecoilValue(categoryState);
   const auth = useRecoilValue(authState);
   const [isHovered, setIsHovered] = useState(false);
@@ -74,8 +75,8 @@ const ChallengeFeed = () => {
               전체
             </button>
           </div>
-          {categories.map((category) => (
-            <div className="itemExcept">
+          {categories.map((category, idx) => (
+            <div className="itemExcept" key={idx}>
               <button
                 key={category}
                 name={category}
@@ -102,12 +103,13 @@ const ChallengeFeed = () => {
       <div className="search">검색된 챌린지 주제 {filteredItems.length}개</div>
 
       <ChallengeLists>
-        {filteredItems.map((item) => {
+        {filteredItems.map((item, idx) => {
           return (
             <ChallengeItem
               title={item.title}
               category={item.category}
               image={item.image}
+              key={idx}
             />
           );
         })}
