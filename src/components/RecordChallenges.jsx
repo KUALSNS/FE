@@ -138,7 +138,7 @@ function RecordChallenges() {
                         </div>
                     </div>
                     <div className='progressTape'>
-                        <RecordProgressTape progress={chal.achievement}/>
+                        <RecordProgressTape progress={chal.achievement} colorIdx={idx}/>
                     </div>
                 </div>
                 ))
