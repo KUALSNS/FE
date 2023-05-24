@@ -159,6 +159,17 @@ const getPlannerCalendar = (start, finish) =>
   },
 }); 
 
+const postActivateCupon = () =>
+  WritonAxios.post(
+    "/api/profile/coupon",
+    {
+      couponCode: 1,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -180,4 +191,5 @@ export {
   postRecordSubmit,
   postPreSubmit,
   postSideBarChallenge,
+  postActivateCupon,
 };
