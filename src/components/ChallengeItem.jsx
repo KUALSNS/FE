@@ -44,6 +44,7 @@ const ChallengeItem = ({ title, category, image }) => {
     return getChallengePage(title)
       .then((res) => {
         console.log(res.data.data);
+        localStorage.setItem("challengeName", title);
         setWriteChallenge(res.data.data);
 
         setSelectChallenge(

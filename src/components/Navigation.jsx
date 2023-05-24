@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   authState,
   detailuserState,
@@ -9,7 +9,7 @@ import {
   activeChallengeState,
   mypageInfoState,
 } from "../atoms/auth";
-import { patchLogoutUser } from "../remotes";
+import { patchLogoutUser, postLoginMain } from "../remotes";
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -19,6 +19,8 @@ const Navigation = () => {
   const detailuser = useRecoilValue(detailuserState);
   const activeChallenge = useRecoilValue(activeChallengeState);
   const userInfo = useRecoilValue(mypageInfoState);
+  const setDetailuser = useSetRecoilState(detailuserState);
+  const setActiveChallenge = useSetRecoilState(activeChallengeState);
 
   const sidebarToggle = () => {
     setListToggle(!listToggle);
@@ -54,6 +56,33 @@ const Navigation = () => {
     setUserToggle(false);
     navigate("/mypage");
   };
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      postLoginMain()
+        .then((res) => {
+          setDetailuser({
+            nickname: res.data.data.nickname,
+            challengeCertain: res.data.data.challengeCertain,
+          });
+          setActiveChallenge({
+            userChallengeSu: res.data.data.userChallengeSu,
+            coopen: res.data.data.coopen,
+            userChallengeArray: res.data.data.userChallengeArray,
+          });
+          setAuth(true);
+        })
+        .catch((err) => {
+          if (err.response.data.code === 419) {
+            //Retoken();
+            //getLoginMain();// 재귀함수? 필요없나.. 고민
+          } else {
+            console.log(err);
+          }
+        });
+    }
+  }, []);
 
   return (
     <Container>

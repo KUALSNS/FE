@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect } from "react";
+
 import { styled } from "styled-components";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import {
@@ -8,6 +10,7 @@ import {
 } from "../atoms/auth";
 import RecordGrowthGraph from "./RecordGrowthGraph";
 import RecordGrowthTable from "./RecordGrowthTable";
+
 import RecordGrowthBlocks from "./RecordGrowthBlocks";
 import { getPlannerStatistic } from "../remotes";
 
@@ -77,6 +80,7 @@ function RecordGrowth() {
         </div>
         <div className="logoArea">
           <img src="record_modal_logo.svg"></img>성장 분석
+
         </div>
       </div>
 
@@ -112,6 +116,7 @@ function RecordGrowth() {
             </div>
             <div className="explain">
               <RecordGrowthBlocks props={weekState} />
+
             </div>
           </>
         ) : (

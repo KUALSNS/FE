@@ -126,6 +126,7 @@ const Container = styled.div`
     white-space: nowrap;
     height: 110px;
     margin-top: 40px;
+    padding-left: 45px;
   }
 
   .progressies::-webkit-scrollbar {
@@ -157,7 +158,6 @@ const Container = styled.div`
     border: none;
     cursor: pointer;
     margin-left: 33px;
-    margin-right: 40px;
   }
 
   .challenge-text {
