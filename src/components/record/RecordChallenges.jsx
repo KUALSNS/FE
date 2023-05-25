@@ -25,7 +25,6 @@ function RecordChallenges() {
     getPlannerHistory()
       .then((res) => {
         const allChallenge = res.data.data.userChallengeHistory;
-        console.log(allChallenge);
         setFinChallenge(allChallenge.finishedChallenges);
         setOngoChallenge(allChallenge.ongoingChallenges);
         setTempChallenge(allChallenge.temporarilySavedChallenges);

@@ -18,7 +18,6 @@ function MypageSubscribe() {
   const handleCuponClick = () => {
     postActivateCupon()
       .then((res) => {
-        console.log(res);
         setSubscribeModalState(true);
         setSubscriber(true);
       })

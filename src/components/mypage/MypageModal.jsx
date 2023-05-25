@@ -17,7 +17,6 @@ function MypageModal() {
   const [toast, setToast] = useRecoilState(challengeToastState);
   useEffect(() => {
     if (toast) {
-      console.log("toast");
       setTimeout(() => {
         setToast(false);
         setModalState({show: false, content: ""})
@@ -50,7 +49,6 @@ function MypageModal() {
   }
 
   const emailConfirm = (email)=>{
-    console.log("email confirm", email);
     postEmail(email)
     .then(res=>{
       setEmailConfirmed(true);
@@ -61,7 +59,6 @@ function MypageModal() {
   const emailSave = ( email)=>{
     patchEmail(email)
     .then(res=>{
-      console.log(res);
       setToast("이메일이 변경되었습니다.");
       setUserInfo({...userInfo, "email":email});
     })
@@ -71,7 +68,6 @@ function MypageModal() {
   }
   const handleEmailSubmit = (e, email, code)=>{
     e.preventDefault();
-    console.log("email code check");
     getEmailCode(email, code)
     .then(res=>{
       console.log(res);
