@@ -25,7 +25,7 @@ const Navigation = () => {
   const [userId, setUserId] = useState("");
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
-  const setSubscriber = useSetRecoilState(subscribedState);
+  const [subscriber, setSubscriber] = useRecoilState(subscribedState);
   const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
   const [semiListToggle, setSemiListToggle] =
     useRecoilState(semiListToggleState);
@@ -104,7 +104,7 @@ const Navigation = () => {
           console.log(err);
         });
     }
-  }, []);
+  }, [subscriber]);
 
   return (
     <Container>
