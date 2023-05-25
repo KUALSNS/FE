@@ -148,6 +148,7 @@ const Sidebar = styled.div`
 
   z-index: 10;
   border-radius: 15px;
+  box-shadow: 0px 2px 38px -8px rgba(39, 39, 39, 0.2);
 
   .sidebar {
     position: relative;
@@ -159,7 +160,7 @@ const Sidebar = styled.div`
     /* height: 100%; */
     background-color: #fbfbfb;
     transition: transform 1s ease-in-out;
-    box-shadow: 0px 2px 5px rgba(38, 51, 77, 0.03);
+
     display: flex;
     flex-direction: column;
   }
