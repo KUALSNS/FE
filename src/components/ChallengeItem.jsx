@@ -180,6 +180,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: row;
     margin-right: 8px;
+    font-size: 13.5px;
   }
 
   .tag-right {

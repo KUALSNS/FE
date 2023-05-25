@@ -1,10 +1,11 @@
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { userState } from "../atoms/auth";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import styled from "styled-components";
-import { postLoginUser } from "../remotes";
+import React from 'react'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { userState } from '../atoms/auth';
+import { useRecoilState,useSetRecoilState } from 'recoil'
+import styled from 'styled-components';
+import { postLoginUser } from '../remotes';
+import { IdPwFindState } from '../atoms/auth';
 import { authState, challengeToastState } from "../atoms/auth";
 import ChallengeToast from "../components/toast/ChallengeToast";
 
@@ -61,8 +62,11 @@ const SigninForm = styled.form`
     margin-top: 40px;
     margin-bottom: 24px;
   }
+  a{
+    cursor: pointer;
+  }
 
-  span {
+  .find {
     display: block;
     width: 328px;
     margin: auto;
@@ -79,6 +83,7 @@ const Signin = () => {
   const [user, setUserState] = useRecoilState(userState);
   const setAuth = useSetRecoilState(authState);
   const [toast, setToast] = useRecoilState(challengeToastState);
+  const setFindState = useSetRecoilState(IdPwFindState);
 
   const LoginSubmit = (e) => {
     e.preventDefault();
@@ -102,6 +107,12 @@ const Signin = () => {
         }
       });
   };
+
+  const findIdPwRoute = (param)=>{
+    setFindState(param);
+    navigate('/find')
+  }
+
 
   const signupRoute = (e) => {
     navigate("/register");
@@ -132,7 +143,9 @@ const Signin = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></input>
           <button type="submit">로그인</button>
-          <span>아이디 찾기 | 비밀번호 찾기</span>
+        <span className='find'>
+          <a onClick={()=>findIdPwRoute("id")}>아이디 찾기</a> | <a onClick={()=>findIdPwRoute("pw")}>비밀번호 찾기</a>
+        </span>
         </SigninForm>
         <img src="signin_signupBtn.svg" onClick={signupRoute} />
       </SigninWrapper>

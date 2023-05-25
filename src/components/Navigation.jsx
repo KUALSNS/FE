@@ -14,8 +14,10 @@ import {
 } from "../atoms/auth";
 import { patchLogoutUser, postLoginMain, getMypageInfo } from "../remotes";
 import SemiNav from "../components/SemiNav";
+import { format } from "date-fns";
 
 const Navigation = () => {
+  const [selectDate, setSelectDate] = useState(new Date());
   const navigate = useNavigate();
   const [listToggle, setListToggle] = useRecoilState(sideToggleState);
   const [userToggle, setUserToggle] = useState(false);
@@ -25,7 +27,7 @@ const Navigation = () => {
   const [userId, setUserId] = useState("");
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
-  const setSubscriber = useSetRecoilState(subscribedState);
+  const [subscriber, setSubscriber] = useRecoilState(subscribedState);
   const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
   const [semiListToggle, setSemiListToggle] =
     useRecoilState(semiListToggleState);
@@ -104,7 +106,7 @@ const Navigation = () => {
           console.log(err);
         });
     }
-  }, []);
+  }, [subscriber]);
 
   return (
     <Container>
@@ -125,7 +127,10 @@ const Navigation = () => {
       <ContainerRight>
         <div className={auth ? "after-right" : "before-right"}>
           <div className="challenge-title">
-            <div>5월 25일 오늘 진행 중인 챌린지 </div>
+            <div>
+              {format(selectDate, "M")}월 {format(selectDate, "dd")}일 오늘 진행
+              중인 챌린지{" "}
+            </div>
             <div className="count">
               {activeChallenge.userChallengeSu} /
               {activeChallenge.coopen ? " ∞" : " 2"}

@@ -170,6 +170,27 @@ const postActivateCupon = () =>
     }
   );
 
+const getIdFind = (email, code)=>
+  WritonAxios.get("/api/user/idFind", {
+    headers: { access: localStorage.getItem("accessToken") },
+    params: {
+      email: email,
+      code: code, 
+    },
+  }); 
+  
+  const postPwFind = (id, email)=>
+  WritonAxios.post(
+    "/api/user/passwordFind",
+    {
+      identifier: id,
+      userEmail: email,
+    },
+    {
+      headers: { access: localStorage.getItem("accessToken") },
+    }
+  );  
+
 export {
   postLoginUser,
   patchLogoutUser,
@@ -192,4 +213,6 @@ export {
   postPreSubmit,
   postSideBarChallenge,
   postActivateCupon,
+  getIdFind,
+  postPwFind,
 };

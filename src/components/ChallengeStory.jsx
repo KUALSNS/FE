@@ -14,8 +14,13 @@ import {
 } from "../atoms/auth";
 import { useNavigate } from "react-router-dom";
 import { postSideBarChallenge } from "../remotes";
+import { format } from "date-fns";
 
 const ChallengeStory = () => {
+  const [nextDate, setNextDate] = useState(
+    new Date(new Date().setMonth(new Date().getMonth() + 1))
+  );
+  console.log(nextDate);
   const [close, setClose] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const auth = useRecoilValue(authState);
@@ -90,14 +95,19 @@ const ChallengeStory = () => {
               onMouseLeave={() => setIsHovered(false)}
             >
               {!isHovered ? (
-                <div>🔥 이번 달 챌린지는 6월 9일 마감이에요</div>
+                <div>
+                  🔥 이번 달 챌린지는 {format(nextDate, "M")}월{" "}
+                  {format(nextDate, "dd")}일 마감이에요
+                </div>
               ) : (
                 <div>
                   <div className="hover-text1">
-                    🔥 이번 달 챌린지는 6월 9일 마감이에요
+                    🔥 이번 달 챌린지는 {format(nextDate, "M")}월{" "}
+                    {format(nextDate, "dd")}일 마감이에요
                   </div>
                   <div className="hover-text2">
-                    5월 9일 부터 30일 동안 진행돼요
+                    {format(new Date(), "M")}월 {format(new Date(), "dd")}일
+                    부터 30일 동안 진행돼요
                   </div>
                 </div>
               )}

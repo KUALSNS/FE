@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import MypageModal from "../components/MypageModal";
 import MypageSubscribe from "../components/MypageSubscribe";
 import { getMypageInfo, getAccessToken, patchNamePhone } from "../remotes";
+import SubscribeCupon from "../components/SubscribeCupon";
 
 const check = false; //needfix: email check button, change into atom
 
@@ -93,6 +94,7 @@ function Mypage() {
 
   return (
     <>
+      <SubscribeCupon />
       <MypageSubscribe />
       {modalState.show && <MypageModal />}
       <Container>
