@@ -422,7 +422,7 @@ function Challenge() {
                         : ""}{" "}
                       {t.category}
                     </span>
-                    <button onClick={(e) => handlePlusClick(t, idx)}>
+                    <button>
                       <img
                         className="plusIcon"
                         src="/challenge_template_plus.svg"
