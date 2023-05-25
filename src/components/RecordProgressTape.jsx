@@ -4,7 +4,7 @@ function RecordProgressTape(props) {
   const progress = props.progress;
   const progressOnTape = (progress*5)%100;
   console.log(progressOnTape);
-  const colorIdx = props.colorIdx;
+  const colorIdx = props.colorIdx%3;
   const colorArr = ["#266CF4", "#FF4C77", "#FF7F0A"]
   const lineNum = [1,2,3,4,5];
   const getLineClassName = (line, progress) => {
