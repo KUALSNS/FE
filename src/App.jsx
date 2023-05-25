@@ -14,7 +14,7 @@ import { useRecoilState } from "recoil";
 import { authState, challengeToastState, SmallScreenState } from "./atoms/auth";
 import jwt_decode from "jwt-decode";
 import { useEffect } from "react";
-import Navigation from "./components/Navigation";
+import Navigation from "./components/navigation/Navigation";
 import ChallengeToast from "./components/toast/ChallengeToast";
 
 function App() {
