@@ -1,15 +1,14 @@
 import { Editor } from "@tinymce/tinymce-react";
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
-import ChallengeModal from "../components/ChallengeModal";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import {
   challengeModalState,
   loadingState,
   ChallengeWriteState,
   selectChallengeState,
-  recordSubmitState,
   sideState,
+  challengeToastState,
 } from "../atoms/auth";
 
 import {
@@ -17,9 +16,8 @@ import {
   postPreSubmit,
   postRecordSubmit,
   postSideBarChallenge,
-  getChallengePage,
 } from "../remotes";
-import { useLocation, useParams } from "react-router";
+import { useLocation } from "react-router";
 
 import ClipLoader from "react-spinners/ClipLoader";
 import { useNavigate } from "react-router-dom";
@@ -29,16 +27,13 @@ function Challenge() {
   const [side, setSide] = useRecoilState(sideState);
 
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
-  const API_KEY = import.meta.env.REACT_APP_API_KEY;
+  //const API_KEY = process.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
   const location = useLocation();
   const tempSaved = { ...location.state };
 
-  const [recordSubmit, setRecordSubmit] = useRecoilState(recordSubmitState);
-
   const [newChallengeFlag, setFlag] = useRecoilState(challengeModalState);
-  console.log(newChallengeFlag);
   const [loading, setLoading] = useRecoilState(loadingState);
   const [saveAlert, setSaveAlert] = useState(false);
   const [saveDisappear, setSaveDisappear] = useState(true);
@@ -53,40 +48,28 @@ function Challenge() {
   const [title, setTitle] = useState("");
   const editorRef = useRef(null);
   const imgUploadRef = useRef(null);
+  const [toast, setToast] = useRecoilState(challengeToastState);
 
   const handleSubmitClick = () => {
-    //needfix: server connection
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-      // setRecordSubmit({
-      //   challengeName: writeChallenge.templateData.challengeName,
-      //   templateName: writeChallenge.templateData.templates[0].templateTitle,
-      //   challengeTitle: title,
-      //   challengeContent: editorRef.current.getContent(),
-      // });
+    if (title) {
+      postRecordSubmit(
+        writeChallenge.templateData.challengeName,
+        writeChallenge.templateData.templates[0].templateTitle,
+        title,
+        editorRef.current.getContent()
+      )
+        .then((res) => {
+          localStorage.removeItem("challengeName");
+          localStorage.removeItem("fixChallenge");
+          setRecordmodal(true);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setToast("제목을 입력해주세요!");
     }
-    postRecordSubmit(
-      writeChallenge.templateData.challengeName,
-      writeChallenge.templateData.templates[0].templateTitle,
-      title,
-      editorRef.current.getContent()
-    )
-      .then((res) => {
-        localStorage.removeItem("challengeName");
-        localStorage.removeItem("fixChallenge");
-        console.log(res); // 오케아 모달창 보내기 (오늘 기록이 완료되었습니다.)// 여기에 오케이 모달창 확인 누르면 navigate(record)
-        setRecordmodal(true);
-      })
-      .catch((err) => console.log(err));
-
-    //navigate("/record");
   };
 
   const handleSaveClick = (idx) => {
-    //needfix: server connection
-    // if (editorRef.current) {
-    //   console.log(editorRef.current.setContent("<div>dfdfsffd</div>"));
-    // }
     postPreSubmit(
       writeChallenge.templateData.challengeName,
       writeChallenge.templateData.templates[0].templateTitle,
@@ -94,7 +77,6 @@ function Challenge() {
       editorRef.current.getContent()
     )
       .then((res) => {
-        console.log(res);
         setSaveAlert(true);
         localStorage.removeItem("challengeName");
         localStorage.removeItem("fixChallenge");
@@ -105,9 +87,7 @@ function Challenge() {
   const handlePlusClick = (t, idx) => {
     if (editorRef.current) {
       const cur = editorRef.current.getContent();
-      // console.log(template);
-      // console.log(idx);
-      // console.log(template[idx]);
+
       editorRef.current.setContent(cur + t.templateContent);
     }
   };
@@ -123,27 +103,9 @@ function Challenge() {
     if (!e.target.files) {
       return;
     }
-    console.log(e.target.files[0].name);
+
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
-    console.log(formData);
-
-    /* needfix: connect to server
-    axios({
-      baseURL: API_HOST,
-      url: '/images/:username/thumbnail',
-      method: 'POST',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });*/
   }, []);
 
   const DropdownChallenge = () => {
@@ -154,11 +116,6 @@ function Challenge() {
     setSelectChallenge("[" + item.category + "]" + " " + item.challengeName);
     getEachChallenge(item.challengeName)
       .then((res) => {
-        console.log(res.data);
-        // setWriteChallenge({
-        //   ...writeChallenge,
-        //   templateData: res.data.data.templateData,
-        // });
         setWriteChallenge(res.data.data);
         if (res.data.data.templateCertain) {
           setPremodal(true);
@@ -167,8 +124,6 @@ function Challenge() {
           editorRef.current.setContent(
             res.data.data.temporaryChallenge[0].writing
           );
-
-          console.log(writeChallenge);
         } else {
           setTitle("");
           editorRef.current.setContent("");
@@ -186,7 +141,6 @@ function Challenge() {
       setPremodal(false);
     } else {
       if (side && editorRef.current && writeChallenge.templateCertain) {
-        console.log(2);
         setTitle(writeChallenge.temporaryChallenge[0].title);
         editorRef.current.setContent(
           writeChallenge.temporaryChallenge[0].writing
@@ -206,15 +160,11 @@ function Challenge() {
 
   const backToPage = () => {
     if (localStorage.getItem("fixChallenge")) {
-      // 로컬 스토리지에 그 값이 있으면
       navigate("/record");
     } else {
       navigate("/");
     }
   };
-
-  // 현재 진행중인 챌린지에 대한 수정하기 모달창
-  // 임시저장한 값에 대한 수정사항
 
   useEffect(() => {
     if (localStorage.getItem("fixChallenge") === "진행중") {
@@ -225,13 +175,11 @@ function Challenge() {
 
     if (side && writeChallenge.templateCertain) {
       setPremodal(true);
-      console.log(2);
     }
     const title = localStorage.getItem("challengeName");
     if (title) {
       getEachChallenge(title) // 이 부분 수정필요.. 백엔드 수정 부탁함.
         .then((res) => {
-          console.log(res.data);
           setWriteChallenge(res.data.data);
           setSelectChallenge(
             "[" +
@@ -247,10 +195,8 @@ function Challenge() {
       postSideBarChallenge()
         .then((res) => {
           if (res.data.data.challengingArray.length) {
-            console.log(res);
             setWriteChallenge(res.data.data);
 
-            console.log(writeChallenge);
             setSelectChallenge(
               "[" +
                 res.data.data.templateData.challengeCategory +
@@ -263,9 +209,6 @@ function Challenge() {
         })
         .catch((err) => console.log(err));
     }
-
-    //나 관리해서 모달창 띄우기 ( 임시저장된게 있네요?? )
-    // 확인 누르면 precclcick 함수 실행
 
     if (saveAlert) {
       setSaveDisappear(false);
@@ -359,12 +302,7 @@ function Challenge() {
                       return (
                         <div
                           key={idx}
-                          className={`drop-item ${
-                            selectChallenge ===
-                            `[${item.category}] ${item.challengeName}`
-                              ? "drop-item-select"
-                              : ""
-                          }`}
+                          className="drop-item"
                           onClick={() => onSelectChallenge(item)}
                         >
                           [{item.category}] {item.challengeName}
@@ -379,7 +317,7 @@ function Challenge() {
 
               <input
                 type="text"
-                placeholder="챌린지 시작을 위한 나의 제목을 기록해볼까요?"
+                placeholder="챌린지 시작을 위한 나의 제목을 작성해볼까요?"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               ></input>
@@ -460,11 +398,7 @@ function Challenge() {
               <h2>질문 템플릿 상세 검색</h2>
               <div className="currentTemplateContainer">
                 {writeChallenge.templateData?.templates?.map((t, idx) => (
-                  <div
-                    className="currentTemplate"
-                    key={idx}
-                    onClick={(e) => handlePlusClick(t, idx)}
-                  >
+                  <div className="currentTemplate" key={idx}>
                     <div
                       className={
                         t.templateTitle.length >= 16 ? "twoline" : "oneline"
@@ -531,8 +465,8 @@ const Container = styled.div`
     z-index: 3;
     width: 396px;
     background-color: #ffffff;
-    padding: 16px;
-    top: 30px;
+
+    top: 35px;
     border-radius: 8px;
     font-family: "Pretendard";
     font-style: normal;
@@ -544,19 +478,16 @@ const Container = styled.div`
   }
 
   .drop-item {
+    width: 380px;
     height: 40px;
     display: flex;
     align-items: center;
-
+    border-bottom: 1px solid #e2e4e7;
     margin-left: 5px;
     padding-left: 15px;
     cursor: pointer;
   }
-  .drop-item-select {
-    background: #f3f5f9;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
+
   .challenging {
     font-family: "Pretendard";
     font-style: normal;
@@ -600,12 +531,10 @@ const Container = styled.div`
   }
 
   .tox .tox-number-input button {
-    //font size button
     display: none;
   }
 
   .tox .tox-number-input input {
-    //font size input
     padding: 4px;
   }
   .tox .tox-editor-container {
@@ -667,7 +596,6 @@ const Container = styled.div`
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    /* identical to box height, or 114% */
 
     text-align: center;
 
@@ -694,18 +622,10 @@ const Container = styled.div`
     margin-right: 8px;
   }
 
-  /* .saveBtns button:nth-of-type(2) {
-    margin-left: 16px;
-    background-image: url("challenge_button_logo.svg");
-    background-repeat: no-repeat;
-    background-color: #272727;
-    color: #ffffff;
-  } */
-
   .right h2 {
     margin-top: 36px;
     margin-bottom: 15px;
-    font-size: 20px; //추가된 부분
+    font-size: 20px;
   }
 
   .currentChallenge {
@@ -713,7 +633,7 @@ const Container = styled.div`
     height: 72px;
     padding: 24px;
     border-radius: 8px;
-    background-color: #f3f5f9; //추가된 부분
+    background-color: #f3f5f9;
     font-size: 18px;
   }
 
@@ -745,13 +665,8 @@ const Container = styled.div`
     text-align: center;
     padding: 15px;
     background: #f3f5f9;
-
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  .currentTemplate:hover {
     box-shadow: 0px 18px 20px -18px rgba(39, 39, 39, 0.2);
-    margin-top: -8px;
+    border-radius: 8px;
   }
 
   .currentTemplate .oneline {
@@ -800,7 +715,6 @@ const ChallengeModalWrapper = styled.div`
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-  /* identical to box height */
 
   text-align: center;
 
@@ -809,7 +723,7 @@ const ChallengeModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   height: 100vh;

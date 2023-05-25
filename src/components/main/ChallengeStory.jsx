@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Progress from "../components/Progress";
+import Progress from "./Progress";
 import { useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -11,16 +11,15 @@ import {
   selectChallengeState,
   ChallengeWriteState,
   sideState,
-} from "../atoms/auth";
+} from "../../atoms/auth";
 import { useNavigate } from "react-router-dom";
-import { postSideBarChallenge } from "../remotes";
+import { postSideBarChallenge } from "../../remotes";
 import { format } from "date-fns";
 
 const ChallengeStory = () => {
   const [nextDate, setNextDate] = useState(
     new Date(new Date().setMonth(new Date().getMonth() + 1))
   );
-  console.log(nextDate);
   const [close, setClose] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const auth = useRecoilValue(authState);
@@ -36,14 +35,10 @@ const ChallengeStory = () => {
   const AddStory = () => {
     if (auth) {
       if (detailuser.challengeCertain) {
-        // 진행중인 챌린지가 있냐 없냐
         postSideBarChallenge()
           .then((res) => {
             if (res.data.data.challengingArray.length) {
-              console.log(res);
               setWriteChallenge(res.data.data);
-
-              console.log(writeChallenge);
               setSelectChallenge(
                 "[" +
                   res.data.data.templateData.challengeCategory +
@@ -63,13 +58,11 @@ const ChallengeStory = () => {
           .catch((err) => {
             console.log(err);
             if (err.response && err.response.status === 404) {
-              console.log(123);
               setToast("오늘은 모두 다 작성하셨어요!");
             }
           });
       } else {
         setToast("진행중인 챌린지가 없어요!");
-        // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
       }
     } else {
       navigate("/login");
@@ -162,12 +155,11 @@ const Container = styled.div`
   }
 
   .progressies::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera 용 */
+    display: none; 
   }
   .story-container {
     background-color: #ffffff;
     max-width: 920px;
-    /* margin: auto; */
     height: 105px;
     margin-top: 40px;
     padding-bottom: 32px;
@@ -257,7 +249,6 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 12px;
     line-height: 20px;
-    /* identical to box height, or 167% */
     position: absolute;
     left: 40px;
     color: #7c8089;

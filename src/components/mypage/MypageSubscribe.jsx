@@ -6,8 +6,8 @@ import {
   subscribedState,
   activeChallengeState,
   subscribeModalState,
-} from "../atoms/auth";
-import { postActivateCupon } from "../remotes";
+} from "../../atoms/auth";
+import { postActivateCupon } from "../../remotes";
 
 function MypageSubscribe() {
   const [showState, setShowState] = useRecoilState(mypageSubscribeState);
@@ -18,7 +18,6 @@ function MypageSubscribe() {
   const handleCuponClick = () => {
     postActivateCupon()
       .then((res) => {
-        console.log(res);
         setSubscribeModalState(true);
         setSubscriber(true);
       })

@@ -31,10 +31,6 @@ const Progress = ({ item, idx }) => {
           trail: {
             stroke: "#E1EAF8",
             strokeLinecap: "butt",
-            // transition: "stroke-dashoffset 0.5s ease 0s",
-            // // Rotate the path
-            // transform: "rotate(0.25turn)",
-            // transformOrigin: "center center",
           },
           background: {
             fill: "#ffffff",
@@ -73,9 +69,6 @@ const Progress = ({ item, idx }) => {
 export default Progress;
 
 const ProgressBar1 = styled.div`
-  /* background-color: lightgreen; */
-  /* width: 100%; */
-
   width: 65px;
   margin-right: 40px;
 
@@ -99,14 +92,13 @@ const ProgressBar1 = styled.div`
     font-weight: 500;
     font-size: 12px;
     line-height: 12px;
-    /* identical to box height, or 100% */
 
     text-align: center;
     width: 65px;
     color: #7c8089;
     margin-top: 8px;
-    white-space: nowrap; /* 줄 바꿈 없이 한 줄에 텍스트를 표시 */
-    overflow: hidden; /* 너비를 넘어가는 텍스트를 숨김 */
+    white-space: nowrap; 
+    overflow: hidden; 
     text-overflow: ellipsis;
   }
   .hover-challenge {
@@ -116,9 +108,6 @@ const ProgressBar1 = styled.div`
     border-radius: 32px;
     z-index: 10;
     height: 26px;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
     padding: 5px 12px;
   }
 `;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ChallengeItem from "./ChallengeItem";
 
 const ChallengeList = ({ item }) => {
-  //const categoryName = Object.keys(categoryObject)[0]
   {
     return (
       <Container>

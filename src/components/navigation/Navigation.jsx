@@ -11,9 +11,9 @@ import {
   subscribedState,
   SmallScreenState,
   semiListToggleState,
-} from "../atoms/auth";
-import { patchLogoutUser, postLoginMain, getMypageInfo } from "../remotes";
-import SemiNav from "../components/SemiNav";
+} from "../../atoms/auth";
+import { patchLogoutUser, postLoginMain, getMypageInfo } from "../../remotes";
+import SemiNav from "./SemiNav";
 import { format } from "date-fns";
 
 const Navigation = () => {
@@ -91,8 +91,6 @@ const Navigation = () => {
         })
         .catch((err) => {
           if (err.response.data.code === 419) {
-            //Retoken();
-            //getLoginMain();// 재귀함수? 필요없나.. 고민
           } else {
             console.log(err);
           }
@@ -191,7 +189,6 @@ const Container = styled.div`
   background-color: #266cf4;
   display: flex;
 
-  /* justify-content: space-between; */
   align-items: center;
   padding-left: 60px;
   padding-right: 74px;
@@ -316,8 +313,8 @@ const ContainerRight = styled.div`
     font-weight: 500;
     font-size: 18px;
     line-height: 16px;
-    white-space: nowrap; /* 줄 바꿈 없이 한 줄에 텍스트를 표시 */
-    overflow: hidden; /* 너비를 넘어가는 텍스트를 숨김 */
+    white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
   }
 

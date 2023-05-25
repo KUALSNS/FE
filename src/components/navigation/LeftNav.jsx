@@ -12,9 +12,9 @@ import {
   ChallengeWriteState,
   selectChallengeState,
   challengeToastState,
-} from "../atoms/auth";
+} from "../../atoms/auth";
 import { useLocation } from "react-router-dom";
-import { postSideBarChallenge } from "../remotes";
+import { postSideBarChallenge } from "../../remotes";
 
 function LeftNav() {
   const navigate = useNavigate();
@@ -46,14 +46,10 @@ function LeftNav() {
     if (auth) {
       if (url === "/challenge") {
         if (detailuser.challengeCertain) {
-          // 진행중인 챌린지가 있냐 없냐
           postSideBarChallenge()
             .then((res) => {
               if (res.data.data.challengingArray.length) {
-                console.log(res);
                 setWriteChallenge(res.data.data);
-
-                console.log(writeChallenge);
                 setSelectChallenge(
                   "[" +
                     res.data.data.templateData.challengeCategory +
@@ -73,13 +69,11 @@ function LeftNav() {
             .catch((err) => {
               console.log(err);
               if (err.response && err.response.status === 404) {
-                console.log(123);
                 setToast("오늘은 모두 다 작성하셨어요!");
               }
             });
         } else {
           setToast("진행중인 챌린지가 없어요!");
-          // 모달창 띄우게끔 홈으로 상태하나 보내주기  임시저장된게 업수다/ 진행중인 챌린지가 없습니다.
         }
       } else {
         navigate(url);
@@ -143,10 +137,8 @@ const Sidebar = styled.div`
     position: relative;
 
     min-height: 100%;
-    /* position: absolute; */
     left: -300px;
     width: 236px;
-    /* height: 100%; */
     background-color: #fbfbfb;
     transition: transform 0.3s ease-in-out;
     box-shadow: 0px 2px 5px rgba(38, 51, 77, 0.03);
@@ -182,7 +174,6 @@ const Sidebar = styled.div`
 
   .sidebar-nav li:hover {
     color: #000;
-    /* background: rgba(255, 255, 255, 0.2); */
   }
 
   .sidebar-nav li .menu {
@@ -202,13 +193,10 @@ const Sidebar = styled.div`
 
   .list-bottom {
     position: absolute;
-    bottom: 115px; //라이톤 로고 bottom 조정
+    bottom: 115px;
     width: 236px;
     display: flex;
     justify-content: center;
-    /* height: 110px; 
-    cursor: pointer;
-    /* margin-top: auto; */
   }
   .list-bottom img {
     cursor: pointer;

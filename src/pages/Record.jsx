@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import RecordCalendar from "../components/RecordCalendar";
-import RecordChallenges from "../components/RecordChallenges";
-import RecordGrowth from "../components/RecordGrowth";
-import SubscribeCupon from "../components/SubscribeCupon";
+import RecordCalendar from "../components/record/RecordCalendar";
+import RecordChallenges from "../components/record/RecordChallenges";
+import RecordGrowth from "../components/record/RecordGrowth";
+import SubscribeCupon from "../components/record/SubscribeCupon";
 import { useRecoilValue } from "recoil";
 import { recordModalState } from "../atoms/auth";
 function Record() {
-  const showGrowth = useRecoilValue(recordModalState);
   return (
     <div>
       <SubscribeCupon />

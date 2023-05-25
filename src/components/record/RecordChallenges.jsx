@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import Parser from "html-react-parser";
 import RecordProgressTape from "./RecordProgressTape";
-import { getPlannerHistory, getPlannerStatistic } from "../remotes";
-import ChallengeItem from "./ChallengeItem";
+import { getPlannerHistory, getPlannerStatistic } from "../../remotes";
+import ChallengeItem from "../main/ChallengeItem";
 import { useRecoilValue } from "recoil";
-import { challengeState, selectChallengeState } from "../atoms/auth";
+import { challengeState, selectChallengeState } from "../../atoms/auth";
 import { useNavigate } from "react-router";
 
 function RecordChallenges() {
@@ -25,7 +25,6 @@ function RecordChallenges() {
     getPlannerHistory()
       .then((res) => {
         const allChallenge = res.data.data.userChallengeHistory;
-        console.log(allChallenge);
         setFinChallenge(allChallenge.finishedChallenges);
         setOngoChallenge(allChallenge.ongoingChallenges);
         setTempChallenge(allChallenge.temporarilySavedChallenges);
@@ -94,12 +93,13 @@ function RecordChallenges() {
             <h2>이런 챌린지는 어때요?</h2>
             <p>라이톤은 지속적인 글쓰기를 위한 글 챌린지를 응원해요</p>
             <ChallengeLists>
-              {allChallengeServed.map((item) => {
+              {allChallengeServed.map((item, idx) => {
                 return (
                   <ChallengeItem
                     title={item.title}
                     category={item.category}
                     image={item.image}
+                    key={idx}
                   />
                 );
               })}
@@ -146,6 +146,7 @@ function RecordChallenges() {
               selectedChallenge.map((chal, idx) =>
                 chal.user_challenge_templetes?.map((item, temIdx) => (
                   <div
+                    key={temIdx}
                     className={
                       longContent.indexOf(idx * 100 + temIdx) > -1
                         ? "challengeItem longerItem"
