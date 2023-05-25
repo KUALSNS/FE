@@ -6,6 +6,7 @@ import { useRecoilState,useSetRecoilState } from 'recoil'
 import styled from 'styled-components';
 import { postLoginUser } from '../remotes';
 import { authState } from '../atoms/auth';
+import { IdPwFindState } from '../atoms/auth';
 
 const SigninWrapper = styled.div`
   font-family: 'Pretendard', sans-serif;
@@ -61,8 +62,11 @@ const SigninForm = styled.form`
     margin-top: 40px;
     margin-bottom: 24px;
   }
+  a{
+    cursor: pointer;
+  }
 
-  span{
+  .find{
     display: block;
     width: 328px;
     margin: auto;
@@ -77,6 +81,7 @@ const Signin = () => {
   
   const [userId, setUserId] = useState('')
   const [password,setPassword] = useState('')
+  const setFindState = useSetRecoilState(IdPwFindState);
   const [user,setUserState] = useRecoilState(userState)
   const setAuth =  useSetRecoilState(authState)
 
@@ -102,6 +107,10 @@ const Signin = () => {
     navigate('/register')
   }
 
+  const findIdPwRoute = (param)=>{
+    setFindState(param);
+    navigate('/find')
+  }
 
   return (
     <SigninWrapper>
@@ -110,7 +119,9 @@ const Signin = () => {
         <input type='text' placeholder='아이디' value={userId} onChange={(e)=>setUserId(e.target.value)}></input>
         <input type='password' placeholder='비밀번호' value={password} onChange={(e)=>setPassword(e.target.value)}></input>
         <button type='submit'>로그인</button>
-        <span>아이디 찾기 | 비밀번호 찾기</span>
+        <span className='find'>
+          <a onClick={()=>findIdPwRoute("id")}>아이디 찾기</a> | <a onClick={()=>findIdPwRoute("pw")}>비밀번호 찾기</a>
+        </span>
       </SigninForm>
       <img src='signin_signupBtn.svg' onClick={signupRoute}/>
     </SigninWrapper>

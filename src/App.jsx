@@ -7,6 +7,7 @@ import Challenge from "./pages/Challenge";
 import Template from "./pages/Template";
 import Record from "./pages/Record";
 import Mypage from "./pages/Mypage";
+import FindIdPw from "./pages/FindIdPw";
 import LeftNav from "./components/LeftNav";
 import { getAccessToken } from "./remotes";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -94,7 +95,7 @@ function App() {
   }, [toast]);
   return (
     <div>
-      {location.pathname == "/login" || location.pathname == "/register" ? (
+      {location.pathname == "/login" || location.pathname == "/find" || location.pathname == "/register" ? (
         ""
       ) : (
         <div>
@@ -126,6 +127,7 @@ function App() {
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/register" element={<Signup />} />
+        <Route path="/find" element={<FindIdPw />} />
       </Routes>
     </div>
   );

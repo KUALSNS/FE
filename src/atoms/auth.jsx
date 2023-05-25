@@ -139,3 +139,8 @@ export const SmallScreenState = atom({
   key: "src/atoms/auth.jsx-SmallScreenState",
   default: false,
 });
+
+export const IdPwFindState = atom({
+  key: "src/atoms/auth.jsx-IdPwFindState",
+  default: "",
+});
