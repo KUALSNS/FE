@@ -7,7 +7,7 @@ import {
   categoryState,
   detailuserState,
   authState,
-} from "../atoms/auth";
+} from "../../atoms/auth";
 import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {

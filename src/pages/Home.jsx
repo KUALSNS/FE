@@ -4,7 +4,7 @@ import LeftNav from "../components/LeftNav";
 import Navigation from "../components/Navigation";
 import { useEffect, useState } from "react";
 import ChallengeStory from "../components/ChallengeStory";
-import ChallengeFeed from "../components/ChallengeFeed";
+import ChallengeFeed from "../components/main/ChallengeFeed";
 import { postLoginMain, getChallenge } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useRecoilState, useSetRecoilState } from "recoil";

@@ -31,10 +31,6 @@ const Progress = ({ item, idx }) => {
           trail: {
             stroke: "#E1EAF8",
             strokeLinecap: "butt",
-            // transition: "stroke-dashoffset 0.5s ease 0s",
-            // // Rotate the path
-            // transform: "rotate(0.25turn)",
-            // transformOrigin: "center center",
           },
           background: {
             fill: "#ffffff",
