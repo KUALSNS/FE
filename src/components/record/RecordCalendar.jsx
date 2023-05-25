@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { useRecoilState } from "recoil";
-import { recordModalState } from "../atoms/auth";
-import Calendar from "./calendar/Calendar";
+import { recordModalState } from "../../atoms/auth";
+import Calendar from "../calendar/Calendar";
 import { format, addMonths, subMonths, getISOWeek, startOfMonth, startOfWeek, differenceInCalendarWeeks, lastDayOfMonth } from "date-fns";
 
 function RecordCalendar() {

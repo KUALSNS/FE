@@ -6,8 +6,8 @@ import {
   mypageSubscribeState,
 } from "../atoms/auth";
 import { useRecoilState } from "recoil";
-import MypageModal from "../components/MypageModal";
-import MypageSubscribe from "../components/MypageSubscribe";
+import MypageModal from "../components/mypage/MypageModal";
+import MypageSubscribe from "../components/mypage/MypageSubscribe";
 import { getMypageInfo, getAccessToken, patchNamePhone } from "../remotes";
 import SubscribeCupon from "../components/SubscribeCupon";
 

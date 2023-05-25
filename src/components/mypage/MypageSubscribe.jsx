@@ -6,8 +6,8 @@ import {
   subscribedState,
   activeChallengeState,
   subscribeModalState,
-} from "../atoms/auth";
-import { postActivateCupon } from "../remotes";
+} from "../../atoms/auth";
+import { postActivateCupon } from "../../remotes";
 
 function MypageSubscribe() {
   const [showState, setShowState] = useRecoilState(mypageSubscribeState);

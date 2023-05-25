@@ -7,12 +7,12 @@ import {
   recordModalState,
   subscribeModalState,
   detailuserState,
-} from "../atoms/auth";
+} from "../../atoms/auth";
 import RecordGrowthGraph from "./RecordGrowthGraph";
 import RecordGrowthTable from "./RecordGrowthTable";
 
 import RecordGrowthBlocks from "./RecordGrowthBlocks";
-import { getPlannerStatistic, postActivateCupon } from "../remotes";
+import { getPlannerStatistic, postActivateCupon } from "../../remotes";
 
 function RecordGrowth() {
   const detailuser = useRecoilValue(detailuserState);

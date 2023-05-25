@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import Parser from "html-react-parser";
 import RecordProgressTape from "./RecordProgressTape";
-import { getPlannerHistory, getPlannerStatistic } from "../remotes";
-import ChallengeItem from "./ChallengeItem";
+import { getPlannerHistory, getPlannerStatistic } from "../../remotes";
+import ChallengeItem from "../ChallengeItem";
 import { useRecoilValue } from "recoil";
-import { challengeState, selectChallengeState } from "../atoms/auth";
+import { challengeState, selectChallengeState } from "../../atoms/auth";
 import { useNavigate } from "react-router";
 
 function RecordChallenges() {
