@@ -7,11 +7,22 @@ function RecordGrowthTable({props}) {
   const [curWeek, setCurWeek] = useState([])
   const [checkPrevWeek, setCheckPrevWeek] = useState([]);
   const [checkCurWeek, setCheckCurWeek] = useState([]);
+  const [curDataLoaded, setCurDataLoaded] = useState(false);
+  const [prevDataLoaded, setPrevDataLoaded] = useState(false);
+
   useEffect(() => {
     findWeeklyDate();
     formatCheckDate();
   }, [])
   
+
+  useEffect(()=>{
+    setPrevDataLoaded(true);
+  }, [checkPrevWeek])
+
+  useEffect(()=>{
+    setCurDataLoaded(true);
+  }, [checkCurWeek])
 
   const findWeeklyDate = ()=>{
     const today = new Date();
@@ -34,10 +45,9 @@ function RecordGrowthTable({props}) {
 
   const formatCheckDate = ()=>{
     const parsedPrevWeek = weekState.lastWeek.map(dateString => new Date(dateString).getDate());
-    setCheckPrevWeek( parsedPrevWeek);
-
+    setCheckPrevWeek(parsedPrevWeek);
     const parsedCurWeek = weekState.thisWeek.map(dateString => new Date(dateString).getDate());
-    setCheckCurWeek( parsedCurWeek);
+    setCheckCurWeek(parsedCurWeek);
   }
   
 
@@ -50,13 +60,13 @@ function RecordGrowthTable({props}) {
         </div>
         <div className='prevWeek checkarea'>
             <span>지난주</span>
-            {prevWeek.map((check, idx) =>(
+            {prevDataLoaded&&prevWeek.map((check, idx) =>(
                 <div key={idx} className={checkPrevWeek.indexOf(check)>-1?"checkbox":"emptybox"}></div>
             ))}
         </div>
         <div className='curWeek checkarea'>
             <span>이번주</span>     
-            {curWeek.map((check, idx)=>(
+            {curDataLoaded&&curWeek.map((check, idx)=>(
                 <div key={idx} className={checkCurWeek.indexOf(check)>-1?"checkbox":"emptybox"}></div>
             ))}
         </div>
