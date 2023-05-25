@@ -149,18 +149,6 @@ const CalendarWrapper = styled.div`
     background: #dee9fd;
     border: 1px solid #bcd6ff;
   }
-
-  /* .monthly {
-    height: 826px;
-    transition: height 0.5s ease-in-out;
-    background-color: grey;
-  } */
-
-  /* .weekly {
-    height: 214px;
-    transition: height 0.3s ease-in-out;
-    background-color: grey;
-  } */
 `;
 
 export default RecordCalendar;

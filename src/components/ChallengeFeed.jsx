@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useState } from "react";
-import ChallengeList from "./ChallengeList";
 import { useRecoilValue } from "recoil";
 import {
   challengeState,
@@ -13,7 +12,6 @@ import ChallengeItem from "./ChallengeItem";
 
 const ChallengeFeed = () => {
   const challenge = useRecoilValue(challengeState);
-  console.log(challenge);
   const categories = useRecoilValue(categoryState);
   const auth = useRecoilValue(authState);
   const [isHovered, setIsHovered] = useState(false);
@@ -124,9 +122,8 @@ const ChallengeLists = styled.div`
   width: 920px;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3개의 열을 생성 */
-
-  grid-column-gap: 28px; /* 열 간격 설정 */
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 28px;
   grid-row-gap: 32px;
   grid-auto-rows: 180px;
   justify-content: space-between;
@@ -135,7 +132,6 @@ const ChallengeLists = styled.div`
 const Container = styled.div`
   background-color: #ffffff;
   max-width: 920px;
-  /* margin: auto; */
   height: 700px;
   margin-top: 44px;
   position: relative;
@@ -159,7 +155,6 @@ const Title = styled.div`
   font-weight: 700;
   font-size: 26px;
   line-height: 32px;
-  /* identical to box height */
   justify-content: center;
   text-align: center;
   display: flex;
@@ -183,7 +178,6 @@ const Title = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 17px;
-    /* identical to box height */
     text-align: center;
     color: #272727;
     display: flex;
@@ -206,7 +200,6 @@ const Title = styled.div`
     font-weight: 400;
     font-size: 16px;
     line-height: 16px;
-    /* identical to box height, or 100% */
     padding-left: 17px;
     color: #272727;
   }
@@ -328,7 +321,6 @@ const Category = styled.div`
     font-weight: 400;
     font-size: 16px;
     line-height: 16px;
-    /* identical to box height, or 100% */
 
     color: #266cf4;
   }

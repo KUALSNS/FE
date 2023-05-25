@@ -2,12 +2,6 @@ import React from "react";
 import { styled } from "styled-components";
 
 const ChallengeToast = ({ message }) => {
-  // const message = [
-  //   "이미 진행 중인 챌린지에요!",
-  //   "진행중인 챌린지가 없어요!",
-  //   "더 이상 챌린지를 진행할 수 없어요!",
-  // ];
-
   return (
     <ChallengeToastWrapper>
       <ChallengeBox>

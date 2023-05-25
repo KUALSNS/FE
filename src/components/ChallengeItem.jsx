@@ -8,8 +8,6 @@ import {
   ChallengeWriteState,
   selectChallengeState,
   challengeToastState,
-  startChallengeModalState,
-  TitleState,
 } from "../atoms/auth";
 import { getChallengePage, getAccessToken } from "../remotes";
 
@@ -21,19 +19,14 @@ const ChallengeItem = ({ title, category, image }) => {
     useRecoilState(selectChallengeState);
   const [writeChallenge, setWriteChallenge] =
     useRecoilState(ChallengeWriteState);
-  const [proceeding, setProceeding] = useState(false);
   const [loading, setLoading] = useRecoilState(loadingState);
   const [toast, setToast] = useRecoilState(challengeToastState);
 
   function Retoken() {
-    // 토큰 재발급 API 호출
     return getAccessToken()
       .then((res) => {
         const newAccessToken = res.data.data.accessToken;
-
         localStorage.setItem("accessToken", newAccessToken);
-        // 재발급 받은 리프레시 토큰도 필요한 경우 저장 또는 업데이트
-
         return Promise.resolve(newAccessToken);
       })
       .catch((error) => {
@@ -45,7 +38,6 @@ const ChallengeItem = ({ title, category, image }) => {
   function getChallengePageWithTokenRefresh(title) {
     return getChallengePage(title)
       .then((res) => {
-        console.log(res.data.data);
         localStorage.setItem("challengeName", title);
         setWriteChallenge(res.data.data);
 
@@ -69,7 +61,6 @@ const ChallengeItem = ({ title, category, image }) => {
         } else if (err.response && err.response.status === 418) {
           setLoading(false);
           setToast("더 이상 챌린지를 진행할 수 없어요!");
-          //  더 이상 챌린지를 진행할 수 없습니다.
         } else {
           console.error(err);
         }
@@ -163,7 +154,6 @@ const Container = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
-    /* identical to box height, or 114% */
     height: 24px;
     color: #7c8089;
   }
@@ -203,7 +193,6 @@ const Container = styled.div`
     font-weight: 500;
     font-size: 14px;
     line-height: 16px;
-    /* identical to box height, or 114% */
     align-items: center;
     text-align: center;
 

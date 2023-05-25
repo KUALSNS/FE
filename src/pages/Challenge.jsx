@@ -27,7 +27,7 @@ function Challenge() {
   const [side, setSide] = useRecoilState(sideState);
 
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
-  const API_KEY = import.meta.env.REACT_APP_API_KEY;
+  //const API_KEY = process.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -302,12 +302,7 @@ function Challenge() {
                       return (
                         <div
                           key={idx}
-                          className={`drop-item ${
-                            selectChallenge ===
-                            `[${item.category}] ${item.challengeName}`
-                              ? "drop-item-select"
-                              : ""
-                          }`}
+                          className="drop-item"
                           onClick={() => onSelectChallenge(item)}
                         >
                           [{item.category}] {item.challengeName}
@@ -322,7 +317,7 @@ function Challenge() {
 
               <input
                 type="text"
-                placeholder="챌린지 시작을 위한 나의 제목을 기록해볼까요?"
+                placeholder="챌린지 시작을 위한 나의 제목을 작성해볼까요?"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               ></input>
@@ -338,7 +333,7 @@ function Challenge() {
                   style={{ display: "none" }}
                 />
                 <Editor
-                  apiKey={API_KEY}
+                  apiKey={"g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20"}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   placeholder="내용을 입력해주세요."
                   init={{
@@ -403,11 +398,7 @@ function Challenge() {
               <h2>질문 템플릿 상세 검색</h2>
               <div className="currentTemplateContainer">
                 {writeChallenge.templateData?.templates?.map((t, idx) => (
-                  <div
-                    className="currentTemplate"
-                    key={idx}
-                    onClick={(e) => handlePlusClick(t, idx)}
-                  >
+                  <div className="currentTemplate" key={idx}>
                     <div
                       className={
                         t.templateTitle.length >= 16 ? "twoline" : "oneline"
@@ -474,8 +465,8 @@ const Container = styled.div`
     z-index: 3;
     width: 396px;
     background-color: #ffffff;
-    padding: 16px;
-    top: 30px;
+
+    top: 35px;
     border-radius: 8px;
     font-family: "Pretendard";
     font-style: normal;
@@ -487,19 +478,16 @@ const Container = styled.div`
   }
 
   .drop-item {
+    width: 380px;
     height: 40px;
     display: flex;
     align-items: center;
-
+    border-bottom: 1px solid #e2e4e7;
     margin-left: 5px;
     padding-left: 15px;
     cursor: pointer;
   }
-  .drop-item-select {
-    background: #f3f5f9;
-    border-radius: 4px;
-    margin-bottom: 8px;
-  }
+
   .challenging {
     font-family: "Pretendard";
     font-style: normal;
@@ -677,13 +665,8 @@ const Container = styled.div`
     text-align: center;
     padding: 15px;
     background: #f3f5f9;
-
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  .currentTemplate:hover {
     box-shadow: 0px 18px 20px -18px rgba(39, 39, 39, 0.2);
-    margin-top: -8px;
+    border-radius: 8px;
   }
 
   .currentTemplate .oneline {
@@ -740,7 +723,7 @@ const ChallengeModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   height: 100vh;
