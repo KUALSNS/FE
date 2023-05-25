@@ -9,8 +9,11 @@ import {
   activeChallengeState,
   mypageInfoState,
   subscribedState,
+  SmallScreenState,
+  semiListToggleState,
 } from "../atoms/auth";
 import { patchLogoutUser, postLoginMain, getMypageInfo } from "../remotes";
+import SemiNav from "../components/SemiNav";
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -23,8 +26,16 @@ const Navigation = () => {
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
   const setSubscriber = useSetRecoilState(subscribedState);
+  const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
+  const [semiListToggle, setSemiListToggle] =
+    useRecoilState(semiListToggleState);
+
   const sidebarToggle = () => {
-    setListToggle(!listToggle);
+    if (isSmallScreen) {
+      setSemiListToggle(!semiListToggle);
+    } else {
+      setListToggle(!listToggle);
+    }
   };
   const userInfoToggle = () => {
     setUserToggle(!userToggle);
@@ -109,6 +120,7 @@ const Navigation = () => {
         <div className="navi-list">
           <img onClick={sidebarToggle} src="/menu.svg" />
         </div>
+        {isSmallScreen ? semiListToggle ? <SemiNav /> : "" : ""}
       </ContainerLeft>
       <ContainerRight>
         <div className={auth ? "after-right" : "before-right"}>

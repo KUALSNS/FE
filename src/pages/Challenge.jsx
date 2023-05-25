@@ -359,7 +359,12 @@ function Challenge() {
                       return (
                         <div
                           key={idx}
-                          className="drop-item"
+                          className={`drop-item ${
+                            selectChallenge ===
+                            `[${item.category}] ${item.challengeName}`
+                              ? "drop-item-select"
+                              : ""
+                          }`}
                           onClick={() => onSelectChallenge(item)}
                         >
                           [{item.category}] {item.challengeName}
@@ -374,7 +379,7 @@ function Challenge() {
 
               <input
                 type="text"
-                placeholder="나의 제목을 기록해보세요"
+                placeholder="챌린지 시작을 위한 나의 제목을 기록해볼까요?"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               ></input>
@@ -522,8 +527,8 @@ const Container = styled.div`
     z-index: 3;
     width: 396px;
     background-color: #ffffff;
-
-    top: 35px;
+    padding: 16px;
+    top: 30px;
     border-radius: 8px;
     font-family: "Pretendard";
     font-style: normal;
@@ -535,16 +540,19 @@ const Container = styled.div`
   }
 
   .drop-item {
-    width: 380px;
     height: 40px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #e2e4e7;
+
     margin-left: 5px;
     padding-left: 15px;
     cursor: pointer;
   }
-
+  .drop-item-select {
+    background: #f3f5f9;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
   .challenging {
     font-family: "Pretendard";
     font-style: normal;
@@ -792,7 +800,7 @@ const ChallengeModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
