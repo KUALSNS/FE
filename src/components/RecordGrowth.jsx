@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 
 import { styled } from "styled-components";
@@ -7,6 +6,7 @@ import {
   subscribedState,
   recordModalState,
   subscribeModalState,
+  detailuserState,
 } from "../atoms/auth";
 import RecordGrowthGraph from "./RecordGrowthGraph";
 import RecordGrowthTable from "./RecordGrowthTable";
@@ -15,6 +15,7 @@ import RecordGrowthBlocks from "./RecordGrowthBlocks";
 import { getPlannerStatistic, postActivateCupon } from "../remotes";
 
 function RecordGrowth() {
+  const detailuser = useRecoilValue(detailuserState);
   const today = new Date();
   const month = today.getMonth();
   const year = today.getFullYear();
@@ -72,15 +73,15 @@ function RecordGrowth() {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleCuponClick = ()=>{
+  const handleCuponClick = () => {
     postActivateCupon()
-    .then((res)=>{
+      .then((res) => {
         console.log(res);
         setSubscribeModalState(true);
         setSubscriber(true);
-    })
-    .catch((err)=>console.log(err));
-  }
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <RecordGrowthWrapper showState={showState}>
       <div className="topbar">
@@ -89,13 +90,12 @@ function RecordGrowth() {
         </div>
         <div className="logoArea">
           <img src="record_modal_logo.svg"></img>성장 분석
-
         </div>
       </div>
 
       <div className="statistics">
         <h2>
-          라이언님,
+          {detailuser.nickname} 님,
           <br />
           이번 달은 {monthState.thisMonth}일 챌린지를 완료했어요
         </h2>
@@ -125,7 +125,6 @@ function RecordGrowth() {
             </div>
             <div className="explain">
               <RecordGrowthBlocks props={weekState} />
-
             </div>
           </>
         ) : (
