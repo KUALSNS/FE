@@ -78,6 +78,7 @@ function Challenge() {
     )
       .then((res) => {
         setSaveAlert(true);
+        setSide(false);
         localStorage.removeItem("challengeName");
         localStorage.removeItem("fixChallenge");
       })
@@ -219,7 +220,7 @@ function Challenge() {
         }, 500);
       }, 1500);
     }
-  }, [saveAlert, writeChallenge.templateCertain]);
+  }, [saveAlert]);
 
   function ChallengePreModal() {
     return (
