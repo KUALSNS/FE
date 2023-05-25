@@ -5,7 +5,8 @@ import { styled } from "styled-components";
 function CheckModal({ message }) {
   const navigate = useNavigate();
   const SpaceRecord = (message) => {
-    if (message == "회원가입이 완료되었습니다.") {
+    if (message == "회원가입이 완료되었습니다." || message==="임시 비밀번호가 전송되었습니다."
+  || message.substr(0,3)==="아이디"){
       navigate("/login");
     } else {
       navigate("/record");
