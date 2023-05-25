@@ -10,8 +10,7 @@ import { useRecoilState } from "recoil";
 import MypageModal from "../components/mypage/MypageModal";
 import MypageSubscribe from "../components/mypage/MypageSubscribe";
 import { getMypageInfo, getAccessToken, patchNamePhone } from "../remotes";
-import SubscribeCupon from "../components/SubscribeCupon";
-import ChallengeToast from "../components/toast/ChallengeToast";
+import SubscribeCupon from "../components/record/SubscribeCupon";
 
 const check = false;
 

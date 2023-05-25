@@ -1,8 +1,8 @@
 import React, {useRef} from 'react'
 import { styled } from 'styled-components'
 import { useRecoilState } from 'recoil';
-import { subscribeModalState } from '../atoms/auth';
-import { subscribedState } from '../atoms/auth';
+import { subscribeModalState } from '../../atoms/auth';
+import { subscribedState } from '../../atoms/auth';
 
 function SubscribeCupon() {
   const [modalState, setModalState] = useRecoilState(subscribeModalState);
