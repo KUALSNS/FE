@@ -374,7 +374,7 @@ function Challenge() {
 
               <input
                 type="text"
-                placeholder="나의 제목을 기록해보세요"
+                placeholder="챌린지 시작을 위한 나의 제목을 기록해볼까요?"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               ></input>
