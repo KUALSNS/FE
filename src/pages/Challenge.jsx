@@ -395,7 +395,7 @@ function Challenge() {
                   style={{ display: "none" }}
                 />
                 <Editor
-                  apiKey={API_KEY}
+                  apiKey={"g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20"}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   placeholder="내용을 입력해주세요."
                   init={{
