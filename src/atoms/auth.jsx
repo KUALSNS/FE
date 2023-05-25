@@ -25,6 +25,16 @@ export const userState = atom({
   },
 });
 
+export const TitleState = atom({
+  key: "src/atoms/auth.jsx-TitleState",
+  default: "",
+});
+
+export const startChallengeModalState = atom({
+  key: "src/atoms/auth.jsx-startChallengeModalState",
+  default: false,
+});
+
 export const mypageModalState = atom({
   key: "src/atoms/auth.jsx-mypageModalState",
   default: {

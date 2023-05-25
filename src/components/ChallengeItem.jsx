@@ -8,6 +8,8 @@ import {
   ChallengeWriteState,
   selectChallengeState,
   challengeToastState,
+  startChallengeModalState,
+  TitleState,
 } from "../atoms/auth";
 import { getChallengePage, getAccessToken } from "../remotes";
 
@@ -58,6 +60,7 @@ const ChallengeItem = ({ title, category, image }) => {
         navigate("/challenge");
       })
       .catch((err) => {
+        console.log(err);
         if (err.response && err.response.status === 419) {
           return Retoken().then(() => getChallengePage(title));
         } else if (err.response && err.response.status === 415) {

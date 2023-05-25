@@ -29,7 +29,7 @@ function Challenge() {
   const [side, setSide] = useRecoilState(sideState);
 
   const emoticon = ["☘️", "🌕", "🗒", "👍"];
-  //const API_KEY = process.env.REACT_APP_API_KEY;
+  const API_KEY = import.meta.env.REACT_APP_API_KEY;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -395,7 +395,7 @@ function Challenge() {
                   style={{ display: "none" }}
                 />
                 <Editor
-                  apiKey={"g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20"}
+                  apiKey={API_KEY}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   placeholder="내용을 입력해주세요."
                   init={{
@@ -800,7 +800,7 @@ const ChallengeModalWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
