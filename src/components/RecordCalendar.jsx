@@ -129,7 +129,7 @@ const CalendarWrapper = styled.div`
     margin-right: 24px;
   }
   .topbar button {
-    width: 123px;
+    width: 140px;
     height: 40px;
     padding: 8px;
     font-size: 14px;
