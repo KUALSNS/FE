@@ -109,7 +109,9 @@ function RecordChallenges() {
       ) : (
         <>
           <div className="topbar">
-            <h2>{filter[filterIdx]}</h2>
+            <h2 onClick={() => setShowFilter(!showFilter)}>
+              {filter[filterIdx]}
+            </h2>
             <img
               className="dropdown"
               onClick={() => setShowFilter(!showFilter)}
@@ -192,9 +194,11 @@ function RecordChallenges() {
                       </div>
                     </div>
 
-                    <div className='progressTape'>
-                        <RecordProgressTape progress={chal.achievement} colorIdx={idx}/>
-
+                    <div className="progressTape">
+                      <RecordProgressTape
+                        progress={chal.achievement}
+                        colorIdx={idx}
+                      />
                     </div>
                   </div>
                 ))
@@ -242,32 +246,44 @@ const RecordChallengesWrapper = styled.div`
     height: 23px;
     margin-right: 2px;
     display: inline-block;
+    cursor: pointer;
   }
   .topbar img {
     cursor: pointer;
   }
   .filter {
     position: absolute;
-    width: 228px;
+    width: 288px;
     box-shadow: 0px 2px 38px -8px rgba(39, 39, 39, 0.2);
     border-radius: 8px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    z-index: 20;
+    z-index: 1;
     gap: 1px;
+    padding: 16px;
   }
 
   .filter div {
     flex-grow: 1;
-    padding: 14px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
     font-size: 14px;
     line-height: 14px;
-    border-bottom: 1px solid #e2e4e7;
     cursor: pointer;
+    color: #7c8089;
   }
-  .filter div:last-of-type {
-    border: 0;
+
+  .filter :nth-child(2) {
+    margin: 8px 0;
+  }
+
+  .filter .selected {
+    background: #f3f5f9;
+    border-radius: 4px;
+    color: #272727;
   }
   .challengeList {
     position: relative;
