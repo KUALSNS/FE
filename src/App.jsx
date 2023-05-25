@@ -29,15 +29,13 @@ function App() {
     if (accessToken) {
       // 토큰의 만료 시간을 체크
       const tokenExpiration = jwt_decode(accessToken).exp;
-      console.log("zz");
+
       const currentTime = Date.now() / 1000;
       // 토큰이 만료되었다면, 새로운 토큰을 발급
       if (tokenExpiration < currentTime) {
         getAccessToken()
           .then((res) => {
-            console.log(res);
             localStorage.setItem("accessToken", res.data.data.accessToken);
-            console.log("access 토큰 만 재발급");
           })
           .catch((error) => {
             if (error.response.data.code === 419) {
@@ -70,7 +68,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(345);
     if (toast) {
       setTimeout(() => {
         setToast(false);

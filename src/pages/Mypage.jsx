@@ -33,10 +33,8 @@ function Mypage() {
   }, []);
 
   const mypageInit = () => {
-    console.log("mypageinit");
     getMypageInfo()
       .then((res) => {
-        console.log(res);
         const data = res.data.responseData;
         setUserInfo({
           id: data.identifier,
@@ -50,7 +48,6 @@ function Mypage() {
         setPhoneInput(data.phone);
       })
       .catch((err) => {
-        console.log(err.response.data.code);
         if (err.response.data.code === 419) {
           Retoken();
         } else {

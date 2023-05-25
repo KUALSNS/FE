@@ -7,7 +7,7 @@ import CheckModal from "../components/modal/CheckModal";
 import ChallengeToast from "../components/toast/ChallengeToast";
 function FindIdPw() {
   const findState = useRecoilValue(IdPwFindState);
-  console.log("findstate:", findState);
+
   const [userName, setUserName] = useState("");
   const [userId, setUserId] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -25,7 +25,6 @@ function FindIdPw() {
   }, [toast]);
 
   const verifyEmail = () => {
-    console.log(userEmail);
     postEmail(userEmail)
       .then((res) => {
         setEmailConfirmed(true);
