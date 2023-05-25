@@ -1,11 +1,11 @@
-import React from 'react'
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { userState } from '../atoms/auth';
-import { useRecoilState,useSetRecoilState } from 'recoil'
-import styled from 'styled-components';
-import { postLoginUser } from '../remotes';
-import { IdPwFindState } from '../atoms/auth';
+import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { userState } from "../atoms/auth";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import styled from "styled-components";
+import { postLoginUser } from "../remotes";
+import { IdPwFindState } from "../atoms/auth";
 import { authState, challengeToastState } from "../atoms/auth";
 import ChallengeToast from "../components/toast/ChallengeToast";
 
@@ -62,7 +62,7 @@ const SigninForm = styled.form`
     margin-top: 40px;
     margin-bottom: 24px;
   }
-  a{
+  a {
     cursor: pointer;
   }
 
@@ -91,9 +91,6 @@ const Signin = () => {
     console.log(password);
     postLoginUser(userId, password)
       .then((res) => {
-        console.log(res);
-        console.log(res.data.data.accessToken);
-        console.log(res.data.data.refreshToken);
         localStorage.setItem("accessToken", res.data.data.accessToken);
         localStorage.setItem("refreshToken", res.data.data.refreshToken);
         setAuth(true);
@@ -108,11 +105,10 @@ const Signin = () => {
       });
   };
 
-  const findIdPwRoute = (param)=>{
+  const findIdPwRoute = (param) => {
     setFindState(param);
-    navigate('/find')
-  }
-
+    navigate("/find");
+  };
 
   const signupRoute = (e) => {
     navigate("/register");
@@ -143,9 +139,10 @@ const Signin = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></input>
           <button type="submit">로그인</button>
-        <span className='find'>
-          <a onClick={()=>findIdPwRoute("id")}>아이디 찾기</a> | <a onClick={()=>findIdPwRoute("pw")}>비밀번호 찾기</a>
-        </span>
+          <span className="find">
+            <a onClick={() => findIdPwRoute("id")}>아이디 찾기</a> |{" "}
+            <a onClick={() => findIdPwRoute("pw")}>비밀번호 찾기</a>
+          </span>
         </SigninForm>
         <img src="signin_signupBtn.svg" onClick={signupRoute} />
       </SigninWrapper>

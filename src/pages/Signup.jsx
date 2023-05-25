@@ -213,22 +213,17 @@ const Signup = () => {
 
   const LoginSubmit = (e) => {
     e.preventDefault();
-    console.log(userId, email, password2, username, phone);
 
     postSignup(userId, email, password2, username, phone)
       .then((res) => {
         console.log(res);
         setOkaymodal(true);
-        // 회원가입이 완료되었습니다. 라는 모달창과 동시에 로그인창으로 이동
-        // navigate("/login");
       })
       .catch((err) => {
         if (err.response && err.response.status === 400) {
           setToast("이미 존재하는 아이디 또는 중복되는 이메일입니다.");
         }
       });
-    //[needFix]
-    //if email exists, show modal
   };
 
   const handleIdChange = (e) => {
@@ -241,7 +236,7 @@ const Signup = () => {
     const regex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[\[\]\/\\\.,<>?;':"{}|\-_+~!@#$%^&*()=\`\[\]])[A-Za-z\d\[\]\/\\\.,<>?;':"{}|\-_+~!@#$%^&*()=\`\[\]]{8,}$/;
     setPassword1(value);
-    console.log(password1);
+
     if (!regex.test(value)) {
       setPassword1Error(true);
     } else {
@@ -290,10 +285,7 @@ const Signup = () => {
 
   const handleIdClick = (e) => {
     e.preventDefault();
-    //[needFix]
-    //fetch to server, check if duplicated
-    //for test,
-    //if userId==="existing1", show error
+
     if (userId === "existing1") {
       setIdError(true);
     } else {
@@ -303,7 +295,7 @@ const Signup = () => {
 
   const handleEmailClick = (e) => {
     e.preventDefault();
-    console.log(email);
+
     postEmail(email)
       .then((res) => {
         setEmailConfirmed(true);
@@ -315,18 +307,14 @@ const Signup = () => {
 
   const handleEmailCodeClick = (e) => {
     e.preventDefault();
-    //[needFix]
-    //email confirm server check
+
     getEmailCode(email, emailCode)
       .then((res) => {
-        console.log(res);
         setToast("이메일 인증이 완료되었습니다.");
-        // 여기도 뭔가 인증이 완료 되었습니다. 토스트로 구현함.
       })
       .catch((err) => {
         setEmailCodeError(true);
         console.log(err);
-        // 여기는 인증이 완료되지않았습니다. 모달창 필요.. 작성한 인증코드 삭제해주는 기능
       });
   };
 

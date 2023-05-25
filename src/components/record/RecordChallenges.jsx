@@ -93,12 +93,13 @@ function RecordChallenges() {
             <h2>이런 챌린지는 어때요?</h2>
             <p>라이톤은 지속적인 글쓰기를 위한 글 챌린지를 응원해요</p>
             <ChallengeLists>
-              {allChallengeServed.map((item) => {
+              {allChallengeServed.map((item, idx) => {
                 return (
                   <ChallengeItem
                     title={item.title}
                     category={item.category}
                     image={item.image}
+                    key={idx}
                   />
                 );
               })}
@@ -145,6 +146,7 @@ function RecordChallenges() {
               selectedChallenge.map((chal, idx) =>
                 chal.user_challenge_templetes?.map((item, temIdx) => (
                   <div
+                    key={temIdx}
                     className={
                       longContent.indexOf(idx * 100 + temIdx) > -1
                         ? "challengeItem longerItem"

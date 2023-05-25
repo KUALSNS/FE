@@ -4,20 +4,23 @@ import {
   mypageInfoState,
   mypageModalState,
   mypageSubscribeState,
+  challengeToastState,
 } from "../atoms/auth";
 import { useRecoilState } from "recoil";
 import MypageModal from "../components/mypage/MypageModal";
 import MypageSubscribe from "../components/mypage/MypageSubscribe";
 import { getMypageInfo, getAccessToken, patchNamePhone } from "../remotes";
 import SubscribeCupon from "../components/SubscribeCupon";
+import ChallengeToast from "../components/toast/ChallengeToast";
 
-const check = false; //needfix: email check button, change into atom
+const check = false;
 
 function Mypage() {
   const [editing, setEditing] = useState(false);
   const [nicknameInput, setNicknameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(mypageInfoState);
+  const [toast, setToast] = useRecoilState(challengeToastState);
   const [modalState, setModalState] = useRecoilState(mypageModalState);
   const [subscribeState, setSubscribeState] =
     useRecoilState(mypageSubscribeState);
@@ -50,7 +53,6 @@ function Mypage() {
         console.log(err.response.data.code);
         if (err.response.data.code === 419) {
           Retoken();
-          //mypageInit();
         } else {
           console.log(err);
         }
@@ -61,7 +63,6 @@ function Mypage() {
     getAccessToken()
       .then((res) => {
         localStorage.setItem("accessToken", res.data.data.accessToken);
-        console.log("Retoken: access 토큰 재발급");
       })
       .catch((error) => {
         if (error.response.data.code === 419) {
@@ -78,13 +79,12 @@ function Mypage() {
   const saveEdit = () => {
     patchNamePhone(nicknameInput, phoneInput)
       .then((res) => {
-        console.log(res);
         setUserInfo({
           ...userInfo,
           nickname: nicknameInput,
           phone: phoneInput,
         });
-        alert("저장되었습니다.");
+        setToast("저장되었습니다.");
       })
       .catch((err) => {
         console.log(err);
@@ -94,6 +94,7 @@ function Mypage() {
 
   return (
     <>
+      {toast === "저장되었습니다." ? <ChallengeToast message={toast} /> : ""}
       <SubscribeCupon />
       <MypageSubscribe />
       {modalState.show && <MypageModal />}
