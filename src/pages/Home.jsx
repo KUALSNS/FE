@@ -7,7 +7,7 @@ import ChallengeStory from "../components/ChallengeStory";
 import ChallengeFeed from "../components/ChallengeFeed";
 import { postLoginMain, getChallenge } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   categoryState,
   challengeState,
@@ -15,8 +15,6 @@ import {
   authState,
   loadingState,
   activeChallengeState,
-  challengeToastState,
-  certainToastState,
 } from "../atoms/auth";
 
 const Home = () => {
@@ -26,13 +24,12 @@ const Home = () => {
   const setDetailuser = useSetRecoilState(detailuserState);
   const setActiveChallenge = useSetRecoilState(activeChallengeState);
   const [auth, setAuth] = useRecoilState(authState);
-  const [certainToast, setCertainToast] = useRecoilState(certainToastState);
 
   const Retoken = () => {
     getAccessToken()
       .then((res) => {
         localStorage.setItem("accessToken", res.data.data.accessToken);
-        console.log("access 토큰 만 재발급");
+        console.log("Retoken: access 토큰 재발급");
       })
       .catch((error) => {
         if (error.response.data.code === 419) {
@@ -52,7 +49,6 @@ const Home = () => {
     if (accessToken) {
       postLoginMain()
         .then((res) => {
-          console.log(res);
           setChallenge(res.data.data.challengesArray);
           setCategory(res.data.data.category);
           setDetailuser({
@@ -69,8 +65,7 @@ const Home = () => {
         })
         .catch((err) => {
           if (err.response.data.code === 419) {
-            //Retoken();
-            //getLoginMain();// 재귀함수? 필요없나.. 고민
+            Retoken();
           } else {
             console.log(err);
           }
@@ -117,15 +112,8 @@ const Container = styled.div`
   background-color: #ffffff;
   max-width: 920px;
   margin: auto;
-  /* height: 1000px; */
+
   margin-top: 80px;
   padding-top: 0.1px;
   padding-bottom: 350px;
 `;
-
-// const Main = styled.div`
-//   /* background-color: lightgreen; */
-//   width: 100%;
-// `;
-
-//전체 width가 1390px 되면 사이드바 사라지게끔 하기

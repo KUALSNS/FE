@@ -1,26 +1,19 @@
-import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Challenge from "./pages/Challenge";
-import Template from "./pages/Template";
+
 import Record from "./pages/Record";
 import Mypage from "./pages/Mypage";
 import FindIdPw from "./pages/FindIdPw";
 import LeftNav from "./components/LeftNav";
 import { getAccessToken } from "./remotes";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  authState,
-  detailuserState,
-  challengeToastState,
-  SmallScreenState,
-  semiListToggleState,
-} from "./atoms/auth";
+import { useRecoilState } from "recoil";
+import { authState, challengeToastState, SmallScreenState } from "./atoms/auth";
 import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
-import { patchLogoutUser } from "./remotes";
+import { useEffect } from "react";
 import Navigation from "./components/Navigation";
 import ChallengeToast from "./components/toast/ChallengeToast";
 
@@ -28,10 +21,8 @@ function App() {
   const location = useLocation();
   const [auth, setAuth] = useRecoilState(authState);
   const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
-  const detailuser = useRecoilValue(detailuserState);
+
   const [toast, setToast] = useRecoilState(challengeToastState);
-  // const [semiListToggle, setSemiListToggle] =
-  //   useRecoilState(semiListToggleState);
 
   const checkTokenExpiration = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -62,8 +53,6 @@ function App() {
     }
   };
 
-  //setInterval(checkTokenExpiration, 60000);
-
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
@@ -81,11 +70,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // if (certainToast) {
-    //   setTimeout(() => {
-    //     setCertainToast(false);
-    //   }, 800);
-    // }
     console.log(345);
     if (toast) {
       setTimeout(() => {
@@ -95,7 +79,9 @@ function App() {
   }, [toast]);
   return (
     <div>
-      {location.pathname == "/login" || location.pathname == "/find" || location.pathname == "/register" ? (
+      {location.pathname == "/login" ||
+      location.pathname == "/find" ||
+      location.pathname == "/register" ? (
         ""
       ) : (
         <div>
@@ -117,6 +103,8 @@ function App() {
         <ChallengeToast message={toast} />
       ) : toast === "더 이상 챌린지를 진행할 수 없어요!" ? (
         <ChallengeToast message={toast} />
+      ) : toast === "제목을 입력해주세요!" ? (
+        <ChallengeToast message={toast} />
       ) : (
         ""
       )}
@@ -124,9 +112,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/challenge" element={<Challenge />} />
-        {/* <Route path="/challenge/:name" element={<Challenge />} /> */}
+
         <Route path="/record" element={<Record />} />
-        <Route path="/template" element={<Template />} />
+
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/register" element={<Signup />} />

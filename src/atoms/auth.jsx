@@ -48,11 +48,6 @@ export const mypageSubscribeState = atom({
   default: false,
 });
 
-// export const sideBarState = atom({
-//   key: "src/atoms/auth.jsx-sideBarState",
-//   default: "/",
-// });
-
 export const detailuserState = atom({
   key: "src/atoms/auth.jsx-detailuserState",
   default: { nickname: "", challengeCertain: false },
