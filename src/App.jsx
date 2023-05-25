@@ -10,7 +10,13 @@ import Mypage from "./pages/Mypage";
 import LeftNav from "./components/LeftNav";
 import { getAccessToken } from "./remotes";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { authState, detailuserState, challengeToastState } from "./atoms/auth";
+import {
+  authState,
+  detailuserState,
+  challengeToastState,
+  SmallScreenState,
+  semiListToggleState,
+} from "./atoms/auth";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { patchLogoutUser } from "./remotes";
@@ -20,9 +26,11 @@ import ChallengeToast from "./components/toast/ChallengeToast";
 function App() {
   const location = useLocation();
   const [auth, setAuth] = useRecoilState(authState);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
   const detailuser = useRecoilValue(detailuserState);
   const [toast, setToast] = useRecoilState(challengeToastState);
+  // const [semiListToggle, setSemiListToggle] =
+  //   useRecoilState(semiListToggleState);
 
   const checkTokenExpiration = () => {
     const accessToken = localStorage.getItem("accessToken");
@@ -70,6 +78,7 @@ function App() {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   useEffect(() => {
     // if (certainToast) {
     //   setTimeout(() => {
