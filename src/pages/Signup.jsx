@@ -7,7 +7,7 @@ import ChallengeToast from "../components/toast/ChallengeToast";
 import { challengeToastState } from "../atoms/auth";
 import { useRecoilState } from "recoil";
 import CheckModal from "../components/modal/CheckModal";
-import SignupTerm from "../components/SignupTerm";
+import SignupTerm from "../components/etc/SignupTerm";
 
 const SignupWrapper = styled.div`
   font-family: "Pretendard";

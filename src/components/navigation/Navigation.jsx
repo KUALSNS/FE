@@ -11,9 +11,9 @@ import {
   subscribedState,
   SmallScreenState,
   semiListToggleState,
-} from "../atoms/auth";
-import { patchLogoutUser, postLoginMain, getMypageInfo } from "../remotes";
-import SemiNav from "../components/SemiNav";
+} from "../../atoms/auth";
+import { patchLogoutUser, postLoginMain, getMypageInfo } from "../../remotes";
+import SemiNav from "./SemiNav";
 import { format } from "date-fns";
 
 const Navigation = () => {

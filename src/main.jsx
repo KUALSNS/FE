@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
-import ScrollToTop from "./components/ScrollToTop";
+import ScrollToTop from "./components/etc/ScrollToTop";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <RecoilRoot>

@@ -8,8 +8,8 @@ import {
   ChallengeWriteState,
   selectChallengeState,
   challengeToastState,
-} from "../atoms/auth";
-import { getChallengePage, getAccessToken } from "../remotes";
+} from "../../atoms/auth";
+import { getChallengePage, getAccessToken } from "../../remotes";
 
 const ChallengeItem = ({ title, category, image }) => {
   const emoticon = ["☘️", "🌕", "🗒", "👍"];

@@ -13,9 +13,9 @@ import {
   selectChallengeState,
   challengeToastState,
   semiListToggleState,
-} from "../atoms/auth";
+} from "../../atoms/auth";
 import { useLocation } from "react-router-dom";
-import { postSideBarChallenge } from "../remotes";
+import { postSideBarChallenge } from "../../remotes";
 
 function SemiNav() {
   const navigate = useNavigate();

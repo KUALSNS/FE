@@ -8,7 +8,7 @@ import Challenge from "./pages/Challenge";
 import Record from "./pages/Record";
 import Mypage from "./pages/Mypage";
 import FindIdPw from "./pages/FindIdPw";
-import LeftNav from "./components/LeftNav";
+import LeftNav from "./components/navigation/LeftNav";
 import { getAccessToken } from "./remotes";
 import { useRecoilState } from "recoil";
 import { authState, challengeToastState, SmallScreenState } from "./atoms/auth";

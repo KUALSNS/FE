@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Progress from "../components/Progress";
+import Progress from "./Progress";
 import { useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import {
@@ -11,9 +11,9 @@ import {
   selectChallengeState,
   ChallengeWriteState,
   sideState,
-} from "../atoms/auth";
+} from "../../atoms/auth";
 import { useNavigate } from "react-router-dom";
-import { postSideBarChallenge } from "../remotes";
+import { postSideBarChallenge } from "../../remotes";
 import { format } from "date-fns";
 
 const ChallengeStory = () => {

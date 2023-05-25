@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import LeftNav from "../components/LeftNav";
-import Navigation from "../components/Navigation";
 import { useEffect, useState } from "react";
-import ChallengeStory from "../components/ChallengeStory";
+import ChallengeStory from "../components/main/ChallengeStory";
 import ChallengeFeed from "../components/main/ChallengeFeed";
 import { postLoginMain, getChallenge } from "../remotes";
 import ClipLoader from "react-spinners/ClipLoader";
