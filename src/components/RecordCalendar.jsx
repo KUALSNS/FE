@@ -16,16 +16,12 @@ function RecordCalendar() {
 
   const startOfMonthDate = startOfMonth(currentMonth);
   const lastOfMonthDate = lastDayOfMonth(currentMonth);
-console.log("startofmonthdate?", startOfMonthDate);
-console.log("today?", today);
   useEffect(() => {
     setTotalWeek(differenceInCalendarWeeks(lastOfMonthDate, startOfMonthDate));
-    console.log("1 총 주 수, 해당 주 수:", totalWeek, currentWeek)
   }, [currentMonth])
   
   useEffect(()=>{
     setCurrentWeek(differenceInCalendarWeeks(today, startOfMonthDate));
-    console.log("2 총 주 수, 해당 주 수:", totalWeek, currentWeek)
   },[])
 
   const prevWeek = () =>{
@@ -135,7 +131,7 @@ const CalendarWrapper = styled.div`
   .topbar button {
     width: 123px;
     height: 40px;
-    padding: 8px 16px;
+    padding: 8px;
     font-size: 14px;
     border-radius: 2px;
   }
