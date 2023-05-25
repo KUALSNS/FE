@@ -5,23 +5,20 @@ function RecordGrowthTable({props}) {
   const week = ["일", "월", "화", "수", "목", "금", "토"];
   const [prevWeek, setPrevWeek] = useState([])
   const [curWeek, setCurWeek] = useState([])
-  const [checkPrevWeek, setCheckPrevWeek] = useState([]);
-  const [checkCurWeek, setCheckCurWeek] = useState([]);
+  const parsedPrevWeek = weekState.lastWeek.map(dateString => new Date(dateString).getDate());
+  const parsedCurWeek = weekState.thisWeek.map(dateString => new Date(dateString).getDate());
+
   useEffect(() => {
     findWeeklyDate();
-    formatCheckDate();
   }, [])
   
-
   const findWeeklyDate = ()=>{
     const today = new Date();
     const day = today.getDay();
     const date = today.getDate();
     const sunday = new Date(today);
     sunday.setDate(date - day);
-  
-    const prevWeek = [];
-    const curWeek = []; 
+
     for (let i = 0; i < 7; i++) {
       const date = new Date(sunday);
       date.setDate(sunday.getDate() + i);
@@ -31,15 +28,6 @@ function RecordGrowthTable({props}) {
     setPrevWeek(prevWeek);
     setCurWeek(curWeek);
   }
-
-  const formatCheckDate = ()=>{
-    const parsedPrevWeek = weekState.lastWeek.map(dateString => new Date(dateString).getDate());
-    setCheckPrevWeek( parsedPrevWeek);
-
-    const parsedCurWeek = weekState.thisWeek.map(dateString => new Date(dateString).getDate());
-    setCheckCurWeek( parsedCurWeek);
-  }
-  
 
   return (
     <Table>
@@ -51,13 +39,13 @@ function RecordGrowthTable({props}) {
         <div className='prevWeek checkarea'>
             <span>지난주</span>
             {prevWeek.map((check, idx) =>(
-                <div key={idx} className={checkPrevWeek.indexOf(check)>-1?"checkbox":"emptybox"}></div>
+                <div key={idx} className={parsedPrevWeek.indexOf(check)>-1?"checkbox":"emptybox"}></div>
             ))}
         </div>
         <div className='curWeek checkarea'>
             <span>이번주</span>     
             {curWeek.map((check, idx)=>(
-                <div key={idx} className={checkCurWeek.indexOf(check)>-1?"checkbox":"emptybox"}></div>
+                <div key={idx} className={parsedCurWeek.indexOf(check)>-1?"checkbox":"emptybox"}></div>
             ))}
         </div>
     </Table>
