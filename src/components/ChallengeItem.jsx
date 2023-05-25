@@ -8,6 +8,8 @@ import {
   ChallengeWriteState,
   selectChallengeState,
   challengeToastState,
+  startChallengeModalState,
+  TitleState,
 } from "../atoms/auth";
 import { getChallengePage, getAccessToken } from "../remotes";
 
@@ -22,6 +24,10 @@ const ChallengeItem = ({ title, category, image }) => {
   const [proceeding, setProceeding] = useState(false);
   const [loading, setLoading] = useRecoilState(loadingState);
   const [toast, setToast] = useRecoilState(challengeToastState);
+  const [startChallenge, setStartChallenge] = useRecoilState(
+    startChallengeModalState
+  );
+  const [orginTitle, setOrginTitle] = useRecoilState(TitleState);
 
   function Retoken() {
     // 토큰 재발급 API 호출
@@ -43,21 +49,11 @@ const ChallengeItem = ({ title, category, image }) => {
   function getChallengePageWithTokenRefresh(title) {
     return getChallengePage(title)
       .then((res) => {
-        console.log(res.data.data);
-        localStorage.setItem("challengeName", title);
-        setWriteChallenge(res.data.data);
-
-        setSelectChallenge(
-          "[" +
-            res.data.data.templateData.challengeCategory +
-            "]" +
-            " " +
-            res.data.data.templateData.challengeName
-        );
+        setStartChallenge(true);
         setLoading(false);
-        navigate("/challenge");
       })
       .catch((err) => {
+        console.log(err);
         if (err.response && err.response.status === 419) {
           return Retoken().then(() => getChallengePage(title));
         } else if (err.response && err.response.status === 415) {
@@ -76,6 +72,7 @@ const ChallengeItem = ({ title, category, image }) => {
   const spaceChallengePage = () => {
     if (auth) {
       setLoading(true);
+      setOrginTitle(title);
       localStorage.removeItem("fixChallenge");
       getChallengePageWithTokenRefresh(title);
     } else {

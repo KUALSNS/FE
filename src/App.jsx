@@ -114,9 +114,12 @@ function App() {
         <ChallengeToast message={toast} />
       ) : toast === "오늘은 모두 다 작성하셨어요!" ? (
         <ChallengeToast message={toast} />
+      ) : toast === "더 이상 챌린지를 진행할 수 없어요!" ? (
+        <ChallengeToast message={toast} />
       ) : (
         ""
       )}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/challenge" element={<Challenge />} />
