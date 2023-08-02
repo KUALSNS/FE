@@ -2061,6 +2061,11 @@
     "stylis" "^4.2.0"
     "tslib" "^2.5.0"
 
+"styled-reset@^4.5.1":
+  "integrity" "sha512-6EvFWZRwaFRFxiPYMwmnzOe33rDkw5r9jIU0eEi49bkt6VSrvjeMp2ZOw/YFbw5SVs81llIY+5fzHtR2/VBZfQ=="
+  "resolved" "https://registry.npmjs.org/styled-reset/-/styled-reset-4.5.1.tgz"
+  "version" "4.5.1"
+
 "stylis@^4.2.0":
   "integrity" "sha512-Orov6g6BB1sDfYgzWfTHDOxamtX1bE/zo104Dh9e6fqJ3PooipYyfJ0pUmrZO2wAvO8YbEyeFrkV91XTsGMSrw=="
   "resolved" "https://registry.npmjs.org/stylis/-/stylis-4.2.0.tgz"
