@@ -70,7 +70,7 @@ function MypageSubscribe() {
                 통계 분석 전체 열람
               </div>
               <hr />
-              <div className="period">이용 기간 2023.05.11 - 2023.06.11</div>
+              <div className="period">이용 기간 2023.05.27 - 2023.06.27</div>
             </div>
           )}
           <button disabled className="unsubscribe">

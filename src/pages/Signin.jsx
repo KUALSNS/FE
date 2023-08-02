@@ -87,8 +87,7 @@ const Signin = () => {
 
   const LoginSubmit = (e) => {
     e.preventDefault();
-    console.log(userId);
-    console.log(password);
+
     postLoginUser(userId, password)
       .then((res) => {
         localStorage.setItem("accessToken", res.data.data.accessToken);

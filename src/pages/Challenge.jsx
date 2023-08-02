@@ -78,6 +78,7 @@ function Challenge() {
     )
       .then((res) => {
         setSaveAlert(true);
+        setSide(false);
         localStorage.removeItem("challengeName");
         localStorage.removeItem("fixChallenge");
       })
@@ -219,7 +220,7 @@ function Challenge() {
         }, 500);
       }, 1500);
     }
-  }, [saveAlert, writeChallenge.templateCertain]);
+  }, [saveAlert]);
 
   function ChallengePreModal() {
     return (
@@ -398,7 +399,11 @@ function Challenge() {
               <h2>질문 템플릿 상세 검색</h2>
               <div className="currentTemplateContainer">
                 {writeChallenge.templateData?.templates?.map((t, idx) => (
-                  <div className="currentTemplate" key={idx}>
+                  <div
+                    className="currentTemplate"
+                    key={idx}
+                    onClick={(e) => handlePlusClick(t, idx)}
+                  >
                     <div
                       className={
                         t.templateTitle.length >= 16 ? "twoline" : "oneline"
@@ -418,7 +423,7 @@ function Challenge() {
                         : ""}{" "}
                       {t.category}
                     </span>
-                    <button onClick={(e) => handlePlusClick(t, idx)}>
+                    <button>
                       <img
                         className="plusIcon"
                         src="/challenge_template_plus.svg"
@@ -665,8 +670,14 @@ const Container = styled.div`
     text-align: center;
     padding: 15px;
     background: #f3f5f9;
-    box-shadow: 0px 18px 20px -18px rgba(39, 39, 39, 0.2);
+
     border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .currentTemplate:hover {
+    box-shadow: 0px 18px 20px -18px rgba(39, 39, 39, 0.2);
+    margin-top: -3px;
   }
 
   .currentTemplate .oneline {

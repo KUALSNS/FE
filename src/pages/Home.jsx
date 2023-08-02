@@ -27,7 +27,6 @@ const Home = () => {
     getAccessToken()
       .then((res) => {
         localStorage.setItem("accessToken", res.data.data.accessToken);
-        console.log("Retoken: access 토큰 재발급");
       })
       .catch((error) => {
         if (error.response.data.code === 419) {

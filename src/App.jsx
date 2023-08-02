@@ -24,11 +24,13 @@ function App() {
 
 	const [toast, setToast] = useRecoilState(challengeToastState);
 
+
 	const checkTokenExpiration = () => {
 		const accessToken = localStorage.getItem('accessToken');
 		if (accessToken) {
 			// 토큰의 만료 시간을 체크
 			const tokenExpiration = jwt_decode(accessToken).exp;
+
 
 			const currentTime = Date.now() / 1000;
 			// 토큰이 만료되었다면, 새로운 토큰을 발급
@@ -64,8 +66,10 @@ function App() {
 		window.addEventListener('resize', handleResize);
 		handleResize();
 
+
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
+
 
 	useEffect(() => {
 		if (toast) {
