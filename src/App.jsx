@@ -9,7 +9,7 @@ import Record from './pages/Record';
 import Mypage from './pages/Mypage';
 import FindIdPw from './pages/FindIdPw';
 import LeftNav from './components/navigation/LeftNav';
-import {getAccessToken} from './remotes';
+import {postAccessToken} from './remotes';
 import {useRecoilState} from 'recoil';
 import {authState, challengeToastState, SmallScreenState} from './atoms/auth';
 import jwt_decode from 'jwt-decode';
@@ -23,33 +23,6 @@ function App() {
 	const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
 
 	const [toast, setToast] = useRecoilState(challengeToastState);
-
-	const checkTokenExpiration = () => {
-		const accessToken = localStorage.getItem('accessToken');
-		if (accessToken) {
-			// 토큰의 만료 시간을 체크
-			const tokenExpiration = jwt_decode(accessToken).exp;
-
-			const currentTime = Date.now() / 1000;
-			// 토큰이 만료되었다면, 새로운 토큰을 발급
-			if (tokenExpiration < currentTime) {
-				getAccessToken()
-					.then(res => {
-						localStorage.setItem('accessToken', res.data.data.accessToken);
-					})
-					.catch(error => {
-						if (error.response.data.code === 419) {
-							localStorage.removeItem('accessToken');
-							localStorage.removeItem('refreshToken');
-							alert('로그인을 다시 하세요');
-							setAuth(false);
-						} else {
-							console.log(error);
-						}
-					});
-			}
-		}
-	};
 
 	useEffect(() => {
 		const accessToken = localStorage.getItem('accessToken');
