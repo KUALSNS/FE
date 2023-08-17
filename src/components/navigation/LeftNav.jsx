@@ -14,7 +14,7 @@ import {
 	challengeToastState,
 } from '../../atoms/auth';
 import {useLocation} from 'react-router-dom';
-import {postSideBarChallenge} from '../../remotes';
+import {postSideBarChallenge, Retoken} from '../../remotes';
 
 function LeftNav() {
 	const navigate = useNavigate();
@@ -42,7 +42,7 @@ function LeftNav() {
 	const [writeChallenge, setWriteChallenge] =
 		useRecoilState(ChallengeWriteState);
 
-	const selectMenu = (url, idx) => {
+	const selectMenu = url => {
 		if (auth) {
 			if (url === '/challenge') {
 				if (detailuser.challengeCertain) {
@@ -67,8 +67,9 @@ function LeftNav() {
 							}
 						})
 						.catch(err => {
-							console.log(err);
-							if (err.response && err.response.status === 404) {
+							if (err.response.data.code === 419) {
+								Retoken(selectMenu, url);
+							} else if (err.response && err.response.status === 404) {
 								setToast('오늘은 모두 다 작성하셨어요!');
 							}
 						});
