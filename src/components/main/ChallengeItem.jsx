@@ -9,7 +9,7 @@ import {
 	selectChallengeState,
 	challengeToastState,
 } from '../../atoms/auth';
-import {getChallengePage, getAccessToken} from '../../remotes';
+import {getChallengePage, Retoken} from '../../remotes';
 
 const ChallengeItem = ({title, category, image}) => {
 	const emoticon = ['☘️', '🌕', '🗒', '👍'];
@@ -21,19 +21,6 @@ const ChallengeItem = ({title, category, image}) => {
 		useRecoilState(ChallengeWriteState);
 	const [loading, setLoading] = useRecoilState(loadingState);
 	const [toast, setToast] = useRecoilState(challengeToastState);
-
-	function Retoken() {
-		return getAccessToken()
-			.then(res => {
-				const newAccessToken = res.data.data.accessToken;
-				localStorage.setItem('accessToken', newAccessToken);
-				return Promise.resolve(newAccessToken);
-			})
-			.catch(error => {
-				console.error('토큰 재발급 에러:', error);
-				return Promise.reject(error);
-			});
-	}
 
 	function getChallengePageWithTokenRefresh(title) {
 		return getChallengePage(title)
@@ -54,7 +41,7 @@ const ChallengeItem = ({title, category, image}) => {
 			.catch(err => {
 				console.log(err);
 				if (err.response && err.response.status === 419) {
-					return Retoken().then(() => getChallengePage(title));
+					Retoken(getChallengePageWithTokenRefresh, title);
 				} else if (err.response && err.response.status === 415) {
 					setLoading(false);
 					setToast('이미 진행 중인 챌린지에요!');
