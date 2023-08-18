@@ -24,6 +24,7 @@ function App() {
 
 	const [toast, setToast] = useRecoilState(challengeToastState);
 
+
 	useEffect(() => {
 		const accessToken = localStorage.getItem('accessToken');
 		if (accessToken) {
@@ -37,8 +38,10 @@ function App() {
 		window.addEventListener('resize', handleResize);
 		handleResize();
 
+
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
+
 
 	useEffect(() => {
 		if (toast) {

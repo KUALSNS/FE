@@ -6,6 +6,7 @@ import {styled} from 'styled-components';
 import CheckModal from '../components/modal/CheckModal';
 import ChallengeToast from '../components/toast/ChallengeToast';
 function FindIdPw() {
+
 	const findState = useRecoilValue(IdPwFindState);
 	console.log('findstate:', findState);
 	const [userName, setUserName] = useState('');
@@ -15,6 +16,7 @@ function FindIdPw() {
 	const [emailConfirmed, setEmailConfirmed] = useState(false);
 	const [modalState, setModalState] = useState('');
 	const [toast, setToast] = useRecoilState(challengeToastState);
+
 
 	useEffect(() => {
 		if (toast) {
@@ -28,6 +30,7 @@ function FindIdPw() {
 		postEmail(userEmail)
 			.then(res => {
 				setEmailConfirmed(true);
+
 
 				setToast('인증번호가 전송되었습니다.');
 			})

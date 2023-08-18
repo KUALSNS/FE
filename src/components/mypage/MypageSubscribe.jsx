@@ -94,6 +94,7 @@ function MypageSubscribe() {
 			)}
 		</SubscribeWrapper>
 	);
+
 }
 
 const SubscribeWrapper = styled.div`

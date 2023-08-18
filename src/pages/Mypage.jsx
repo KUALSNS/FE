@@ -32,6 +32,7 @@ function Mypage() {
 		mypageInit();
 	}, []);
 
+
 	const mypageInit = () => {
 		getMypageInfo()
 			.then(res => {
@@ -56,6 +57,7 @@ function Mypage() {
 			});
 	};
 
+ 
 	const saveEdit = () => {
 		patchNamePhone(nicknameInput, phoneInput)
 			.then(res => {

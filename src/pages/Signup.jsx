@@ -216,7 +216,6 @@ const Signup = () => {
 
     postSignup(userId, email, password2, username, phone)
       .then((res) => {
-        console.log(res);
         setOkaymodal(true);
       })
       .catch((err) => {
@@ -329,7 +328,7 @@ const Signup = () => {
   const handleCheck = (idx) => {
     const newCheck = [...check];
     newCheck[idx] = !newCheck[idx];
-    console.log(newCheck);
+
     setCheck(newCheck);
   };
 
