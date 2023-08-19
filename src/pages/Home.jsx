@@ -53,14 +53,13 @@ const Home = () => {
 		} else {
 			getChallenge()
 				.then(res => {
-					setChallenge(res.data.data.challengesArray);
+					setChallenge(res.data.data.challenges);
 					setCategory(res.data.data.category);
 					setLoading(false);
 				})
 				.catch(err => console.log(err));
 		}
 	}, []);
-
 
 	if (loading) {
 		return (
