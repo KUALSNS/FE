@@ -71,7 +71,7 @@ const postLoginMain = () =>
 	});
 
 const getChallengePage = name =>
-	WritonAxios.get(`/api/challenge/start/${name}`, {
+	WritonAxios.get(`/api/write/start/${name}`, {
 		headers: {access: localStorage.getItem('accessToken')},
 	});
 
@@ -116,7 +116,7 @@ const patchEmail = newEmail =>
 	);
 
 const getEachChallenge = name =>
-	WritonAxios.get(`/api/challenge/write/${name}`, {
+	WritonAxios.get(`/api/write/${name}`, {
 		headers: {access: localStorage.getItem('accessToken')},
 	});
 
@@ -127,7 +127,7 @@ const postRecordSubmit = (
 	challengeContent,
 ) =>
 	WritonAxios.post(
-		'/api/challenge/write/register',
+		'/api/write/register',
 		{
 			challengeName: challengeName,
 			templateName: templateName,
@@ -146,7 +146,7 @@ const postPreSubmit = (
 	challengeContent,
 ) =>
 	WritonAxios.post(
-		'/api/challenge/write/temporary-storage',
+		'/api/write/write/temporary-storage',
 		{
 			challengeName: challengeName,
 			templateName: templateName,
@@ -159,7 +159,7 @@ const postPreSubmit = (
 	);
 
 const postSideBarChallenge = () =>
-	WritonAxios.post('/api/challenge/write', '', {
+	WritonAxios.post('/api/write', '', {
 		headers: {access: localStorage.getItem('accessToken')},
 	});
 
@@ -214,6 +214,10 @@ const postPwFind = (id, email) =>
 		},
 	);
 
+const getCheckId = userId =>
+	WritonAxios.get(`/api/user/check-identifier?checkIdentifier=${userId}`);
+// 지동으로 결과값이 반환된다.
+
 export {
 	postLoginUser,
 	patchLogoutUser,
@@ -239,4 +243,5 @@ export {
 	getIdFind,
 	postPwFind,
 	Retoken,
+	getCheckId,
 };

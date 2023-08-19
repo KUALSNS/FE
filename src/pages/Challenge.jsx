@@ -380,14 +380,9 @@ function Challenge() {
 										statusbar: false,
 										plugins: 'autolink autosave save directionality image link',
 										toolbar:
-											'blocks fontsizeinput bold italic underline strikethrough customImage forecolor backcolor customRemove ',
+											'blocks fontsizeinput bold italic underline strikethrough forecolor backcolor customRemove ',
 										link_context_toolbar: true,
 										setup: editor => {
-											editor.ui.registry.addToggleButton('customImage', {
-												icon: 'image',
-												tooltip: '이미지 삽입',
-												onAction: handleImgClick,
-											});
 											editor.ui.registry.addToggleButton('customRemove', {
 												icon: 'remove',
 												tooltip: '전체 삭제',
