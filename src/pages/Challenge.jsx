@@ -749,13 +749,12 @@ const ChallengeModalWrapper = styled.div`
 	line-height: 22px;
 
 	text-align: center;
-
 	color: #272727;
 	text-align: center;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	height: 100vh;
