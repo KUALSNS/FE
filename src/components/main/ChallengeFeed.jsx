@@ -83,16 +83,6 @@ const ChallengeFeed = () => {
 								}`}
 							>
 								{category}
-								{/* <div className="img-category" onClick={onSelectCategory}>
-									<img
-										onClick={onSelectCategory}
-										src={
-											activeCategories.includes(category)
-												? 'minus.svg'
-												: 'plus.svg'
-										}
-									/>
-								</div> */}
 							</button>
 						</div>
 					))}
@@ -244,6 +234,7 @@ const Category = styled.div`
 		cursor: pointer;
 		margin-right: 16px;
 		position: relative;
+		border-radius: 32px;
 	}
 
 	.category .itemExcept button::after {
