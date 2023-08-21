@@ -74,25 +74,25 @@ const ChallengeFeed = () => {
 						</button>
 					</div>
 					{categories.map((category, idx) => (
-						<div className="itemExcept" key={idx}>
+						<div className="itemExcept" key={idx} onClick={onSelectCategory}>
 							<button
 								key={category}
 								name={category}
-								onClick={onSelectCategory}
 								className={`button ${
 									activeCategories.includes(category) ? 'except' : 'not'
 								}`}
 							>
 								{category}
-								<div className="img-category">
+								{/* <div className="img-category" onClick={onSelectCategory}>
 									<img
+										onClick={onSelectCategory}
 										src={
 											activeCategories.includes(category)
 												? 'minus.svg'
 												: 'plus.svg'
 										}
 									/>
-								</div>
+								</div> */}
 							</button>
 						</div>
 					))}
@@ -243,14 +243,45 @@ const Category = styled.div`
 		padding-right: 12px;
 		cursor: pointer;
 		margin-right: 16px;
+		position: relative;
 	}
 
-	.itemExcept .img-category {
-		width: 16px;
-		border-left: 1px solid #bcd6ff;
-		margin-left: 8px;
-		padding-left: 8px;
+	.category .itemExcept button::after {
+		content: '';
+		display: block;
+		width: 1px;
+		height: 16px;
+		background-color: #bcd6ff;
+		position: absolute;
+		top: 12px;
+		right: 35px;
 	}
+	.category .itemExcept button::before {
+		content: '';
+		display: block;
+		width: 16px;
+		height: 16px;
+		position: absolute;
+		top: 12px;
+		right: 15px;
+		background-image: url('plus.svg');
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	.category .itemExcept button.except::before {
+		content: '';
+		display: block;
+		width: 16px;
+		height: 16px;
+		position: absolute;
+		top: 12px;
+		right: 15px;
+		background-image: url('minus.svg');
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
 	.img-category img {
 		margin-bottom: 3px;
 	}
