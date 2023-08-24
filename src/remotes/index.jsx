@@ -146,7 +146,7 @@ const postPreSubmit = (
 	challengeContent,
 ) =>
 	WritonAxios.post(
-		'/api/write/write/temporary-storage',
+		'/api/write/temporary-storage',
 		{
 			challengeName: challengeName,
 			templateName: templateName,
