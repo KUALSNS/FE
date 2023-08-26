@@ -65,11 +65,7 @@ const Navigation = () => {
 	};
 
 	const SpaceToLogin = () => {
-		navigate('/login');
-	};
-
-	const SpaceToRegister = () => {
-		navigate('/register');
+		navigate('/sociallogin');
 	};
 
 	const SpaceToMypage = () => {
@@ -85,6 +81,7 @@ const Navigation = () => {
 					setDetailuser({
 						nickname: res.data.data.nickname,
 						challengeCertain: res.data.data.challengeCertain,
+						userId: res.data.data.identifier,
 					});
 					setActiveChallenge({
 						userChallengeSu: res.data.data.userChallengeSu,
@@ -101,7 +98,6 @@ const Navigation = () => {
 						console.log(err);
 					}
 				});
-
 			getMypageInfo()
 				.then(res => {
 					setUserId(res.data.responseData.identifier);
@@ -159,7 +155,7 @@ const Navigation = () => {
 												<img src="/drop_user_img.svg" />
 												{detailuser.nickname}
 											</div>
-											<div className="user-id">{userId || '아이디'}</div>
+											<div className="user-id">{detailuser.userId}</div>
 										</div>
 										<div className="mypage" onClick={SpaceToMypage}>
 											<img src="/drop_user.svg" />
@@ -177,8 +173,7 @@ const Navigation = () => {
 						</div>
 					) : (
 						<div className="before-user">
-							<div onClick={SpaceToLogin}>로그인</div>
-							<div onClick={SpaceToRegister}>회원가입</div>
+							<div onClick={SpaceToLogin}>로그인 / 회원가입</div>
 						</div>
 					)}
 				</div>
