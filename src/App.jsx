@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import Challenge from './pages/Challenge';
-
+import KakaoCallback from './pages/KakaoCallback';
 import Record from './pages/Record';
 import Mypage from './pages/Mypage';
 import FindIdPw from './pages/FindIdPw';
@@ -16,6 +16,7 @@ import jwt_decode from 'jwt-decode';
 import {useEffect} from 'react';
 import Navigation from './components/navigation/Navigation';
 import ChallengeToast from './components/toast/ChallengeToast';
+import SocialLogin from './pages/SocialLogin';
 
 function App() {
 	const location = useLocation();
@@ -23,7 +24,6 @@ function App() {
 	const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
 
 	const [toast, setToast] = useRecoilState(challengeToastState);
-
 
 	useEffect(() => {
 		const accessToken = localStorage.getItem('accessToken');
@@ -38,10 +38,8 @@ function App() {
 		window.addEventListener('resize', handleResize);
 		handleResize();
 
-
 		return () => window.removeEventListener('resize', handleResize);
 	}, []);
-
 
 	useEffect(() => {
 		if (toast) {
@@ -54,7 +52,8 @@ function App() {
 		<div>
 			{location.pathname == '/login' ||
 			location.pathname == '/find' ||
-			location.pathname == '/register' ? (
+			location.pathname == '/register' ||
+			location.pathname == '/sociallogin' ? (
 				''
 			) : (
 				<div>
@@ -89,9 +88,11 @@ function App() {
 				<Route path="/record" element={<Record />} />
 
 				<Route path="/mypage" element={<Mypage />} />
+				<Route path="/sociallogin" element={<SocialLogin />} />
 				<Route path="/login" element={<Signin />} />
 				<Route path="/register" element={<Signup />} />
 				<Route path="/find" element={<FindIdPw />} />
+				<Route path="/auth/kakao/callback" element={<KakaoCallback />} />
 			</Routes>
 		</div>
 	);
