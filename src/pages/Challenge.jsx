@@ -370,7 +370,7 @@ function Challenge() {
 									style={{display: 'none'}}
 								/>
 								<Editor
-									apiKey={'g4mg3drbkngwjqktapnoov8l2rgl77uqi4ji7mr62mheiq20'}
+									apiKey={import.meta.env.VITE_editor_api_key}
 									onInit={(evt, editor) => (editorRef.current = editor)}
 									placeholder="내용을 입력해주세요."
 									init={{
