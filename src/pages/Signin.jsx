@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {userState} from '../atoms/auth';
@@ -14,6 +14,7 @@ const SigninWrapper = styled.div`
 	text-align: center;
 	min-height: 100vh;
 	padding-top: 83px;
+	position: relative;
 	div {
 		font-family: 'Happiness-Sans-Bold', sans-serif;
 		font-weight: 700;
@@ -24,6 +25,11 @@ const SigninWrapper = styled.div`
 
 	img {
 		margin-bottom: 212px;
+		position: absolute;
+		top: 726px;
+		left: 0;
+		right: 0;
+		margin: auto;
 	}
 
 	img:hover {
@@ -72,19 +78,16 @@ const SigninForm = styled.form`
 		margin: auto;
 		text-align: right;
 		font-size: 12px;
-		margin-bottom: 275px;
 	}
 `;
 const Signin = () => {
 	const navigate = useNavigate();
-
 	const [userId, setUserId] = useState('');
 	const [password, setPassword] = useState('');
 	const [user, setUserState] = useRecoilState(userState);
 	const setAuth = useSetRecoilState(authState);
 	const [toast, setToast] = useRecoilState(challengeToastState);
 	const setFindState = useSetRecoilState(IdPwFindState);
-
 
 	const LoginSubmit = e => {
 		e.preventDefault();
@@ -103,7 +106,6 @@ const Signin = () => {
 				}
 			});
 	};
-
 
 	const findIdPwRoute = param => {
 		setFindState(param);
