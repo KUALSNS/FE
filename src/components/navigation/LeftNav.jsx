@@ -30,6 +30,7 @@ function LeftNav() {
 		['글 챌린지', '/challenge'],
 		['글 플래너', '/record'],
 		['마이페이지', '/mypage'],
+		['라이톤 설명서', '/guideline'],
 	];
 
 	const location = useLocation();
@@ -79,8 +80,10 @@ function LeftNav() {
 			} else {
 				navigate(url);
 			}
+		} else if (url === '/guideline') {
+			navigate(url);
 		} else {
-			navigate('/login');
+			navigate('/sociallogin');
 		}
 	};
 
