@@ -9,20 +9,20 @@ import Record from './pages/Record';
 import Mypage from './pages/Mypage';
 import FindIdPw from './pages/FindIdPw';
 import LeftNav from './components/navigation/LeftNav';
-import {postAccessToken} from './remotes';
 import {useRecoilState} from 'recoil';
 import {authState, challengeToastState, SmallScreenState} from './atoms/auth';
-import jwt_decode from 'jwt-decode';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import Navigation from './components/navigation/Navigation';
 import ChallengeToast from './components/toast/ChallengeToast';
 import SocialLogin from './pages/SocialLogin';
+import GuideLine from './pages/GuideLine';
+import GuidelineModal from './components/modal/guidelineModal';
 
 function App() {
 	const location = useLocation();
 	const [auth, setAuth] = useRecoilState(authState);
 	const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
-
+	const [onClose, setOnClose] = useState(false);
 	const [toast, setToast] = useRecoilState(challengeToastState);
 
 	useEffect(() => {
@@ -80,13 +80,19 @@ function App() {
 			) : (
 				''
 			)}
+			{localStorage.getItem('guideModal') ? (
+				''
+			) : onClose ? (
+				''
+			) : (
+				<GuidelineModal onClos={onClose} setOnClose={setOnClose} />
+			)}
 
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/challenge" element={<Challenge />} />
-
 				<Route path="/record" element={<Record />} />
-
+				<Route path="/guideline" element={<GuideLine />} />
 				<Route path="/mypage" element={<Mypage />} />
 				<Route path="/sociallogin" element={<SocialLogin />} />
 				<Route path="/login" element={<Signin />} />
