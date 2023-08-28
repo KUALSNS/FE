@@ -33,6 +33,7 @@ function SemiNav() {
 		['글 챌린지', '/challenge'],
 		['글 플래너', '/record'],
 		['마이페이지', '/mypage'],
+		['라이톤 설명서', '/guideline'],
 	];
 
 	const location = useLocation();
@@ -83,7 +84,7 @@ function SemiNav() {
 				navigate(url);
 			}
 		} else {
-			navigate('/login');
+			navigate('/sociallogin');
 		}
 		setSemiListToggle(false);
 	};
