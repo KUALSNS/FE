@@ -127,7 +127,7 @@ const Container = styled.div`
 		font-family: 'Pretendard';
 		font-style: normal;
 		font-weight: 600;
-		font-size: 17.9px;
+		font-size: 17.4px;
 		line-height: 24px;
 		text-align: center;
 
