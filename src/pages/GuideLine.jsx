@@ -211,7 +211,7 @@ const Container = styled.div`
 	.Secondguide .head {
 		height: 72px;
 		background-color: #e1eaf8;
-		border-radius: 17px 17px 0 0;
+		border-radius: 15px 15px 0 0;
 		position: relative;
 	}
 	.Secondguide .orderNum {
@@ -237,7 +237,7 @@ const Container = styled.div`
 		height: 110px;
 		position: absolute;
 		bottom: 0;
-		border-radius: 0 0 17px 17px;
+		border-radius: 0 0 15px 15px;
 		display: flex;
 		text-align: center;
 		justify-content: center;
