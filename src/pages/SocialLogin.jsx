@@ -61,7 +61,6 @@ const Container = styled.div`
 	.title {
 		color: #272727;
 		text-align: center;
-		font-family: Happiness Sans;
 		font-size: 26px;
 		font-style: normal;
 		font-weight: 700;
