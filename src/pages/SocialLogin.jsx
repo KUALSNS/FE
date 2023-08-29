@@ -80,7 +80,7 @@ const Container = styled.div`
 		cursor: pointer;
 	}
 	.LoginBtn {
-		font-family: Pretendard;
+		font-family: 'Pretendard', sans-serif;
 		font-size: 15px;
 		font-style: normal;
 		font-weight: 500;

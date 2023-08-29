@@ -173,6 +173,7 @@ const Container = styled.div`
 		line-height: normal;
 		color: #272727;
 		margin-bottom: 16px;
+		font-family: 'Happiness-Sans-Bold', sans-serif;
 	}
 
 	.line {
@@ -198,6 +199,7 @@ const Container = styled.div`
 		font-weight: 700;
 		line-height: normal;
 		margin-bottom: 17px;
+		font-family: 'Happiness-Sans-Bold', sans-serif;
 	}
 	.Secondguide .guideImgContainer {
 		height: 537px;
@@ -209,7 +211,7 @@ const Container = styled.div`
 	.Secondguide .head {
 		height: 72px;
 		background-color: #e1eaf8;
-		border-radius: 17px 17px 0 0;
+		border-radius: 15px 15px 0 0;
 		position: relative;
 	}
 	.Secondguide .orderNum {
@@ -235,7 +237,7 @@ const Container = styled.div`
 		height: 110px;
 		position: absolute;
 		bottom: 0;
-		border-radius: 0 0 17px 17px;
+		border-radius: 0 0 15px 15px;
 		display: flex;
 		text-align: center;
 		justify-content: center;

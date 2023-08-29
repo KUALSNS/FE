@@ -65,7 +65,7 @@ function RecordCalendar() {
 				<div className="yearMonth">
 					<img
 						className="spaceMonth"
-						src="LeftArrow.svg"
+						src="/LeftArrow.svg"
 						onClick={showAll ? preMonth : prevWeek}
 					/>
 					<span className="text">
@@ -74,17 +74,17 @@ function RecordCalendar() {
 					</span>
 					<img
 						className="spaceMonth"
-						src="RightArrow.svg"
+						src="/RightArrow.svg"
 						onClick={showAll ? nextMonth : nextWeek}
 					/>
 				</div>
 
 				<button className="show" onClick={() => setShowAll(!showAll)}>
-					<img src="calendar_showBtnIcon.svg" />
+					<img src="/calendar_showBtnIcon.svg" />
 					{showAll ? '달력 접기' : '달력 펼치기'}
 				</button>
 				<button className="grow" onClick={() => setShowGrowth(!showGrowth)}>
-					<img src="calendar_growBtnIcon.svg" />
+					<img src="/calendar_growBtnIcon.svg" />
 					성장
 				</button>
 			</div>
@@ -121,7 +121,11 @@ const CalendarWrapper = styled.div`
 		font-size: 18px;
 		line-height: 22px;
 		/* identical to box height */
-
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-o-user-select: none;
+		user-select: none;
 		color: #272727;
 	}
 
