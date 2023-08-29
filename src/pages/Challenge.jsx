@@ -433,7 +433,7 @@ function Challenge() {
 									<div className="currentTemplate" key={idx}>
 										<div
 											className={
-												t.templateTitle.length >= 16 ? 'twoline' : 'oneline'
+												t.templateTitle.length >= 17 ? 'twoline' : 'oneline'
 											}
 										>
 											{t.templateTitle}
