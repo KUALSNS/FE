@@ -16,13 +16,12 @@ import Navigation from './components/navigation/Navigation';
 import ChallengeToast from './components/toast/ChallengeToast';
 import SocialLogin from './pages/SocialLogin';
 import GuideLine from './pages/GuideLine';
-import GuidelineModal from './components/modal/guidelineModal';
 
 function App() {
 	const location = useLocation();
 	const [auth, setAuth] = useRecoilState(authState);
 	const [isSmallScreen, setIsSmallScreen] = useRecoilState(SmallScreenState);
-	const [onClose, setOnClose] = useState(false);
+
 	const [toast, setToast] = useRecoilState(challengeToastState);
 
 	useEffect(() => {
@@ -79,13 +78,6 @@ function App() {
 				<ChallengeToast message={toast} />
 			) : (
 				''
-			)}
-			{localStorage.getItem('guideModal') ? (
-				''
-			) : onClose ? (
-				''
-			) : (
-				<GuidelineModal onClos={onClose} setOnClose={setOnClose} />
 			)}
 
 			<Routes>

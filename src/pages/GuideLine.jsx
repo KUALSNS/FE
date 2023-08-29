@@ -36,10 +36,10 @@ const GuideLine = () => {
 		},
 	];
 	const guideIMG = [
-		'guideIMG1.png',
-		'guideIMG2.png',
-		'guideIMG3.png',
-		'guideIMG4.png',
+		'/guideIMG1.png',
+		'/guideIMG2.png',
+		'/guideIMG3.png',
+		'/guideIMG4.png',
 	];
 	const guideTEXT = [
 		`30일 글 챌린지를 탐색하고
@@ -59,7 +59,7 @@ const GuideLine = () => {
 		<Container>
 			<div className="Firstguide">
 				<div className="guideLogo">
-					<img src="guidelineLogo.png" width={454} />
+					<img src="/guidelineLogo.png" width={454} />
 				</div>
 				<div className="guideText">
 					<h1>라이톤 200% 사용 설명서</h1>
@@ -103,11 +103,11 @@ const GuideLine = () => {
 					</Slider>
 					<div>
 						<div className="preArrow" onClick={previous}>
-							<img src="guideArrow.svg" alt="pre" />
+							<img src="/guideArrow.svg" alt="pre" />
 						</div>
 
 						<div className="nextArrow" onClick={next}>
-							<img src="guideArrow.svg" alt="next" />
+							<img src="/guideArrow.svg" alt="next" />
 						</div>
 					</div>
 					<div className="guideImgText">

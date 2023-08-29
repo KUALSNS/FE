@@ -66,7 +66,7 @@ const ChallengeStory = () => {
 				setToast('진행중인 챌린지가 없어요!');
 			}
 		} else {
-			navigate('/login');
+			navigate('/sociallogin');
 		}
 	};
 
