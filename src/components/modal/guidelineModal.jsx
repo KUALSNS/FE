@@ -11,7 +11,7 @@ const GuidelineModal = ({onClose, setOnClose}) => {
 			<GuideBox>
 				<div className="close">
 					<img
-						src="modalClose.svg"
+						src="/modalClose.svg"
 						alt="close"
 						width={14}
 						onClick={() => setOnClose(!onClose)}
@@ -24,7 +24,7 @@ const GuidelineModal = ({onClose, setOnClose}) => {
 					<div className="text">
 						글 챌린지 시작과 글 템플릿 활용 방법을 확인해요.
 					</div>
-					<img src="guidelineLogo.png" alt="모달로고" width={276} />
+					<img src="/guidelineLogo.png" alt="모달로고" width={276} />
 				</div>
 				<div className="Btn">
 					<div className="todayStopBtn">
