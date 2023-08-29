@@ -173,6 +173,7 @@ const Container = styled.div`
 		line-height: normal;
 		color: #272727;
 		margin-bottom: 16px;
+		font-family: 'Happiness-Sans-Bold', sans-serif;
 	}
 
 	.line {
@@ -198,6 +199,7 @@ const Container = styled.div`
 		font-weight: 700;
 		line-height: normal;
 		margin-bottom: 17px;
+		font-family: 'Happiness-Sans-Bold', sans-serif;
 	}
 	.Secondguide .guideImgContainer {
 		height: 537px;

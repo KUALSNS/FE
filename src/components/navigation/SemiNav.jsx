@@ -190,7 +190,7 @@ const Sidebar = styled.div`
 
 	.sidebar-nav li .menu {
 		display: flex;
-		font-family: 'Happiness Sans';
+		font-family: 'Happiness-Sans-Bold';
 		font-style: normal;
 		font-weight: 700;
 		font-size: 18px;

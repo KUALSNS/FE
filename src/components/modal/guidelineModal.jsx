@@ -111,6 +111,7 @@ const GuideBox = styled.div`
 		color: #272727;
 		display: flex;
 		justify-content: center;
+		font-family: 'Happiness-Sans-Bold', sans-serif;
 	}
 	.Modalcenter .titleOpen {
 		color: #266cf4;
@@ -120,7 +121,7 @@ const GuideBox = styled.div`
 		margin-top: 22px;
 		color: #7c8089;
 		text-align: center;
-		font-family: Pretendard;
+		font-family: 'Pretendard' sans-serif;
 		font-size: 15px;
 		font-style: normal;
 		font-weight: 400;
