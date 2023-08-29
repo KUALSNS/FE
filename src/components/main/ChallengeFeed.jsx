@@ -255,7 +255,7 @@ const Category = styled.div`
 		position: absolute;
 		top: 12px;
 		right: 15px;
-		background-image: url('plus.svg');
+		background-image: url('/plus.svg');
 		background-repeat: no-repeat;
 		background-position: center;
 	}
@@ -268,7 +268,7 @@ const Category = styled.div`
 		position: absolute;
 		top: 12px;
 		right: 15px;
-		background-image: url('minus.svg');
+		background-image: url('/minus.svg');
 		background-repeat: no-repeat;
 		background-position: center;
 	}
