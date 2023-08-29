@@ -32,10 +32,10 @@ function Mypage() {
 		mypageInit();
 	}, []);
 
-
 	const mypageInit = () => {
 		getMypageInfo()
 			.then(res => {
+				console.log(res);
 				const data = res.data.responseData;
 				setUserInfo({
 					id: data.identifier,
@@ -57,7 +57,6 @@ function Mypage() {
 			});
 	};
 
- 
 	const saveEdit = () => {
 		patchNamePhone(nicknameInput, phoneInput)
 			.then(res => {
