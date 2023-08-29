@@ -14,6 +14,7 @@ import {
 	loadingState,
 	activeChallengeState,
 } from '../atoms/auth';
+import GuidelineModal from '../components/modal/guidelineModal';
 
 const Home = () => {
 	const [loading, setLoading] = useRecoilState(loadingState);
@@ -22,6 +23,7 @@ const Home = () => {
 	const setDetailuser = useSetRecoilState(detailuserState);
 	const setActiveChallenge = useSetRecoilState(activeChallengeState);
 	const [auth, setAuth] = useRecoilState(authState);
+	const [onClose, setOnClose] = useState(false);
 
 	useEffect(() => {
 		localStorage.removeItem('fixChallenge');
@@ -77,6 +79,13 @@ const Home = () => {
 	} else {
 		return (
 			<div>
+				{localStorage.getItem('guideModal') ? (
+					''
+				) : onClose ? (
+					''
+				) : (
+					<GuidelineModal onClos={onClose} setOnClose={setOnClose} />
+				)}
 				<Container>
 					<ChallengeStory />
 					<ChallengeFeed />
