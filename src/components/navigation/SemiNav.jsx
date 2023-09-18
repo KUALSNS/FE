@@ -85,6 +85,8 @@ function SemiNav() {
 			}
 		} else if (url === '/guideline') {
 			navigate(url);
+		} else if (url === '/') {
+			navigate(url);
 		} else {
 			navigate('/sociallogin');
 		}
