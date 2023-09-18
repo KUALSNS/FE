@@ -10,7 +10,7 @@ import {authState, challengeToastState} from '../atoms/auth';
 import ChallengeToast from '../components/toast/ChallengeToast';
 
 const SigninWrapper = styled.div`
-	zoom: 0.85;
+	zoom: 0.9;
 	font-family: 'Pretendard', sans-serif;
 	text-align: center;
 	min-height: 100vh;

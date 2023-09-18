@@ -11,7 +11,7 @@ import SignupTerm from '../components/etc/SignupTerm';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 const SignupWrapper = styled.div`
-	zoom: 0.66;
+	zoom: 0.9;
 	font-family: 'Pretendard';
 	text-align: center;
 	padding-top: 76px;
@@ -312,6 +312,7 @@ const Signup = () => {
 				setToast('인증 요청이 되었습니다.');
 			})
 			.catch(err => {
+				setLoading(false);
 				setToast('이메일이 중복됩니다!');
 				setEmailConfirmed(false);
 				setEmail('');
