@@ -51,7 +51,6 @@ const GuideLine = () => {
 		`나의 챌린지 기록에 맞춘 달성률, 달력, 달성 배지 기능을 제공해요
   💡 홈 화면에서도 참여 챌린지 상태 확인이 가능해요`,
 	];
-	const dotline = [1, 2, 3, 4];
 	const previous = useCallback(() => slickRef.current.slickPrev(), []);
 	const next = useCallback(() => slickRef.current.slickNext(), []);
 
@@ -80,10 +79,10 @@ const GuideLine = () => {
 					{guideImgTitle.map((item, idx) => {
 						if (idx === num) {
 							return (
-								<>
+								<React.Fragment key={idx}>
 									<h1>{item.title}</h1>
 									<p>{item.text}</p>
-								</>
+								</React.Fragment>
 							);
 						}
 					})}
@@ -113,15 +112,15 @@ const GuideLine = () => {
 					<div className="guideImgText">
 						{guideTEXT.map((item, idx) => {
 							if (num === idx) {
-								return <pre>{item} </pre>;
+								return <pre key={idx}>{item} </pre>;
 							}
 						})}
 					</div>
 					<div className="dotLine">
-						<div className={0 === num && 'active'}></div>
-						<div className={1 === num && 'active'}></div>
-						<div className={2 === num && 'active'}></div>
-						<div className={3 === num && 'active'}></div>
+						<div className={0 === num ? 'active' : ''}></div>
+						<div className={1 === num ? 'active' : ''}></div>
+						<div className={2 === num ? 'active' : ''}></div>
+						<div className={3 === num ? 'active' : ''}></div>
 					</div>
 				</div>
 			</div>
