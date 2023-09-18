@@ -61,6 +61,24 @@ const Home = () => {
 				})
 				.catch(err => console.log(err));
 		}
+		const objString = window.localStorage.getItem('guideModal');
+
+		// null 체크
+		if (!objString) {
+			return null;
+		}
+
+		// 문자열을 객체로 변환
+		const obj = JSON.parse(objString);
+
+		// 현재 시간과 localStorage의 expire 시간 비교
+		if (Date.now() > obj.expire) {
+			// 만료시간이 지난 item 삭제
+			window.localStorage.removeItem('guideModal');
+
+			// null 리턴
+			return null;
+		}
 	}, []);
 
 	if (loading) {
