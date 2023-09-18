@@ -63,7 +63,10 @@ const Home = () => {
 		}
 		const objString = window.localStorage.getItem('guideModal');
 		const obj = JSON.parse(objString);
-		if (Date.now() > obj?.expire) {
+		if (
+			Date.now() > obj?.expire ||
+			window.localStorage.getItem('guideModal') === true
+		) {
 			window.localStorage.removeItem('guideModal');
 		}
 	}, []);
