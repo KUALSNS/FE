@@ -8,12 +8,13 @@ import {challengeToastState} from '../atoms/auth';
 import {useRecoilState} from 'recoil';
 import CheckModal from '../components/modal/CheckModal';
 import SignupTerm from '../components/etc/SignupTerm';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const SignupWrapper = styled.div`
+	zoom: 0.66;
 	font-family: 'Pretendard';
 	text-align: center;
 	padding-top: 76px;
-	padding-bottom: 100px;
 
 	.logo {
 		margin-bottom: 44px;
@@ -120,7 +121,7 @@ const SignupForm = styled.form`
 		color: #7c8089;
 	}
 
-	.check img:hover {
+	.check:hover {
 		cursor: pointer;
 	}
 
@@ -159,6 +160,7 @@ const SignupForm = styled.form`
 
 const Signup = () => {
 	const navigate = useNavigate();
+	const [loading, setLoading] = useState(false);
 	const [userId, setUserId] = useState('');
 	const [password1, setPassword1] = useState('');
 	const [password2, setPassword2] = useState('');
@@ -301,14 +303,19 @@ const Signup = () => {
 
 	const handleEmailClick = e => {
 		e.preventDefault();
-
+		setLoading(true);
 		postEmail(email)
 			.then(res => {
+				setLoading(false);
 				setEmailConfirmed(true);
 
 				setToast('인증 요청이 되었습니다.');
 			})
-			.catch(err => console.log(err));
+			.catch(err => {
+				setToast('이메일이 중복됩니다!');
+				setEmailConfirmed(false);
+				setEmail('');
+			});
 	};
 
 	const handleEmailCodeClick = e => {
@@ -320,7 +327,7 @@ const Signup = () => {
 			})
 			.catch(err => {
 				setEmailCodeError(true);
-				console.log(err);
+				setEmailCode('');
 			});
 	};
 
@@ -364,6 +371,8 @@ const Signup = () => {
 				<ChallengeToast message={toast} />
 			) : toast === '사용 가능한 아이디입니다.' ? (
 				<ChallengeToast message={toast} />
+			) : toast === '이메일이 중복됩니다!' ? (
+				<ChallengeToast message={toast} />
 			) : (
 				''
 			)}
@@ -376,6 +385,25 @@ const Signup = () => {
 			/>
 
 			<SignupForm>
+				{loading ? (
+					<div
+						style={{
+							position: 'absolute',
+							left: 0,
+							right: 0,
+							margin: 'auto',
+							zIndex: 10,
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'center',
+							height: '100vh',
+						}}
+					>
+						<ClipLoader color="#266cf4" loading={loading} size={130} />
+					</div>
+				) : (
+					''
+				)}
 				<div className="field">
 					<div>아이디</div>
 					<input
@@ -504,9 +532,8 @@ const Signup = () => {
 				<div className="field">
 					<div>이용약관 동의</div>
 					<div className="policy">
-						<div className="check">
+						<div className="check" onClick={handleCheckAll}>
 							<img
-								onClick={handleCheckAll}
 								src={
 									check.every(c => c === true)
 										? 'signup_checkall.svg'
@@ -516,9 +543,8 @@ const Signup = () => {
 							<span>약관 전체 동의 (선택 동의 포함)</span>
 							<a className="hidden">자세히</a>
 						</div>
-						<div className="check">
+						<div className="check" onClick={() => handleCheck(0)}>
 							<img
-								onClick={() => handleCheck(0)}
 								src={
 									check[0] ? 'signup_check.svg' : 'signup_check_disabled.svg'
 								}
@@ -532,9 +558,8 @@ const Signup = () => {
 								자세히
 							</a>
 						</div>
-						<div className="check">
+						<div className="check" onClick={() => handleCheck(1)}>
 							<img
-								onClick={() => handleCheck(1)}
 								src={
 									check[1] ? 'signup_check.svg' : 'signup_check_disabled.svg'
 								}
@@ -542,9 +567,8 @@ const Signup = () => {
 							<span>[필수] 개인정보 수집 및 이용 동의</span>
 							<a onClick={() => setShowTerm(1)}>자세히</a>
 						</div>
-						<div className="check">
+						<div className="check" onClick={() => handleCheck(2)}>
 							<img
-								onClick={() => handleCheck(2)}
 								src={
 									check[2] ? 'signup_check.svg' : 'signup_check_disabled.svg'
 								}

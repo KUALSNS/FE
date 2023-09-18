@@ -52,6 +52,7 @@ const SocialLogin = () => {
 };
 
 const Container = styled.div`
+	zoom: 0.85;
 	font-family: 'Pretendard', sans-serif;
 	text-align: center;
 	min-height: 700px;

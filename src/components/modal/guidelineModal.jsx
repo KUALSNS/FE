@@ -5,6 +5,11 @@ import {styled} from 'styled-components';
 
 const GuidelineModal = ({onClose, setOnClose}) => {
 	const navigate = useNavigate();
+	const obj = {
+		value: true,
+		expire: Date.now() + 24 * 60 * 60 * 1000,
+	};
+	const objString = JSON.stringify(obj);
 
 	return (
 		<GuideModalWrapper>
@@ -30,7 +35,7 @@ const GuidelineModal = ({onClose, setOnClose}) => {
 					<div className="todayStopBtn">
 						<p
 							onClick={() => {
-								localStorage.setItem('guideModal', true);
+								localStorage.setItem('guideModal', objString);
 								setOnClose(true);
 							}}
 						>
@@ -41,7 +46,6 @@ const GuidelineModal = ({onClose, setOnClose}) => {
 						<p
 							onClick={() => {
 								navigate('/guideline');
-								localStorage.setItem('guideModal', true);
 								setOnClose(true);
 							}}
 						>
@@ -72,8 +76,8 @@ const GuideModalWrapper = styled.div`
 	position: fixed;
 	top: 0;
 	left: 0;
-	height: 100vh;
-	width: 100vw;
+	height: 100%;
+	width: 100%;
 	background: rgba(0, 0, 0, 0.4);
 	z-index: 20;
 `;
