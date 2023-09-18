@@ -65,7 +65,7 @@ const Home = () => {
 		const obj = JSON.parse(objString);
 		if (
 			Date.now() > obj?.expire ||
-			window.localStorage.getItem('guideModal') === true
+			window.localStorage.getItem('guideModal') === 'true'
 		) {
 			window.localStorage.removeItem('guideModal');
 		}
@@ -87,7 +87,7 @@ const Home = () => {
 	} else {
 		return (
 			<div>
-				{localStorage.getItem('guideModal') ? (
+				{window.localStorage.getItem('guideModal') ? (
 					''
 				) : onClose ? (
 					''
