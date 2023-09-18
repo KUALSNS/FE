@@ -15,7 +15,7 @@ const SignupWrapper = styled.div`
 	font-family: 'Pretendard';
 	text-align: center;
 	padding-top: 76px;
-
+	padding-bottom: 100px;
 	.logo {
 		margin-bottom: 44px;
 		cursor: pointer;
@@ -168,6 +168,7 @@ const Signup = () => {
 	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
 	const [idError, setIdError] = useState(false);
+	const [duplicateId, setDuplicateId] = useState(false);
 	const [password1Error, setPassword1Error] = useState(false);
 	const [password2Error, setPassword2Error] = useState(false);
 	const [emailCode, setEmailCode] = useState('');
@@ -215,16 +216,19 @@ const Signup = () => {
 
 	const LoginSubmit = e => {
 		e.preventDefault();
-
-		postSignup(userId, email, password2, username, phone)
-			.then(res => {
-				setOkaymodal(true);
-			})
-			.catch(err => {
-				if (err.response && err.response.status === 400) {
-					setToast('이미 존재하는 아이디 또는 중복되는 이메일입니다.');
-				}
-			});
+		if (duplicateId) {
+			postSignup(userId, email, password2, username, phone)
+				.then(res => {
+					setOkaymodal(true);
+				})
+				.catch(err => {
+					if (err.response && err.response.status === 400) {
+						setToast('이미 존재하는 아이디 또는 중복되는 이메일입니다.');
+					}
+				});
+		} else {
+			setToast('아이디 중복을 체크 해주세요!');
+		}
 	};
 
 	const handleIdChange = e => {
@@ -286,10 +290,10 @@ const Signup = () => {
 
 	const handleIdClick = e => {
 		e.preventDefault();
-		console.log(userId);
 		getCheckId(userId)
 			.then(res => {
 				setIdError(false);
+				setDuplicateId(true);
 				setToast('사용 가능한 아이디입니다.');
 			})
 			.catch(err => {
@@ -324,6 +328,7 @@ const Signup = () => {
 
 		getEmailCode(email, emailCode)
 			.then(res => {
+				setEmailCodeError(false);
 				setToast('이메일 인증이 완료되었습니다.');
 			})
 			.catch(err => {
@@ -373,6 +378,8 @@ const Signup = () => {
 			) : toast === '사용 가능한 아이디입니다.' ? (
 				<ChallengeToast message={toast} />
 			) : toast === '이메일이 중복됩니다!' ? (
+				<ChallengeToast message={toast} />
+			) : toast === '아이디 중복을 체크 해주세요!' ? (
 				<ChallengeToast message={toast} />
 			) : (
 				''
