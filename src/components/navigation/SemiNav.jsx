@@ -83,6 +83,8 @@ function SemiNav() {
 			} else {
 				navigate(url);
 			}
+		} else if (url === '/guideline') {
+			navigate(url);
 		} else {
 			navigate('/sociallogin');
 		}

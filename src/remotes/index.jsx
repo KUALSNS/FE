@@ -56,7 +56,7 @@ const getEmailCode = (userEmail, userEmailCode) =>
 
 const postSignup = (userId, userEmail, userPassword, nickname, phoneNumber) =>
 	WritonAxios.post('/api/user/signup', {
-		userId: userId,
+		identifier: userId,
 		email: userEmail,
 		password: userPassword,
 		nickname: nickname,
