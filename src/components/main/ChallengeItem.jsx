@@ -60,7 +60,7 @@ const ChallengeItem = ({title, category, image}) => {
 			localStorage.removeItem('fixChallenge');
 			getChallengePageWithTokenRefresh(title);
 		} else {
-			navigate('/login');
+			navigate('/sociallogin');
 		}
 	};
 
